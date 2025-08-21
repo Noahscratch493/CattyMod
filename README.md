@@ -10,7 +10,7 @@ It’s a fully featured Scratch 3 editor that’s been reworked with visual twea
 ---
 
 ## 🔗 Live Demo  
-🎮 [noahscratch493.github.io/cattymod/](https://noahscratch493.github.io/cattymod/)
+🎮 [cattymod.github.io/editor](https://cattymod.github.io/editor)
 
 ---
 
@@ -47,7 +47,7 @@ CattyMod supports **many addons** that can expand the editor with new features, 
 
 ## 🚀 Getting Started
 
-1. Go to [CattyMod on GitHub Pages](https://noahscratch493.github.io/cattymod/)  
+1. Go to [CattyMod on GitHub Pages](https://cattymod.github.io/editor)  
 2. Start creating a project or open an existing one  
 3. Try exploring the addons and enable what you want to change in the UI
 ---
@@ -64,7 +64,6 @@ CattyMod supports **many addons** that can expand the editor with new features, 
 ## 🤝 Contributing
 
 Fork the repo, make your changes, but don't submit a pull request or merge.  
-New addons, tools, or fixes are always welcome.
 
 ---
 
