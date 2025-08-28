@@ -1,7 +1,7 @@
 {
   "short_name": "CattyMod",
   "name": "CattyMod",
-  "description": "A cool Scratch Mod",
+  "description": "A suite of tools",
   "icons": [
     {
       "src": "images/192.png",
@@ -14,7 +14,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "editor",
+  "start_url": "login",
   "background_color": "#333333",
   "display": "standalone",
   "theme_color": "#333333"
