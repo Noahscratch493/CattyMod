@@ -3,9 +3,11 @@
 **CattyMod** is a cool, custom Scratch mod I made using the Scrooch 3 framework.  
 It’s a fully featured Scratch 3 editor that’s been reworked with visual tweaks and a massive list of add-ons that introduce powerful new tools and features.
 
-<a href="https://scrooch-project.github.io/ad/build/ad.html?mod=CattyMod">
+<p align="center">
+  <a href="https://scrooch-project.github.io/ad/build/ad.html?mod=EggMod">
   <img src="https://scrooch-project.github.io/ad/PoweredByScrooch.svg" alt="Powered by Scrooch" width="150">
 </a>
+</p>
 
 ---
 
