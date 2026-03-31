@@ -4,7 +4,7 @@
 It’s a fully featured Scratch 3 editor that’s been reworked with visual tweaks and a massive list of add-ons that introduce powerful new tools and features.
 
 <p align="center">
-  <a href="https://scrooch-project.github.io/ad/build/ad.html?mod=EggMod">
+  <a href="https://scrooch-project.github.io/ad/build/ad.html?mod=CattyMod">
   <img src="https://scrooch-project.github.io/ad/PoweredByScrooch.svg" alt="Powered by Scrooch" width="150">
 </a>
 </p>
