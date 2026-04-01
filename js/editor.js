@@ -3200,7 +3200,7 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_intl__WEBPACK_IMPORTED_MODULE_5__["FormattedMessage"]
     // eslint-disable-next-line max-len
     , {
-      defaultMessage: "Unshared projects will no longer be accessible using just their project ID at some point in the future due to upcoming Scratch API changes.",
+      defaultMessage: "Unshared projects are no longer accessible due to Scratch API changes. We're sorry for any inconvenience.",
       id: "tw.unshared.1"
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_intl__WEBPACK_IMPORTED_MODULE_5__["FormattedMessage"], {
       defaultMessage: "For more information, visit: {link}",
