@@ -65,7 +65,7 @@ CattyMod supports **many addons** that can expand the editor with new features, 
 
 ## 🤝 Contributing
 
-Fork the repo, make your changes, but don't submit a pull request or merge.  
+I recommend you don't and instead contribute to the parent of CattyMod, [Scrooch](https://scrooch-project.github.io)
 
 ---
 
