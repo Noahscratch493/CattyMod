@@ -60,7 +60,6 @@
       border-radius: 50%;
     }
 
-    /* Based on section */
     .based-on {
       display: flex;
       flex-wrap: wrap;
@@ -70,7 +69,7 @@
     }
     .based-on img {
       height: 40px;
-      width: auto; /* preserve aspect ratio */
+      width: auto;
       vertical-align: middle;
       border-radius: 8px;
     }
@@ -96,7 +95,6 @@
 <main>
   <header class="top-header">Credits</header>
 
-  <!-- Developers -->
   <section>
     <h2>Developers</h2>
     <div class="users">
@@ -107,13 +105,17 @@
     </div>
   </section>
 
-  <!-- Addons -->
   <section>
     <h2>Addons</h2>
     <div id="addon-users" class="users"></div>
   </section>
 
-  <!-- Based On (Scratch → CattyMod) -->
+  <section>
+    <h2>Extensions</h2>
+    <p>Most extension developers haven't been listed as I could not find the developer.</p>
+    <div id="extension-users" class="users"></div>
+  </section>
+
   <section>
     <h2>Based On</h2>
     <div class="based-on">
@@ -129,86 +131,118 @@
     </div>
   </section>
 
-  <!-- GitHub Pages -->
   <section>
     <h2>GitHub Pages</h2>
     <p>CattyMod is hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.</p>
   </section>
 
-  <!-- Scratch -->
   <section>
     <h2>Scratch</h2>
-    <p>
-      CattyMod is based on the work of the
+    <p>CattyMod is based on the work of the
       <a href="https://scratch.mit.edu/credits" target="_blank">Scratch contributors</a>,
       but is not endorsed by Scratch.
     </p>
     <p><a href="https://scratch.mit.edu/donate" target="_blank">Donate to support Scratch</a>.</p>
   </section>
 
-  <!-- Translators -->
   <section>
     <h2>Translators</h2>
     <p>More than 100 people have helped translate CattyMod and its addons — far more than we could list here.</p>
   </section>
 
-
-
   <section>
-       <h2>Inspiration</h2>
+    <h2>Inspiration</h2>
     <p>PenguinMod's gh-pages branch inspired me to create CattyMod!</p>
     <p>Snail IDE's homepage inspired me to put a video of projects on the homepage.</p>
-</section>
+  </section>
+
+  <section>
+    <h2>PenguinMod</h2>
+    <p>This is a list of PenguinMod accounts from the version of PenguinMod that CattyMod uses (GitHub accounts):</p>
+    <div id="penguinmod-users" class="users"></div>
+  </section>
+
+  <section>
+    <h2>And finally... You!</h2>
+    <p>For supporting my Scratch mod by just using it!</p>
+  </section>
+
+  <hr>
+
   <section>
     <p><i>Individual contributors are listed in no particular order. The order is randomized each visit.</i></p>
   </section>
-  </main>
 
+</main>
 
-  <script>
+<script>
 (function() {
-  const users = [
+  const addonUsers = [
     { userId: '34018398', username: 'Jeffalo' },
     { userId: '64184234', username: 'ErrorGamer2000' },
     { userId: '41616512', username: 'pufferfish101007' },
     { userId: '61409215', username: 'TheColaber' },
-    { userId: '1882674',  username: 'griffpatch' },
+    { userId: '1882674', username: 'griffpatch' },
     { userId: '10817178', username: 'apple502j' },
     { userId: '16947341', username: '--Explosion--' },
     { userId: '14880401', username: 'Sheep_maker' },
-    { userId: '9981676',  username: 'NitroCipher' },
-    { userId: '2561680',  username: 'lisa_wolfgang' },
+    { userId: '9981676', username: 'NitroCipher' },
+    { userId: '2561680', username: 'lisa_wolfgang' },
     { userId: '60000111', username: 'GDUcrash' },
-    { userId: '4648559',  username: 'World_Languages' },
+    { userId: '4648559', username: 'World_Languages' },
     { userId: '17340565', username: 'GarboMuffin' },
-    { userId: '5354974',  username: 'Chrome_Cat' },
+    { userId: '5354974', username: 'Chrome_Cat' },
     { userId: '34455896', username: 'summerscar' },
     { userId: '55742784', username: 'RedGuy7' },
-    { userId: '9636514',  username: 'Tacodude7729' },
+    { userId: '9636514', username: 'Tacodude7729' },
     { userId: '14792872', username: '_nix' },
     { userId: '30323614', username: 'BarelySmooth' },
     { userId: '64691048', username: 'CST1229' }
   ];
 
-  const container = document.getElementById('addon-users');
+  const extensionUsers = [
+    { userId: '119198', username: 'scratchteam' },
+    { userId: '17340565', username: 'GarboMuffin' },
+    { userId: '1882674', username: 'griffpatch' }
+  ];
 
-  // Shuffle list
-  for (let i = users.length - 1; i > 0; i--) {
-    const r = Math.floor(Math.random() * (i + 1));
-    [users[i], users[r]] = [users[r], users[i]];
+  const penguinModUsers = [
+    { github: 'RedMan13', display: 'godslayerakp', avatar: 'https://github.com/RedMan13.png' },
+    { github: 'jwklong', display: 'jwklong', avatar: 'https://github.com/jwklong.png' },
+    { github: 'JeremyGamer13', display: 'JeremyGamer13', avatar: 'https://github.com/JeremyGamer13.png' },
+    { github: 'Ianyourgod', display: 'Ianyourgod', avatar: 'https://github.com/Ianyourgod.png' },
+    { github: 'asmarly', display: 'asmarly', avatar: 'https://github.com/asmarly.png' },
+    { github: 'CST1229', display: 'CST1229', avatar: 'https://github.com/CST1229.png' }
+  ];
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const r = Math.floor(Math.random() * (i + 1));
+      [array[i], array[r]] = [array[r], array[i]];
+    }
   }
 
-  users.forEach(u => {
-    const a = document.createElement('a');
-    a.className = 'user';
-    a.href = `https://scratch.mit.edu/users/${u.username}/`;
-    a.target = '_blank';
-    a.innerHTML = `
-      <img src="https://trampoline.turbowarp.org/avatars/${u.userId}" alt="${u.username}">
-      <div>${u.username}</div>
-    `;
-    container.appendChild(a);
-  });
+  function renderUsers(containerId, users, isGitHub=false) {
+    const container = document.getElementById(containerId);
+    shuffle(users);
+    users.forEach(u => {
+      const a = document.createElement('a');
+      a.className = 'user';
+      a.target = '_blank';
+      if (isGitHub) {
+        a.href = `https://github.com/${u.github}`;
+        a.innerHTML = `<img src="${u.avatar}" alt="${u.display}"><div>${u.display}</div>`;
+      } else {
+        a.href = `https://scratch.mit.edu/users/${u.username}/`;
+        a.innerHTML = `<img src="https://trampoline.turbowarp.org/avatars/${u.userId}" alt="${u.username}"><div>${u.username}</div>`;
+      }
+      container.appendChild(a);
+    });
+  }
+
+  renderUsers('addon-users', addonUsers);
+  renderUsers('extension-users', extensionUsers);
+  renderUsers('penguinmod-users', penguinModUsers, true);
 })();
 </script>
 
