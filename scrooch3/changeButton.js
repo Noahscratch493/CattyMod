@@ -10,58 +10,51 @@
         const span = button.querySelector(".button_content_3jdgj span");
         if (!span) return;
 
+        // Check URL
         if (window.location.href.includes("editor")) {
+            // Editor → Upload
             if (span.textContent !== "Share") span.textContent = "Share";
 
             button.href = "#";
             button.target = "";
 
+            // Remove existing click handlers to avoid duplicates
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
 
             newButton.addEventListener("click", async (e) => {
                 e.preventDefault();
+                // Download project
+                const data = await vm.saveProjectSb3();
+                const blob = new Blob([data], { type: "application/zip" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "project.sb3";
+                a.click();
 
-                // Set button to "Wait..."
-                span.textContent = "Wait…";
-
-                try {
-                    // Get project SB3
-                    const data = await vm.saveProjectSb3();
-                    const blob = new Blob([data], { type: "application/zip" });
-                    const formData = new FormData();
-                    formData.append("file", blob, "project.sb3");
-
-                    // Send to CattyMod Explore
-                    const response = await fetch(
-                        "https://cattymod-explore.lovable.app/upload",
-                        { method: "POST", body: formData }
-                    );
-
-                    if (!response.ok) throw new Error("Upload failed");
-
-                    // Open the explore page after upload
-                    window.open("https://cattymod-explore.lovable.app", "_blank");
-                } catch (err) {
-                    console.error(err);
-                    alert("Failed to upload project.");
-                } finally {
-                    // Reset button text
-                    span.textContent = "Share";
-                }
+                // Open Padlet
+                window.open(
+                    "https://cattymod.app/explore/upload",
+                    "_blank"
+                );
             });
         } else {
+            // Not editor → Homepage
             if (span.textContent !== "Explore") span.textContent = "Explore";
 
-            button.href = "https://cattymod.app/explore";
+            button.href = "https://padlet.com/noahscratch493/cattymod-community-fzzxxm3jc7xg9xf5";
+            // Remove old click handlers by cloning
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
         }
     }
 
+    // Observe DOM changes (Scratch constantly re-renders)
     const observer = new MutationObserver(updateButton);
     observer.observe(document.body, { childList: true, subtree: true });
 
+    // Check URL changes every second
     setInterval(() => {
         if (window.location.href !== lastUrl) {
             lastUrl = window.location.href;
