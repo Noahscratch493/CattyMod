@@ -13,6 +13,9 @@ function addHomeIcon() {
   link.style.padding = '0 6px';
   link.style.borderRadius = '0';
 
+  // ✨ smooth hover transition
+  link.style.transition = 'background 0.15s ease';
+
   const icon = document.createElement('img');
   icon.src = 'https://cattymod.app/assets/home.png';
   icon.className = 'home-favicon';
@@ -23,7 +26,8 @@ function addHomeIcon() {
 
   link.appendChild(icon);
 
-  link.onmouseover = () => link.style.background = '#26ABD4';
+  // ✅ 15% white overlay hover effect
+  link.onmouseover = () => link.style.background = 'rgba(255, 255, 255, 0.15)';
   link.onmouseout = () => link.style.background = 'transparent';
 
   menu.prepend(link);
