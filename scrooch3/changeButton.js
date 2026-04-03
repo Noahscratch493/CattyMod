@@ -11,7 +11,7 @@
         if (!span) return;
 
         if (window.location.href.includes("editor")) {
-            // Editor → Share to Community
+            // Editor → Share to Upload Page
             if (span.textContent !== "Share") span.textContent = "Share";
 
             button.href = "#";
@@ -28,26 +28,27 @@
                 const data = await vm.saveProjectSb3();
                 const blob = new Blob([data], { type: "application/zip" });
 
-                // Convert to base64 for postMessage
+                // Convert to base64
                 const arrayBuffer = await blob.arrayBuffer();
                 const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
 
-                // Send to explore site via postMessage
-                // Assumes cattymod-explore.lovable.app is embedded in an iframe
-                const exploreIframe = document.querySelector(
-                    'iframe[src*="cattymod-explore.lovable.app"]'
+                // Open upload page in a new tab
+                const uploadWindow = window.open(
+                    "https://cattymod.app/explore/upload",
+                    "_blank"
                 );
 
-                if (exploreIframe?.contentWindow) {
-                    exploreIframe.contentWindow.postMessage(
+                // Wait for the tab to load before sending message
+                const sendSB3 = () => {
+                    if (!uploadWindow || !uploadWindow.postMessage) return;
+                    uploadWindow.postMessage(
                         { action: "receiveSB3", data: base64, name: "project.sb3" },
-                        "https://cattymod-explore.lovable.app"
+                        "https://cattymod.app"
                     );
-                } else {
-                    // Fallback: open Explore in new tab with alert
-                    window.open("https://cattymod-explore.lovable.app/explore/upload", "_blank");
-                    alert("Explore site not detected. Opened in new tab.");
-                }
+                };
+
+                // Give the tab a little time to load
+                setTimeout(sendSB3, 500);
             });
         } else {
             // Not editor → Homepage
