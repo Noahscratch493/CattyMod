@@ -11,7 +11,7 @@
         if (!span) return;
 
         if (window.location.href.includes("editor")) {
-            // Editor → Share to Upload Page
+            // Editor → Share to Explore
             if (span.textContent !== "Share") span.textContent = "Share";
 
             button.href = "#";
@@ -32,22 +32,21 @@
                 const arrayBuffer = await blob.arrayBuffer();
                 const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
 
-                // Open upload page in a new tab
-                const uploadWindow = window.open(
-                    "https://cattymod.app/explore/upload",
+                // Open CattyMod Explore upload page in a new tab
+                const exploreWindow = window.open(
+                    "https://cattymod-explore.lovable.app/explore/upload",
                     "_blank"
                 );
 
-                // Wait for the tab to load before sending message
+                // Send the SB3 to the Explore page after a short delay
                 const sendSB3 = () => {
-                    if (!uploadWindow || !uploadWindow.postMessage) return;
-                    uploadWindow.postMessage(
+                    if (!exploreWindow || !exploreWindow.postMessage) return;
+                    exploreWindow.postMessage(
                         { action: "receiveSB3", data: base64, name: "project.sb3" },
-                        "https://cattymod.app"
+                        "https://cattymod-explore.lovable.app"
                     );
                 };
 
-                // Give the tab a little time to load
                 setTimeout(sendSB3, 500);
             });
         } else {
