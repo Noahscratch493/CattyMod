@@ -2,47 +2,35 @@
 (function () {
   let lastUrl = "";
 
-  function updateButton() {
-    const button = document.querySelector(
-      'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
-    );
-    if (!button) return;
-
-    // Skip already processed buttons
-    if (button.dataset.processed === "true") return;
+  function processButton(button: HTMLAnchorElement) {
+    if (!button || button.dataset.processed === "true") return;
 
     const span = button.querySelector(".button_content_3jdgj span");
     if (!span) return;
 
     if (window.location.href.includes("editor")) {
-      // Editor → Share to CattyMod Explore
-      if (span.textContent !== "Share") span.textContent = "Share";
-
+      // Editor → Share
+      span.textContent = "Share";
       button.href = "#";
       button.target = "";
 
-      // Clone button to remove previous listeners
-      const newButton = button.cloneNode(true);
-      newButton.dataset.processed = "true"; // mark as processed
-      button.parentNode.replaceChild(newButton, button);
+      // Mark as processed before adding event listener
+      button.dataset.processed = "true";
 
-      newButton.addEventListener("click", async (e) => {
+      button.addEventListener("click", async (e) => {
         e.preventDefault();
-
         try {
-          // Save project as SB3
           const data = await vm.saveProjectSb3();
           const blob = new Blob([data], { type: "application/zip" });
           const arrayBuffer = await blob.arrayBuffer();
           const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
 
-          // Open CattyMod Explore upload page in new tab
+          // Open explore upload page
           const exploreWindow = window.open(
             "https://cattymod-explore.lovable.app/explore/upload",
             "_blank"
           );
 
-          // Send SB3 after a short delay
           setTimeout(() => {
             if (!exploreWindow || !exploreWindow.postMessage) return;
             exploreWindow.postMessage(
@@ -56,25 +44,32 @@
         }
       });
     } else {
-      // Not editor → Homepage
-      if (span.textContent !== "Explore") span.textContent = "Explore";
-
+      // Homepage → Explore
+      span.textContent = "Explore";
       button.href = "https://cattymod.app/explore";
-      const newButton = button.cloneNode(true);
-      newButton.dataset.processed = "true"; // mark as processed
-      button.parentNode.replaceChild(newButton, button);
+      button.dataset.processed = "true";
     }
   }
 
-  // Observe DOM changes (Scratch constantly re-renders buttons)
-  const observer = new MutationObserver(updateButton);
+  function updateButtons() {
+    const buttons = document.querySelectorAll(
+      'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
+    );
+    buttons.forEach(processButton);
+  }
+
+  // MutationObserver for DOM changes
+  const observer = new MutationObserver(updateButtons);
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // Also check URL changes periodically
+  // Initial run
+  updateButtons();
+
+  // URL check (optional, only to detect navigation)
   setInterval(() => {
     if (window.location.href !== lastUrl) {
       lastUrl = window.location.href;
-      updateButton();
+      updateButtons();
     }
   }, 1000);
 })();
