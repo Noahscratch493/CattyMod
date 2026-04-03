@@ -33,7 +33,7 @@
                 a.download = "project.sb3";
                 a.click();
 
-                // Open Padlet
+                // Open Upload Page
                 window.open(
                     "https://cattymod.app/explore/upload",
                     "_blank"
