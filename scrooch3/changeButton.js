@@ -35,7 +35,7 @@
 
                 // Open Padlet
                 window.open(
-                    "https://padlet.com/noahscratch493/cattymod-community-fzzxxm3jc7xg9xf5",
+                    "https://cattymod.app/explore/upload",
                     "_blank"
                 );
             });
