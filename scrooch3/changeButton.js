@@ -1,81 +1,71 @@
 (function () {
-  let lastUrl = "";
+    let lastUrl = "";
 
-  function processButton(button) {
-    if (!button || button.dataset.processed === "true") return;
+    function updateButton() {
+        const button = document.querySelector(
+            'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
+        );
+        if (!button) return;
 
-    const span = button.querySelector(".button_content_3jdgj span");
-    if (!span) return;
+        const span = button.querySelector(".button_content_3jdgj span");
+        if (!span) return;
 
-    if (window.location.href.includes("editor")) {
-      // Editor → Share
-      span.textContent = "Share";
-      button.href = "#";
-      button.target = "";
-      button.dataset.processed = "true";
+        if (window.location.href.includes("editor")) {
+            if (span.textContent !== "Share") span.textContent = "Share";
 
-      button.addEventListener("click", async (e) => {
-        e.preventDefault();
+            button.href = "#";
+            button.target = "";
 
-        // Wait for vm to exist
-        if (typeof vm === "undefined") {
-          alert("VM is not ready. Please wait a moment and try again.");
-          return;
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener("click", async (e) => {
+                e.preventDefault();
+
+                // Set button to "Wait..."
+                span.textContent = "Wait…";
+
+                try {
+                    // Get project SB3
+                    const data = await vm.saveProjectSb3();
+                    const blob = new Blob([data], { type: "application/zip" });
+                    const formData = new FormData();
+                    formData.append("file", blob, "project.sb3");
+
+                    // Send to CattyMod Explore
+                    const response = await fetch(
+                        "https://cattymod-explore.lovable.app/upload",
+                        { method: "POST", body: formData }
+                    );
+
+                    if (!response.ok) throw new Error("Upload failed");
+
+                    // Open the explore page after upload
+                    window.open("https://cattymod-explore.lovable.app", "_blank");
+                } catch (err) {
+                    console.error(err);
+                    alert("Failed to upload project.");
+                } finally {
+                    // Reset button text
+                    span.textContent = "Share";
+                }
+            });
+        } else {
+            if (span.textContent !== "Explore") span.textContent = "Explore";
+
+            button.href = "https://cattymod.app/explore";
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
         }
+    }
 
-        try {
-          const data = await vm.saveProjectSb3(); // Save project as SB3
-          const blob = new Blob([data], { type: "application/zip" });
-          const arrayBuffer = await blob.arrayBuffer();
-          const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const observer = new MutationObserver(updateButton);
+    observer.observe(document.body, { childList: true, subtree: true });
 
-          // Open Explore upload page
-          const exploreWindow = window.open(
-            "https://cattymod-explore.lovable.app/explore/upload",
-            "_blank"
-          );
-
-          setTimeout(() => {
-            if (!exploreWindow || !exploreWindow.postMessage) return;
-            exploreWindow.postMessage(
-              { action: "receiveSB3", data: base64, name: "project.sb3" },
-              "https://cattymod-explore.lovable.app"
-            );
-          }, 500);
-        } catch (err) {
-          console.error("Error sharing SB3:", err);
-          alert(
-            "Failed to share project. Try saving as SB3 manually and uploading to CattyMod Explore."
-          );
+    setInterval(() => {
+        if (window.location.href !== lastUrl) {
+            lastUrl = window.location.href;
+            updateButton();
         }
-      });
-    } else {
-      // Homepage → Explore
-      span.textContent = "Explore";
-      button.href = "https://cattymod.app/explore";
-      button.dataset.processed = "true";
-    }
-  }
-
-  function updateButtons() {
-    const buttons = document.querySelectorAll(
-      'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
-    );
-    buttons.forEach(processButton);
-  }
-
-  // MutationObserver for DOM changes
-  const observer = new MutationObserver(updateButtons);
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  // Initial run
-  updateButtons();
-
-  // URL check
-  setInterval(() => {
-    if (window.location.href !== lastUrl) {
-      lastUrl = window.location.href;
-      updateButtons();
-    }
-  }, 1000);
+    }, 1000);
 })();
