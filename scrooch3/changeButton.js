@@ -10,14 +10,18 @@
         const span = button.querySelector(".button_content_3jdgj span");
         if (!span) return;
 
-        // Remove old click handlers
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-
+        // Check URL
         if (window.location.href.includes("editor")) {
-            // Editor mode → Upload
-            span.textContent = "Upload";
-            newButton.href = "#";
+            // Editor → Upload
+            if (span.textContent !== "Upload") span.textContent = "Upload";
+
+            button.href = "#";
+            button.target = "";
+
+            // Remove existing click handlers to avoid duplicates
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
             newButton.addEventListener("click", async (e) => {
                 e.preventDefault();
                 // Download project
@@ -37,13 +41,18 @@
             });
         } else {
             // Not editor → Home
-            span.textContent = "Home";
-            newButton.href = "https://www.cattymod.app";
-            newButton.target = "_blank"; // open in new tab
+            if (span.textContent !== "Home") span.textContent = "Home";
+
+            button.href = "https://www.cattymod.app";
+            button.target = "_blank";
+
+            // Remove old click handlers by cloning
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
         }
     }
 
-    // Observe DOM changes in case Scratch re-renders
+    // Observe DOM changes (Scratch constantly re-renders)
     const observer = new MutationObserver(updateButton);
     observer.observe(document.body, { childList: true, subtree: true });
 
