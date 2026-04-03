@@ -1,30 +1,46 @@
 (function () {
-    function renameAddon() {
-        // Find all addon cards
-        const addons = document.querySelectorAll("[data-addon-id]");
+    function fixAddon(addon) {
+        if (!addon || addon.dataset.fixed) return;
 
-        addons.forEach(addon => {
-            if (addon.getAttribute("data-addon-id") === "tw-remove-feedback") {
+        addon.dataset.fixed = "true"; // prevent reprocessing
 
-                // Look through all elements inside this addon
-                addon.querySelectorAll("*").forEach(el => {
-                    const text = el.textContent?.trim().toLowerCase();
+        addon.querySelectorAll("*").forEach(el => {
+            const text = el.textContent?.toLowerCase() || "";
 
-                    if (text === "remove feedback button" || text === "remove feedback") {
-                        el.textContent = "Remove Home and Upload buttons";
-                    }
-                });
+            if (text.includes("remove feedback")) {
+                el.textContent = "Remove Home and Upload buttons";
             }
         });
     }
 
-    // Run once
-    renameAddon();
+    function scanExisting() {
+        document.querySelectorAll('[data-addon-id="tw-remove-feedback"]')
+            .forEach(fixAddon);
+    }
 
-    // Watch for UI re-renders
-    const observer = new MutationObserver(renameAddon);
+    // 🔍 Observe ONLY new elements (more efficient + reliable)
+    const observer = new MutationObserver(mutations => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (!(node instanceof HTMLElement)) continue;
+
+                // If the addon itself is added
+                if (node.matches?.('[data-addon-id="tw-remove-feedback"]')) {
+                    fixAddon(node);
+                }
+
+                // Or if it appears inside something
+                node.querySelectorAll?.('[data-addon-id="tw-remove-feedback"]')
+                    .forEach(fixAddon);
+            }
+        }
+    });
+
     observer.observe(document.body, {
         childList: true,
         subtree: true
     });
+
+    // Run once for already-loaded content
+    scanExisting();
 })();
