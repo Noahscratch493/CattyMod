@@ -10,41 +10,50 @@
         const span = button.querySelector(".button_content_3jdgj span");
         if (!span) return;
 
-        // Check URL
         if (window.location.href.includes("editor")) {
-            // Editor → Upload
+            // Editor → Share to Community
             if (span.textContent !== "Share") span.textContent = "Share";
 
             button.href = "#";
             button.target = "";
 
-            // Remove existing click handlers to avoid duplicates
+            // Remove existing click handlers
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
 
             newButton.addEventListener("click", async (e) => {
                 e.preventDefault();
-                // Download project
+
+                // Save project as SB3
                 const data = await vm.saveProjectSb3();
                 const blob = new Blob([data], { type: "application/zip" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "project.sb3";
-                a.click();
 
-                // Open Upload Page
-                window.open(
-                    "https://cattymod.app/explore/upload",
-                    "_blank"
+                // Convert to base64 for postMessage
+                const arrayBuffer = await blob.arrayBuffer();
+                const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+                // Send to explore site via postMessage
+                // Assumes cattymod-explore.lovable.app is embedded in an iframe
+                const exploreIframe = document.querySelector(
+                    'iframe[src*="cattymod-explore.lovable.app"]'
                 );
+
+                if (exploreIframe?.contentWindow) {
+                    exploreIframe.contentWindow.postMessage(
+                        { action: "receiveSB3", data: base64, name: "project.sb3" },
+                        "https://cattymod-explore.lovable.app"
+                    );
+                } else {
+                    // Fallback: open Explore in new tab with alert
+                    window.open("https://cattymod-explore.lovable.app/explore/upload", "_blank");
+                    alert("Explore site not detected. Opened in new tab.");
+                }
             });
         } else {
             // Not editor → Homepage
             if (span.textContent !== "Explore") span.textContent = "Explore";
 
             button.href = "https://cattymod.app/explore";
-            // Remove old click handlers by cloning
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
         }
