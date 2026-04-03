@@ -33,17 +33,17 @@
                 a.download = "project.sb3";
                 a.click();
 
-                // Open Padlet
+                // Open Upload Page
                 window.open(
                     "https://cattymod.app/explore/upload",
                     "_blank"
                 );
             });
         } else {
-            // Not editor → Homepage
+            // Not editor → Explore
             if (span.textContent !== "Explore") span.textContent = "Explore";
 
-            button.href = "https://padlet.com/noahscratch493/cattymod-community-fzzxxm3jc7xg9xf5";
+            button.href = "https://cattymod.app/explore";
             // Remove old click handlers by cloning
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
