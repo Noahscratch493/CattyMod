@@ -13,7 +13,7 @@
         // Check URL
         if (window.location.href.includes("editor")) {
             // Editor → Upload
-            if (span.textContent !== "Upload") span.textContent = "Upload";
+            if (span.textContent !== "Share") span.textContent = "Share";
 
             button.href = "#";
             button.target = "";
