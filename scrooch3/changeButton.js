@@ -43,7 +43,7 @@
             // Not editor → Homepage
             if (span.textContent !== "Explore") span.textContent = "Explore";
 
-            button.href = "https://padlet.com/noahscratch493/cattymod-community-fzzxxm3jc7xg9xf5";
+            button.href = "https://cattymod.app/explore";
             // Remove old click handlers by cloning
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
