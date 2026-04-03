@@ -40,8 +40,8 @@
                 );
             });
         } else {
-            // Not editor → Home
-            if (span.textContent !== "Home") span.textContent = "Home";
+            // Not editor → Homepage
+            if (span.textContent !== "Homepage") span.textContent = "Homepage";
 
             button.href = "https://www.cattymod.app";
             button.target = "_blank";
