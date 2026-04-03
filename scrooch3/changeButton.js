@@ -2,7 +2,7 @@
 (function () {
   let lastUrl = "";
 
-  function processButton(button: HTMLAnchorElement) {
+  function processButton(button) {
     if (!button || button.dataset.processed === "true") return;
 
     const span = button.querySelector(".button_content_3jdgj span");
@@ -65,7 +65,7 @@
   // Initial run
   updateButtons();
 
-  // URL check (optional, only to detect navigation)
+  // URL check (optional)
   setInterval(() => {
     if (window.location.href !== lastUrl) {
       lastUrl = window.location.href;
