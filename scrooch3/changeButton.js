@@ -1,4 +1,3 @@
-// changeButton.js
 (function () {
   let lastUrl = "";
 
@@ -13,19 +12,24 @@
       span.textContent = "Share";
       button.href = "#";
       button.target = "";
-
-      // Mark as processed before adding event listener
       button.dataset.processed = "true";
 
       button.addEventListener("click", async (e) => {
         e.preventDefault();
+
+        // Wait for vm to exist
+        if (typeof vm === "undefined") {
+          alert("VM is not ready. Please wait a moment and try again.");
+          return;
+        }
+
         try {
-          const data = await vm.saveProjectSb3();
+          const data = await vm.saveProjectSb3(); // Save project as SB3
           const blob = new Blob([data], { type: "application/zip" });
           const arrayBuffer = await blob.arrayBuffer();
           const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
 
-          // Open explore upload page
+          // Open Explore upload page
           const exploreWindow = window.open(
             "https://cattymod-explore.lovable.app/explore/upload",
             "_blank"
@@ -40,7 +44,9 @@
           }, 500);
         } catch (err) {
           console.error("Error sharing SB3:", err);
-          alert("Failed to share project. Try saving as SB3 and uploading manually.");
+          alert(
+            "Failed to share project. Try saving as SB3 manually and uploading to CattyMod Explore."
+          );
         }
       });
     } else {
@@ -65,7 +71,7 @@
   // Initial run
   updateButtons();
 
-  // URL check (optional)
+  // URL check
   setInterval(() => {
     if (window.location.href !== lastUrl) {
       lastUrl = window.location.href;
