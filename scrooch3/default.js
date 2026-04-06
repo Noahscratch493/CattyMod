@@ -53,15 +53,20 @@
         }, true);
     }
 
-    // ✅ Only load on page load if no non-empty project_url param exists
+    // ✅ Only load on page load if:
+    // - no project_url param
+    // - AND no numeric hash like #123
     window.addEventListener("load", async () => {
         const params = new URLSearchParams(window.location.search);
         const projectURL = params.get("project_url");
 
-        if (!projectURL) {
+        const hash = window.location.hash;
+        const hasNumericHash = /^#\d+$/.test(hash);
+
+        if (!projectURL && !hasNumericHash) {
             await loadDefaultProject();
         } else {
-            console.log("⏭ Skipping default project (project_url detected)");
+            console.log("⏭ Skipping default project (project_url or numeric hash detected)");
         }
     });
 
