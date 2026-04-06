@@ -40,25 +40,29 @@
             const span = li.querySelector("span");
             if (!span || span.textContent.trim() !== "New") return;
 
-            // 🚫 Stop site from doing its own "New" behavior
             e.preventDefault();
             e.stopImmediatePropagation();
             e.stopPropagation();
 
-            // ✅ Your own confirm alert
             const ok = confirm("Replace contents of the current project?");
             if (!ok) return;
 
-            // Let the VM settle then load your project
             setTimeout(() => {
                 loadDefaultProject();
             }, 400);
-        }, true); // capture phase = intercept before site handlers
+        }, true);
     }
 
-    // Optional: also load on page load
+    // ✅ Only load on page load if no non-empty project_url param exists
     window.addEventListener("load", async () => {
-        await loadDefaultProject();
+        const params = new URLSearchParams(window.location.search);
+        const projectURL = params.get("project_url");
+
+        if (!projectURL) {
+            await loadDefaultProject();
+        } else {
+            console.log("⏭ Skipping default project (project_url detected)");
+        }
     });
 
 })();
