@@ -10,7 +10,7 @@
         const res = await fetch("https://raw.githubusercontent.com/cattymod/editor/refs/heads/editor/stop.txt");
         const text = (await res.text()).trim().toLowerCase();
 
-        if (text === "false") {
+        if (text === "true") {
             window.location.href = "https://studio.cattymod.app/improve.html";
         }
     } catch (err) {
