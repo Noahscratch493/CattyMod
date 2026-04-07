@@ -9,6 +9,7 @@
   const navColor = getCookie('NavColour');
   if (!navColor || !/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(navColor)) return;
 
+  // Darken a hex color by a percentage (0-1)
   function darkenColor(hex, amount = 0.25) {
     let c = hex.slice(1);
     if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
@@ -19,7 +20,8 @@
     return `rgb(${r},${g},${b})`;
   }
 
-  const smallBtnColor = darkenColor(navColor);
+  const smallBtnColor = darkenColor(navColor, 0.25);
+  const outlineColor = darkenColor(navColor, 0.4); // slightly darker for main button outline
 
   function applyColors() {
     // Navbar
@@ -46,7 +48,7 @@
     document.querySelectorAll('.action-menu_main-button_3ccfy')
       .forEach(e => {
         e.style.background = navColor;
-        e.style.outline = '4px solid ' + navColor;
+        e.style.outline = '4px solid ' + outlineColor;
       });
 
     // Small sprite buttons
@@ -83,7 +85,7 @@
   // Run immediately
   applyColors();
 
-  // Observe dynamic DOM changes (buttons re-render)
+  // Observe dynamic DOM changes
   const observer = new MutationObserver(applyColors);
   observer.observe(document.body, { childList: true, subtree: true });
 })();
