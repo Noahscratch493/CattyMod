@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Scrooch Theme Settings</title>
   <style>
-    /* Dark theme background */
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
@@ -99,15 +98,34 @@
       background-color: #666;
     }
 
+    /* UPDATED PREVIEW - HALF HEIGHT */
     .preview {
       margin-top: 1.5rem;
-      padding: 1rem;
+      padding: 0 10px; /* horizontal padding for spacing */
       border-radius: 8px;
-      background-color: #2a2a2a;
       text-align: center;
-      font-size: 1rem;
-      color: #fff;
-      transition: color 0.2s, background-color 0.2s;
+      transition: background-color 0.2s;
+
+      position: relative;
+      overflow: hidden;
+      background-color: #009CCC;
+      height: 40px; /* half height */
+    }
+
+    .preview::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10px;
+      right: 10px;
+      bottom: 0;
+
+      background-image: url("https://cattymod.app/assets/navbar.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      pointer-events: none;
     }
 
     small {
@@ -133,24 +151,16 @@
       <button id="resetButton">♻ Reset Theme</button>
     </div>
 
-    <div class="preview" id="previewText">
-      Preview: This is the colour of Navbar BG and text on the Custom Button.
-    </div>
+    <div class="preview" id="previewText"></div>
 
     <small>Press back when you are done.</small>
   </div>
 
   <script>
-    // -------------------------
-    // Back button
-    // -------------------------
     document.getElementById('backButton').addEventListener('click', () => {
       window.location.href = 'https://www.cattymod.app/editor/';
     });
 
-    // -------------------------
-    // Cookie helpers
-    // -------------------------
     function setCookie(name, value, days) {
       const d = new Date();
       d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -169,35 +179,30 @@
       document.cookie = name + '=; Max-Age=-99999999; path=/';
     }
 
-    // -------------------------
-    // Theme color functionality
-    // -------------------------
     const navbarColorInput = document.getElementById('navbarColor');
     const previewText = document.getElementById('previewText');
 
-    // Load current color from cookie
     const currentColor = getCookie('NavColour');
     if (currentColor) {
       navbarColorInput.value = currentColor;
-      previewText.style.color = currentColor;
+      previewText.style.backgroundColor = currentColor;
+    } else {
+      previewText.style.backgroundColor = '#009CCC';
     }
 
-    // Live preview
     navbarColorInput.addEventListener('input', () => {
-      previewText.style.color = navbarColorInput.value;
+      previewText.style.backgroundColor = navbarColorInput.value;
     });
 
-    // Save theme
     document.getElementById('saveButton').addEventListener('click', () => {
       setCookie('NavColour', navbarColorInput.value, 365);
       alert("Success! Click [Back] to see your theme!");
     });
 
-    // Reset theme
     document.getElementById('resetButton').addEventListener('click', () => {
       deleteCookie('NavColour');
       navbarColorInput.value = '#000000';
-      previewText.style.color = '#fff';
+      previewText.style.backgroundColor = '#009CCC';
       alert("Theme reset to default!");
     });
   </script>
