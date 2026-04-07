@@ -8,7 +8,7 @@
   }
 
   const navColor = getCookie('NavColour');
-  if (!navColor) return; // do nothing if cookie doesn't exist
+  if (!navColor || !/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(navColor)) return;
 
   // function to apply colors
   function applyColors() {
@@ -26,6 +26,15 @@
         span.style.color = navColor;
       }
     });
+
+    // set extension button color (background + border + outline)
+    document.querySelectorAll('.gui_extension-button-container_b4rCs.box_box_2jjDp button.gui_extension-button_2T7PA')
+      .forEach(b => {
+        b.style.setProperty('background-color', navColor, 'important');
+        b.style.setProperty('border', '2px solid ' + navColor, 'important');
+        b.style.setProperty('outline', '2px solid ' + navColor, 'important');
+        b.style.setProperty('box-shadow', 'none', 'important');
+      });
   }
 
   // run immediately
