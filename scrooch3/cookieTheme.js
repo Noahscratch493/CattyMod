@@ -1,5 +1,4 @@
 (function () {
-  // helper to read cookies
   function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -10,7 +9,6 @@
   const navColor = getCookie('NavColour');
   if (!navColor || !/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(navColor)) return;
 
-  // compute a slightly darker version of navColor for small buttons
   function darkenColor(hex, amount = 0.2) {
     let c = hex.slice(1);
     if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
@@ -23,20 +21,19 @@
 
   const smallBtnColor = darkenColor(navColor, 0.25);
 
-  // function to apply colors
   function applyColors() {
-    // navbar background
+    // Navbar
     document.querySelectorAll('div.menu-bar_menu-bar_JcuHF.box_box_2jjDp')
       .forEach(el => el.style.backgroundColor = navColor);
 
-    // feedback button text
+    // Feedback
     document.querySelectorAll('a.menu-bar_feedback-link_1BnAR')
       .forEach(link => {
         const span = link.querySelector('.button_content_3jdgj span');
         if (span) span.style.color = navColor;
       });
 
-    // extension buttons
+    // Extension buttons
     document.querySelectorAll('.gui_extension-button-container_b4rCs.box_box_2jjDp button.gui_extension-button_2T7PA')
       .forEach(b => {
         b.style.setProperty('background-color', navColor, 'important');
@@ -45,18 +42,18 @@
         b.style.setProperty('box-shadow', 'none', 'important');
       });
 
-    // main sprite buttons
+    // Main sprite buttons
     document.querySelectorAll('.action-menu_main-button_3ccfy')
       .forEach(e => {
         e.style.background = navColor;
         e.style.outline = '4px solid ' + navColor;
       });
 
-    // small sprite buttons (slightly darker)
+    // Small sprite buttons
     document.querySelectorAll('.action-menu_more-button_1fMGZ')
       .forEach(e => e.style.background = smallBtnColor);
 
-    // container / blue box behind small buttons
+    // Container behind small buttons
     document.querySelectorAll('.action-menu_more-buttons_3Bjkq,.action-menu_more-buttons-outer_3J9yZ')
       .forEach(e => {
         e.style.background = smallBtnColor;
@@ -64,33 +61,23 @@
         e.style.border = 'none';
       });
 
-    // tooltips (background + text)
+    // Tooltips
     document.querySelectorAll('.action-menu_tooltip_3Bkh5')
       .forEach(t => {
-        t.style.backgroundColor = navColor;
+        t.style.backgroundColor = navColor; // main fill
         t.style.color = 'white';
         t.style.boxShadow = 'none';
+
+        // Force arrow color to match navColor
+        const computed = window.getComputedStyle(t, '::after');
+        if (computed) t.style.setProperty('--tooltip-arrow-color', navColor);
       });
   }
 
-  // inject CSS to force tooltip arrow to match navbar color
-  if (!document.getElementById('tooltip-navcolor-style')) {
-    const s = document.createElement('style');
-    s.id = 'tooltip-navcolor-style';
-    s.innerHTML = `
-      .action-menu_tooltip_3Bkh5::after,
-      .action-menu_tooltip_3Bkh5::before {
-        background-color: ${navColor} !important;
-        border-color: ${navColor} !important;
-      }
-    `;
-    document.head.appendChild(s);
-  }
-
-  // run immediately
+  // Run immediately
   applyColors();
 
-  // observe dynamic DOM changes
+  // Observe dynamic changes
   const observer = new MutationObserver(applyColors);
   observer.observe(document.body, { childList: true, subtree: true });
 })();
