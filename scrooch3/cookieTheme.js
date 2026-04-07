@@ -9,7 +9,7 @@
   const navColor = getCookie('NavColour');
   if (!navColor || !/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(navColor)) return;
 
-  function darkenColor(hex, amount = 0.2) {
+  function darkenColor(hex, amount = 0.25) {
     let c = hex.slice(1);
     if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
     const num = parseInt(c, 16);
@@ -19,14 +19,14 @@
     return `rgb(${r},${g},${b})`;
   }
 
-  const smallBtnColor = darkenColor(navColor, 0.25);
+  const smallBtnColor = darkenColor(navColor);
 
   function applyColors() {
     // Navbar
     document.querySelectorAll('div.menu-bar_menu-bar_JcuHF.box_box_2jjDp')
       .forEach(el => el.style.backgroundColor = navColor);
 
-    // Feedback
+    // Feedback button
     document.querySelectorAll('a.menu-bar_feedback-link_1BnAR')
       .forEach(link => {
         const span = link.querySelector('.button_content_3jdgj span');
@@ -61,23 +61,31 @@
         e.style.border = 'none';
       });
 
-    // Tooltips
+    // Tooltips: force inline background and text color
     document.querySelectorAll('.action-menu_tooltip_3Bkh5')
       .forEach(t => {
-        t.style.backgroundColor = navColor; // main fill
+        t.style.background = navColor + ' !important';
         t.style.color = 'white';
-        t.style.boxShadow = 'none';
-
-        // Force arrow color to match navColor
-        const computed = window.getComputedStyle(t, '::after');
-        if (computed) t.style.setProperty('--tooltip-arrow-color', navColor);
       });
+  }
+
+  // Inject CSS to force tooltip arrow to match navbar color
+  if (!document.getElementById('tooltip-navcolor-style')) {
+    const s = document.createElement('style');
+    s.id = 'tooltip-navcolor-style';
+    s.innerHTML = `
+      .action-menu_tooltip_3Bkh5::after {
+        background-color: ${navColor} !important;
+        border-color: ${navColor} !important;
+      }
+    `;
+    document.head.appendChild(s);
   }
 
   // Run immediately
   applyColors();
 
-  // Observe dynamic changes
+  // Observe dynamic DOM changes
   const observer = new MutationObserver(applyColors);
   observer.observe(document.body, { childList: true, subtree: true });
 })();
