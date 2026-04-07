@@ -60,32 +60,30 @@
         e.style.boxShadow = 'none';
         e.style.border = 'none';
       });
-
-    // Tooltips: force inline background and text color
-    document.querySelectorAll('.action-menu_tooltip_3Bkh5')
-      .forEach(t => {
-        t.style.background = navColor + ' !important';
-        t.style.color = 'white';
-      });
   }
 
-  // Inject CSS to force tooltip arrow to match navbar color
+  // Inject CSS to force tooltip + arrow color
   if (!document.getElementById('tooltip-navcolor-style')) {
-    const s = document.createElement('style');
-    s.id = 'tooltip-navcolor-style';
-    s.innerHTML = `
+    const styleEl = document.createElement('style');
+    styleEl.id = 'tooltip-navcolor-style';
+    styleEl.innerHTML = `
+      .action-menu_tooltip_3Bkh5 {
+        background-color: ${navColor} !important;
+        color: white !important;
+        box-shadow: none !important;
+      }
       .action-menu_tooltip_3Bkh5::after {
         background-color: ${navColor} !important;
         border-color: ${navColor} !important;
       }
     `;
-    document.head.appendChild(s);
+    document.head.appendChild(styleEl);
   }
 
   // Run immediately
   applyColors();
 
-  // Observe dynamic DOM changes
+  // Observe dynamic DOM changes (buttons re-render)
   const observer = new MutationObserver(applyColors);
   observer.observe(document.body, { childList: true, subtree: true });
 })();
