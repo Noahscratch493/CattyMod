@@ -98,10 +98,10 @@
       background-color: #666;
     }
 
-    /* UPDATED PREVIEW - HALF HEIGHT */
+    /* PREVIEW MATCHING IMAGE SIZE AND CENTERED */
     .preview {
-      margin-top: 1.5rem;
-      padding: 0 10px; /* horizontal padding for spacing */
+      margin: 1.5rem auto; /* vertical spacing + horizontal centering */
+      padding: 0;
       border-radius: 8px;
       text-align: center;
       transition: background-color 0.2s;
@@ -109,18 +109,21 @@
       position: relative;
       overflow: hidden;
       background-color: #009CCC;
-      height: 40px; /* half height */
+
+      width: 100%; /* fallback if image width not known */
+      max-width: 400px; /* match image width in px if known */
+      height: 80px;     /* match image height in px */
     }
 
     .preview::before {
       content: "";
       position: absolute;
       top: 0;
-      left: 10px;
-      right: 10px;
+      left: 0;
+      right: 0;
       bottom: 0;
 
-      background-image: url("https://cattymod.app/assets/navbar.png");
+      background-image: url("https://cattymod.app/assets/newnav.png");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
