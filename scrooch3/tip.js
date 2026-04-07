@@ -7,7 +7,7 @@
     "Fact: CattyMod was originally called Automate.",
     "Fact: CattyMod is made by only 1 Developer!",
     "Tip: Go to the bottom of the page to see cool projects!",
-    "Fact: There are exactly 6 Facts and Tips!"
+    "Fact: There are exactly 6 Facts and Tips including this one!"
   ];
   let used = [];
 
