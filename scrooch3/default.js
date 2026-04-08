@@ -1,5 +1,6 @@
 (async () => {
     const DEFAULT_SB3_URL = "https://cattymod.app/assets/default.sb3";
+    const ERROR_SB3_URL = "https://cattymod.app/assets/invalid-projecturl.sb3";
 
     // Wait for VM helper
     const waitForVM = () => new Promise(resolve => {
@@ -12,28 +13,29 @@
         }, 100);
     });
 
-    // Load project function (reusable)
+    // Load project from URL
     async function loadProjectFromURL(url) {
-        try {
-            await waitForVM();
+        await waitForVM();
 
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`Failed to fetch SB3 file: ${response.status}`);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch SB3 file: ${response.status}`);
 
-            const arrayBuffer = await response.arrayBuffer();
-            await window.vm.loadProject(arrayBuffer);
+        const arrayBuffer = await response.arrayBuffer();
+        await window.vm.loadProject(arrayBuffer);
 
-            console.log(`✅ Project loaded from ${url}`);
-        } catch (err) {
-            console.error("❌ Error loading project:", err);
-        }
+        console.log(`✅ Project loaded from ${url}`);
     }
 
     async function loadDefaultProject() {
         return loadProjectFromURL(DEFAULT_SB3_URL);
     }
 
-    // ✅ Hook "New" button and completely override site behavior
+    async function loadErrorProject(reason) {
+        console.warn("⚠️ Loading error project:", reason);
+        return loadProjectFromURL(ERROR_SB3_URL);
+    }
+
+    // Hook "New" button
     if (!window.__customNewHookInstalled) {
         window.__customNewHookInstalled = true;
 
@@ -57,28 +59,54 @@
         }, true);
     }
 
-    // ✅ Page load logic
+    // Page load logic
     window.addEventListener("load", async () => {
         const params = new URLSearchParams(window.location.search);
         const projectSB3 = params.get("projectsb3");
+        const projectURL = params.get("project_url");
 
         const hash = window.location.hash;
         const hasNumericHash = /^#\d+$/.test(hash);
 
-        // If numeric hash → skip everything
+        // ⏭ Skip if numeric hash
         if (hasNumericHash) {
             console.log("⏭ Skipping load (numeric hash detected)");
             return;
         }
 
-        // If projectsb3 param exists → load that
-        if (projectSB3) {
-            console.log("🔗 Loading project from projectsb3 param...");
-            await loadProjectFromURL(projectSB3);
+        // ⏭ Skip if built-in project_url is used
+        if (projectURL) {
+            console.log("⏭ Skipping default (project_url detected)");
             return;
         }
 
-        // Otherwise → load default
+        // 🔗 Handle projectsb3
+        if (projectSB3) {
+            let url;
+
+            try {
+                url = new URL(projectSB3, window.location.origin);
+            } catch {
+                await loadErrorProject("Invalid URL format");
+                return;
+            }
+
+            if (!["http:", "https:"].includes(url.protocol)) {
+                await loadErrorProject("Invalid protocol");
+                return;
+            }
+
+            try {
+                console.log("🔗 Loading project from projectsb3 param...");
+                await loadProjectFromURL(url.href);
+            } catch {
+                await loadErrorProject("Fetch failed");
+            }
+
+            return;
+        }
+
+        // 📦 Default fallback
         await loadDefaultProject();
     });
 
