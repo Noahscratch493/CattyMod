@@ -13,20 +13,24 @@
     });
 
     // Load project function (reusable)
-    async function loadDefaultProject() {
+    async function loadProjectFromURL(url) {
         try {
             await waitForVM();
 
-            const response = await fetch(DEFAULT_SB3_URL);
+            const response = await fetch(url);
             if (!response.ok) throw new Error(`Failed to fetch SB3 file: ${response.status}`);
 
             const arrayBuffer = await response.arrayBuffer();
             await window.vm.loadProject(arrayBuffer);
 
-            console.log("✅ CattyMod default project loaded!");
+            console.log(`✅ Project loaded from ${url}`);
         } catch (err) {
-            console.error("❌ Error loading CattyMod project:", err);
+            console.error("❌ Error loading project:", err);
         }
+    }
+
+    async function loadDefaultProject() {
+        return loadProjectFromURL(DEFAULT_SB3_URL);
     }
 
     // ✅ Hook "New" button and completely override site behavior
@@ -53,21 +57,29 @@
         }, true);
     }
 
-    // ✅ Only load on page load if:
-    // - no project_url param
-    // - AND no numeric hash like #123
+    // ✅ Page load logic
     window.addEventListener("load", async () => {
         const params = new URLSearchParams(window.location.search);
-        const projectURL = params.get("project_url");
+        const projectSB3 = params.get("projectsb3");
 
         const hash = window.location.hash;
         const hasNumericHash = /^#\d+$/.test(hash);
 
-        if (!projectURL && !hasNumericHash) {
-            await loadDefaultProject();
-        } else {
-            console.log("⏭ Skipping default project (project_url or numeric hash detected)");
+        // If numeric hash → skip everything
+        if (hasNumericHash) {
+            console.log("⏭ Skipping load (numeric hash detected)");
+            return;
         }
+
+        // If projectsb3 param exists → load that
+        if (projectSB3) {
+            console.log("🔗 Loading project from projectsb3 param...");
+            await loadProjectFromURL(projectSB3);
+            return;
+        }
+
+        // Otherwise → load default
+        await loadDefaultProject();
     });
 
 })();
