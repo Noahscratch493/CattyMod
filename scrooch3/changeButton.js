@@ -1,7 +1,10 @@
 (function () {
-    let lastUrl = "";
+    if (window.__cattyShareHookLoaded) return;
+    window.__cattyShareHookLoaded = true;
 
-    function makePopup({ title, text, subtitle, icon }) {
+    let lastUrl = window.location.href;
+
+    function makePopup({ title, text, subtitle, icon, singleButton }) {
         return new Promise((resolve) => {
             const overlay = document.createElement("div");
             overlay.style = `
@@ -23,6 +26,21 @@
                 box-shadow: 0 6px 0 rgba(0,0,0,0.15);
                 font-family: Helvetica, Arial, sans-serif;
                 overflow: hidden;
+                position: relative;
+            `;
+
+            // X button (WHITE NOW)
+            const closeBtn = document.createElement("div");
+            closeBtn.textContent = "✕";
+            closeBtn.style = `
+                position: absolute;
+                top: 6px;
+                right: 10px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                color: white;
+                user-select: none;
             `;
 
             const header = document.createElement("div");
@@ -57,7 +75,6 @@
             body.appendChild(iconEl);
             body.appendChild(textEl);
 
-            // Optional subtitle (Scratch-style grey small text)
             if (subtitle) {
                 const subEl = document.createElement("div");
                 subEl.textContent = subtitle;
@@ -97,27 +114,41 @@
                 return btn;
             }
 
-            const yesBtn = makeButton("Yes", "#4C97FF");
-            const noBtn = makeButton("No", "#FF6680");
+            function close(value) {
+                if (overlay.parentNode) overlay.remove();
+                resolve(value);
+            }
 
-            yesBtn.onclick = () => {
-                document.body.removeChild(overlay);
-                resolve(true);
-            };
+            closeBtn.onclick = () => close(false);
 
-            noBtn.onclick = () => {
-                document.body.removeChild(overlay);
-                resolve(false);
-            };
+            footer.appendChild(closeBtn);
 
-            footer.appendChild(noBtn);
-            footer.appendChild(yesBtn);
+            // SINGLE BUTTON MODE (FINISHED POPUP)
+            if (singleButton) {
+                const closeOnly = makeButton("Close", "#4C97FF");
+                closeOnly.onclick = () => close(true);
+                footer.appendChild(closeOnly);
+            } else {
+                const yesBtn = makeButton("Yes", "#4C97FF");
+                const noBtn = makeButton("No", "#FF6680");
 
+                yesBtn.onclick = () => close(true);
+                noBtn.onclick = () => close(false);
+
+                footer.appendChild(noBtn);
+                footer.appendChild(yesBtn);
+            }
+
+            dialog.appendChild(closeBtn);
             dialog.appendChild(header);
             dialog.appendChild(body);
             dialog.appendChild(footer);
             overlay.appendChild(dialog);
             document.body.appendChild(overlay);
+
+            overlay.addEventListener("click", (e) => {
+                if (e.target === overlay) close(false);
+            });
         });
     }
 
@@ -142,7 +173,6 @@
             newButton.addEventListener("click", async (e) => {
                 e.preventDefault();
 
-                // Publish popup (Scratch style)
                 const publish = await makePopup({
                     title: "Publish project",
                     text: "Are you sure you want to publish your project?",
@@ -151,11 +181,11 @@
 
                 if (!publish) return;
 
-                // Download popup (with subtitle)
                 const shouldDownload = await makePopup({
                     title: "Download project",
                     text: "Do you want to download your project file?",
-                    subtitle: "We ask you incase you've already downloaded it ready for uploading",
+                    subtitle:
+                        "We ask you incase you've already downloaded it ready for uploading",
                     icon: "https://cattymod.app/assets/box.png"
                 });
 
@@ -177,6 +207,16 @@
                     "https://cattymod.app/explore/upload",
                     "_blank"
                 );
+
+                setTimeout(() => {
+                    makePopup({
+                        title: "Finished!",
+                        text: "We opened the upload page in a new tab!",
+                        subtitle: "We can't wait to see your project!",
+                        icon: "https://cattymod.app/assets/dango/blocks.svg",
+                        singleButton: true
+                    });
+                }, 300);
             });
 
         } else {
