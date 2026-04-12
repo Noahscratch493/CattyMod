@@ -68,7 +68,6 @@
                     margin-top: 8px;
                     font-size: 12px;
                     color: #888;
-                    line-height: 1.3;
                 `;
                 body.appendChild(subEl);
             }
@@ -83,10 +82,10 @@
                 border-top: 1px solid #ddd;
             `;
 
-            function makeButton(label, color) {
-                const btn = document.createElement("button");
-                btn.textContent = label;
-                btn.style = `
+            function btn(label, color) {
+                const b = document.createElement("button");
+                b.textContent = label;
+                b.style = `
                     padding: 6px 14px;
                     border-radius: 6px;
                     border: none;
@@ -95,9 +94,8 @@
                     font-weight: bold;
                     color: white;
                     background: ${color};
-                    box-shadow: 0 2px 0 rgba(0,0,0,0.2);
                 `;
-                return btn;
+                return b;
             }
 
             function close(value) {
@@ -105,10 +103,10 @@
                 resolve(value);
             }
 
-            // ALWAYS SAFE CLOSE (IMPORTANT FIX)
-            const closeBtn = document.createElement("div");
-            closeBtn.textContent = "✕";
-            closeBtn.style = `
+            // ❌ X = ABORT (IMPORTANT FIX)
+            const x = document.createElement("div");
+            x.textContent = "✕";
+            x.style = `
                 position: absolute;
                 top: 6px;
                 right: 10px;
@@ -118,35 +116,26 @@
                 color: white;
                 user-select: none;
             `;
-            closeBtn.onclick = () => close(false);
+            x.onclick = () => close("close");
 
-            footer.appendChild(closeBtn);
+            const yesBtn = btn("Yes", "#4C97FF");
+            const noBtn = btn("No", "#FF6680");
 
-            if (singleButton) {
-                const closeOnly = makeButton("Close", "#4C97FF");
-                closeOnly.onclick = () => close(true);
-                footer.appendChild(closeOnly);
-            } else {
-                const yesBtn = makeButton("Yes", "#4C97FF");
-                const noBtn = makeButton("No", "#FF6680");
+            yesBtn.onclick = () => close(true);
+            noBtn.onclick = () => close(false);
 
-                yesBtn.onclick = () => close(true);
-                noBtn.onclick = () => close(false);
+            footer.appendChild(noBtn);
+            footer.appendChild(yesBtn);
 
-                footer.appendChild(noBtn);
-                footer.appendChild(yesBtn);
-            }
-
-            dialog.appendChild(closeBtn);
+            dialog.appendChild(x);
             dialog.appendChild(header);
             dialog.appendChild(body);
             dialog.appendChild(footer);
             overlay.appendChild(dialog);
             document.body.appendChild(overlay);
 
-            // click outside ALWAYS closes safely
             overlay.addEventListener("click", (e) => {
-                if (e.target === overlay) close(false);
+                if (e.target === overlay) close("close");
             });
         });
     }
@@ -178,6 +167,7 @@
                     icon: "https://cattymod.app/assets/dango/publish.svg"
                 });
 
+                if (publish === "close") return; // STOP EVERYTHING
                 if (!publish) return;
 
                 const shouldDownload = await makePopup({
@@ -187,6 +177,8 @@
                         "We ask you incase you've already downloaded it ready for uploading",
                     icon: "https://cattymod.app/assets/box.png"
                 });
+
+                if (shouldDownload === "close") return; // STOP EVERYTHING
 
                 if (shouldDownload) {
                     const data = await vm.saveProjectSb3();
