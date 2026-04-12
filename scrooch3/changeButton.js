@@ -29,20 +29,6 @@
                 position: relative;
             `;
 
-            // X button (WHITE NOW)
-            const closeBtn = document.createElement("div");
-            closeBtn.textContent = "✕";
-            closeBtn.style = `
-                position: absolute;
-                top: 6px;
-                right: 10px;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: bold;
-                color: white;
-                user-select: none;
-            `;
-
             const header = document.createElement("div");
             header.style = `
                 background: #4C97FF;
@@ -119,11 +105,23 @@
                 resolve(value);
             }
 
+            // ALWAYS SAFE CLOSE (IMPORTANT FIX)
+            const closeBtn = document.createElement("div");
+            closeBtn.textContent = "✕";
+            closeBtn.style = `
+                position: absolute;
+                top: 6px;
+                right: 10px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                color: white;
+                user-select: none;
+            `;
             closeBtn.onclick = () => close(false);
 
             footer.appendChild(closeBtn);
 
-            // SINGLE BUTTON MODE (FINISHED POPUP)
             if (singleButton) {
                 const closeOnly = makeButton("Close", "#4C97FF");
                 closeOnly.onclick = () => close(true);
@@ -146,6 +144,7 @@
             overlay.appendChild(dialog);
             document.body.appendChild(overlay);
 
+            // click outside ALWAYS closes safely
             overlay.addEventListener("click", (e) => {
                 if (e.target === overlay) close(false);
             });
