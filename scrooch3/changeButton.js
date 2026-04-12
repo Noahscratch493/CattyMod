@@ -4,7 +4,7 @@
 
     let lastUrl = window.location.href;
 
-    function makePopup({ title, text, subtitle, icon, singleButton }) {
+    function makePopup({ title, text, subtitle, icon, type = "confirm" }) {
         return new Promise((resolve) => {
             const overlay = document.createElement("div");
             overlay.style = `
@@ -103,7 +103,7 @@
                 resolve(value);
             }
 
-            // ❌ X = ABORT (IMPORTANT FIX)
+            // X always aborts safely
             const x = document.createElement("div");
             x.textContent = "✕";
             x.style = `
@@ -118,16 +118,25 @@
             `;
             x.onclick = () => close("close");
 
-            const yesBtn = btn("Yes", "#4C97FF");
-            const noBtn = btn("No", "#FF6680");
-
-            yesBtn.onclick = () => close(true);
-            noBtn.onclick = () => close(false);
-
-            footer.appendChild(noBtn);
-            footer.appendChild(yesBtn);
-
             dialog.appendChild(x);
+
+            if (type === "info") {
+                // FINISHED POPUP → ONLY CLOSE BUTTON
+                const closeBtn = btn("Close", "#4C97FF");
+                closeBtn.onclick = () => close(true);
+                footer.appendChild(closeBtn);
+            } else {
+                // CONFIRM POPUP → YES / NO
+                const yesBtn = btn("Yes", "#4C97FF");
+                const noBtn = btn("No", "#FF6680");
+
+                yesBtn.onclick = () => close(true);
+                noBtn.onclick = () => close(false);
+
+                footer.appendChild(noBtn);
+                footer.appendChild(yesBtn);
+            }
+
             dialog.appendChild(header);
             dialog.appendChild(body);
             dialog.appendChild(footer);
@@ -164,10 +173,11 @@
                 const publish = await makePopup({
                     title: "Publish project",
                     text: "Are you sure you want to publish your project?",
-                    icon: "https://cattymod.app/assets/dango/publish.svg"
+                    icon: "https://cattymod.app/assets/dango/publish.svg",
+                    type: "confirm"
                 });
 
-                if (publish === "close") return; // STOP EVERYTHING
+                if (publish === "close") return;
                 if (!publish) return;
 
                 const shouldDownload = await makePopup({
@@ -175,10 +185,11 @@
                     text: "Do you want to download your project file?",
                     subtitle:
                         "We ask you incase you've already downloaded it ready for uploading",
-                    icon: "https://cattymod.app/assets/box.png"
+                    icon: "https://cattymod.app/assets/box.png",
+                    type: "confirm"
                 });
 
-                if (shouldDownload === "close") return; // STOP EVERYTHING
+                if (shouldDownload === "close") return;
 
                 if (shouldDownload) {
                     const data = await vm.saveProjectSb3();
@@ -205,7 +216,7 @@
                         text: "We opened the upload page in a new tab!",
                         subtitle: "We can't wait to see your project!",
                         icon: "https://cattymod.app/assets/dango/blocks.svg",
-                        singleButton: true
+                        type: "info"
                     });
                 }, 300);
             });
