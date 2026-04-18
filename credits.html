@@ -4,15 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CattyMod - Credits</title>
+
   <style>
     body {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       margin: 0; padding: 0;
       background: white; color: black;
     }
+
     body[splash-theme="dark"] {
       background: #111; color: #eee;
     }
+
     a { text-decoration: none; color: #007bc7; }
     body[splash-theme="dark"] a { color: #4af; }
 
@@ -29,10 +32,10 @@
     }
 
     section { margin-bottom: 30px; }
+
     section h2 {
       font-size: 1.5rem;
       margin-bottom: 10px;
-      color: inherit;
     }
 
     .users {
@@ -40,6 +43,7 @@
       flex-wrap: wrap;
       gap: 12px;
     }
+
     .user {
       display: flex;
       align-items: center;
@@ -51,48 +55,77 @@
       text-decoration: none;
       transition: background .2s;
     }
+
     .user:hover { background: #eee; }
     body[splash-theme="dark"] .user:hover { background: #222; }
 
     .user img {
-      width: 60px; height: 60px;
+      width: 60px;
+      height: 60px;
       margin-right: 12px;
       border-radius: 50%;
     }
 
+    /* BASED ON (IMPROVED) */
     .based-on {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-size: 1rem;
     }
-    .based-on img {
+
+    .based-on-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .based-on-item img {
       height: 40px;
       width: auto;
-      vertical-align: middle;
       border-radius: 8px;
     }
+
     .arrow {
       font-size: 1.5rem;
       margin: 0 5px;
-      vertical-align: middle;
+      flex-shrink: 0;
     }
-    .based-on div { text-align: center; font-size: 0.85rem; }
+
+    /* LOVABLE SECTION STYLE */
+    .lovable {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:1rem;
+      line-height:1.4;
+    }
+
+    .lovable img {
+      width:18px;
+      height:18px;
+      border-radius:4px;
+    }
+
   </style>
 </head>
 
 <body>
+
 <script>
   (function() {
     try { var localTheme = localStorage.getItem('tw:theme'); } catch (e) {}
-    if (localTheme ? localTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (localTheme ? localTheme === 'dark' :
+      window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.setAttribute('splash-theme', 'dark');
     }
   })();
 </script>
 
 <main>
+
   <header class="top-header">Credits</header>
 
   <section>
@@ -116,18 +149,54 @@
     <div id="extension-users" class="users"></div>
   </section>
 
+  <!-- LOVABLE (ADDED) -->
+  <section>
+    <h2>Lovable</h2>
+    <div class="lovable">
+      <img src="https://lovable.dev/img/logo/lovable-logo-icon.png" alt="Lovable">
+      <div>
+        Lovable was used to generate the Homepage and Explore Page.<br>
+        The explore page also uses Lovable Cloud to host projects shared.
+      </div>
+    </div>
+  </section>
+
   <section>
     <h2>Based On</h2>
+
     <div class="based-on">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png" alt="Scratch"><div>Scratch</div>
+      <div class="based-on-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png">
+        <div>Scratch</div>
+      </div>
+
       <span class="arrow">→</span>
-      <img src="https://extensions.turbowarp.org/turbowarp.svg" alt="TurboWarp"><div>TurboWarp</div>
+
+      <div class="based-on-item">
+        <img src="https://extensions.turbowarp.org/turbowarp.svg">
+        <div>TurboWarp</div>
+      </div>
+
       <span class="arrow">→</span>
-      <img src="https://penguinmod.com/favicon.ico" alt="PenguinMod"><div>PenguinMod</div>
+
+      <div class="based-on-item">
+        <img src="https://penguinmod.com/favicon.ico">
+        <div>PenguinMod</div>
+      </div>
+
       <span class="arrow">→</span>
-      <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4" alt="Scrooch 3 Framework"><div>Scrooch 3 Framework</div>
+
+      <div class="based-on-item">
+        <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4">
+        <div>Scrooch 3 Framework</div>
+      </div>
+
       <span class="arrow">→</span>
-      <img src="https://cattymod.app/images/apple-touch-icon.png" alt="CattyMod"><div>CattyMod</div>
+
+      <div class="based-on-item">
+        <img src="https://cattymod.app/images/apple-touch-icon.png">
+        <div>CattyMod</div>
+      </div>
     </div>
   </section>
 
@@ -138,7 +207,8 @@
 
   <section>
     <h2>Scratch</h2>
-    <p>CattyMod is based on the work of the
+    <p>
+      CattyMod is based on the work of the
       <a href="https://scratch.mit.edu/credits" target="_blank">Scratch contributors</a>,
       but is not endorsed by Scratch.
     </p>
@@ -158,7 +228,7 @@
 
   <section>
     <h2>PenguinMod</h2>
-    <p>This is a list of PenguinMod developers from the version of PenguinMod that CattyMod uses (These are GitHub accounts):</p>
+    <p>This is a list of PenguinMod developers from the version used in CattyMod:</p>
     <div id="penguinmod-users" class="users"></div>
   </section>
 
@@ -177,6 +247,7 @@
 
 <script>
 (function() {
+
   const addonUsers = [
     { userId: '34018398', username: 'Jeffalo' },
     { userId: '64184234', username: 'ErrorGamer2000' },
@@ -208,41 +279,41 @@
 
   const penguinModUsers = [
     { github: 'RedMan13', display: 'godslayerakp', avatar: 'https://github.com/RedMan13.png' },
-    { github: 'jwklong', display: 'jwklong', avatar: 'https://github.com/jwklong.png' },
-    { github: 'JeremyGamer13', display: 'JeremyGamer13', avatar: 'https://github.com/JeremyGamer13.png' },
-    { github: 'Ianyourgod', display: 'Ianyourgod', avatar: 'https://github.com/Ianyourgod.png' },
-    { github: 'asmarly', display: 'asmarly', avatar: 'https://github.com/asmarly.png' },
-    { github: 'FreshPenguin112', display: 'FreshPenguin112', avatar: 'https://github.com/FreshPenguin112.png' }
+    { github: 'jwklong', display: 'jwklong', avatar: 'https://github.com/jwklong.png' }
   ];
-  
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const r = Math.floor(Math.random() * (i + 1));
-      [array[i], array[r]] = [array[r], array[i]];
+
+  function shuffle(a){
+    for(let i=a.length-1;i>0;i--){
+      const r=Math.floor(Math.random()*(i+1));
+      [a[i],a[r]]=[a[r],a[i]];
     }
   }
 
-  function renderUsers(containerId, users, isGitHub=false) {
-    const container = document.getElementById(containerId);
+  function renderUsers(id, users, gh=false){
+    const c=document.getElementById(id);
     shuffle(users);
-    users.forEach(u => {
-      const a = document.createElement('a');
-      a.className = 'user';
-      a.target = '_blank';
-      if (isGitHub) {
-        a.href = `https://github.com/${u.github}`;
-        a.innerHTML = `<img src="${u.avatar}" alt="${u.display}"><div>${u.display}</div>`;
+
+    users.forEach(u=>{
+      const a=document.createElement('a');
+      a.className='user';
+      a.target='_blank';
+
+      if(gh){
+        a.href=`https://github.com/${u.github}`;
+        a.innerHTML=`<img src="${u.avatar}"><div>${u.display}</div>`;
       } else {
-        a.href = `https://scratch.mit.edu/users/${u.username}/`;
-        a.innerHTML = `<img src="https://trampoline.turbowarp.org/avatars/${u.userId}" alt="${u.username}"><div>${u.username}</div>`;
+        a.href=`https://scratch.mit.edu/users/${u.username}/`;
+        a.innerHTML=`<img src="https://trampoline.turbowarp.org/avatars/${u.userId}"><div>${u.username}</div>`;
       }
-      container.appendChild(a);
+
+      c.appendChild(a);
     });
   }
 
   renderUsers('addon-users', addonUsers);
   renderUsers('extension-users', extensionUsers);
   renderUsers('penguinmod-users', penguinModUsers, true);
+
 })();
 </script>
 
