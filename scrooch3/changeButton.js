@@ -31,7 +31,7 @@
 
             const header = document.createElement("div");
             header.style = `
-                background: #4C97FF;
+                background: #009CCC;
                 color: white;
                 padding: 10px 12px;
                 font-size: 14px;
@@ -122,12 +122,12 @@
 
             if (type === "info") {
                 // FINISHED POPUP → ONLY CLOSE BUTTON
-                const closeBtn = btn("Close", "#4C97FF");
+                const closeBtn = btn("Close", "#009CCC");
                 closeBtn.onclick = () => close(true);
                 footer.appendChild(closeBtn);
             } else {
                 // CONFIRM POPUP → YES / NO
-                const yesBtn = btn("Yes", "#4C97FF");
+                const yesBtn = btn("Yes", "#009CCC");
                 const noBtn = btn("No", "#FF6680");
 
                 yesBtn.onclick = () => close(true);
