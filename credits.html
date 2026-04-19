@@ -1,290 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CattyMod - Credits</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CattyMod - Credits</title>
 
-  <style>
-    body {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: white; color: black;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    body[splash-theme="dark"] {
-      background: #111; color: #eee;
-    }
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
 
-    a { text-decoration: none; color: #007bc7; }
-    body[splash-theme="dark"] a { color: #4af; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #000;
+    color: #eee;
+    transition: 0.3s ease;
+  }
 
-    main { max-width: 900px; margin: auto; padding: 20px; }
+  body.light {
+    background: white;
+    color: black;
+  }
 
-    header.top-header {
-      text-align: center;
-      padding: 30px 0;
-      color: white;
-      background-color: #007bc7;
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 40px;
-    }
+a {
+  text-decoration: none;
+  color: #4af;
+  font-size: 1.3rem;
+}
 
-    section { margin-bottom: 30px; }
+body.light a {
+  color: #007bc7;
+}
 
-    section h2 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
+  main {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
 
-    .users {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+  /* ===== BANNER FIX (TOP + FULL WIDTH) ===== */
+  header.top-header {
+    position: relative;
+    top: 0;
+    left: 0;
 
-    .user {
-      display: flex;
-      align-items: center;
-      width: 300px;
-      padding: 4px;
-      border-radius: 4px;
-      font-size: 1.25rem;
-      color: inherit;
-      text-decoration: none;
-      transition: background .2s;
-    }
+    width: 100vw;
+    margin: 0;
+    margin-left: calc(50% - 50vw);
 
-    .user:hover { background: #eee; }
-    body[splash-theme="dark"] .user:hover { background: #222; }
+    text-align: center;
+    padding: 30px 0;
 
-    .user img {
-      width: 60px;
-      height: 60px;
-      margin-right: 12px;
-      border-radius: 50%;
-    }
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
 
-    /* BASED ON (IMPROVED) */
-    .based-on {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      font-size: 1rem;
-    }
+    background: #007bc7;
 
-    .based-on-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
+    box-sizing: border-box;
+    transition: 0.3s ease;
+  }
 
-    .based-on-item img {
-      height: 40px;
-      width: auto;
-      border-radius: 8px;
-    }
+  body.light header.top-header {
+    background: #00C3FF;
+    color: black;
+  }
 
-    .arrow {
-      font-size: 1.5rem;
-      margin: 0 5px;
-      flex-shrink: 0;
-    }
+  section { margin-bottom: 30px; }
 
-    /* LOVABLE SECTION STYLE */
-    .lovable {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-size:1rem;
-      line-height:1.4;
-    }
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
 
-    .lovable img {
-      width:18px;
-      height:18px;
-      border-radius:4px;
-    }
+  .users {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 
-  </style>
+  .user {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    padding: 6px;
+    border-radius: 6px;
+    transition: 0.2s ease;
+  }
+
+  .user:hover { background: rgba(255,255,255,0.08); }
+  body.light .user:hover { background: #eee; }
+
+  .user img {
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+    border-radius: 50%;
+  }
+
+  .based-on {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .based-on-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .based-on-item img {
+    height: 40px;
+  }
+
+  .arrow {
+    font-size: 1.3rem;
+  }
+
+  .lovable {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lovable img {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ===== THEME BUTTON ===== */
+  #themeToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: #007bc7;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: 0.3s ease;
+  }
+
+  body.light #themeToggle {
+    background: #00C3FF;
+    color: black;
+  }
+
+</style>
 </head>
 
 <body>
 
-<script>
-  (function() {
-    try { our localTheme = localStorage.getItem('tw:theme'); } catch (e) {}
-    if (localTheme ? localTheme === 'dark' :
-      window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.setAttribute('splash-theme', 'dark');
-    }
-  })();
-</script>
+<header class="top-header">CattyMod Credits</header>
 
 <main>
 
-  <header class="top-header"> CattyMod Credits</header>
+<section>
+  <h2>Developers</h2>
+  <div class="users">
+    <a class="user" href="https://me.cattymod.app">
+      <img src="https://trampoline.turbowarp.org/avatars/111812798">
+      <div>Noahscratch493</div>
+    </a>
+  </div>
+</section>
 
-  <section>
-    <h2>Developers</h2>
-    <div class="users">
-      <a href="https://me.cattymod.app" target="_blank" class="user">
-        <img src="https://trampoline.turbowarp.org/avatars/111812798" alt="Noahscratch493">
-        <div>Noahscratch493</div>
-      </a>
+<section>
+  <h2>Addons</h2>
+  <div id="addon-users" class="users"></div>
+</section>
+
+<section>
+  <h2>Extensions</h2>
+  <p>Most extension developers haven't been listed as I could not find the developer.</p>
+  <div id="extension-users" class="users"></div>
+</section>
+
+<section>
+  <h2>Lovable</h2>
+  <div class="lovable">
+    <img src="https://lovable.dev/img/logo/lovable-logo-icon.png">
+    <div>
+      <a href="https://lovable.dev">Lovable</a> was used to generate pages.
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <h2>Addons</h2>
-    <div id="addon-users" class="users"></div>
-  </section>
+<section>
+  <h2>Based On</h2>
 
-  <section>
-    <h2>Extensions</h2>
-    <p>Most extension developers haven't been listed as I could not find the developer.</p>
-    <div id="extension-users" class="users"></div>
-  </section>
-
-  <!-- LOVABLE (ADDED) -->
-  <section>
-    <h2>Lovable</h2>
-    <div class="lovable">
-      <img src="https://lovable.dev/img/logo/lovable-logo-icon.png" alt="Lovable">
-<div>
-  <a href="https://lovable.dev" target="_blank">Lovable</a> was used to generate the Homepage and Explore Page.<br>
-  The explore page also uses Lovable Cloud to host projects shared.
-</div>
+  <div class="based-on">
+    <div class="based-on-item">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png">
+      Scratch
     </div>
-  </section>
 
-  <section>
-    <h2>Based On</h2>
+    <span class="arrow">→</span>
 
-    <div class="based-on">
-      <div class="based-on-item">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png">
-        <div>Scratch</div>
-      </div>
-
-      <span class="arrow">→</span>
-
-      <div class="based-on-item">
-        <img src="https://extensions.turbowarp.org/turbowarp.svg">
-        <div>TurboWarp</div>
-      </div>
-
-      <span class="arrow">→</span>
-
-      <div class="based-on-item">
-        <img src="https://penguinmod.com/favicon.ico">
-        <div>PenguinMod</div>
-      </div>
-
-      <span class="arrow">→</span>
-
-      <div class="based-on-item">
-        <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4">
-        <div>Scrooch 3 Framework</div>
-      </div>
-
-      <span class="arrow">→</span>
-
-      <div class="based-on-item">
-        <img src="https://cattymod.app/images/apple-touch-icon.png">
-        <div>CattyMod</div>
-      </div>
+    <div class="based-on-item">
+      <img src="https://extensions.turbowarp.org/turbowarp.svg">
+      TurboWarp
     </div>
-  </section>
 
-  <section>
-    <h2>GitHub Pages</h2>
-    <p>CattyMod is hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.</p>
-  </section>
+    <span class="arrow">→</span>
 
-  <section>
-    <h2>Scratch</h2>
-    <p>
-      CattyMod is based on the work of the
-      <a href="https://scratch.mit.edu/credits" target="_blank">Scratch contributors</a>,
-      but is not endorsed by Scratch.
-    </p>
-    <p><a href="https://scratch.mit.edu/donate" target="_blank">Donate to support Scratch</a>.</p>
-  </section>
+    <div class="based-on-item">
+      <img src="https://penguinmod.com/favicon.ico">
+      PenguinMod
+    </div>
 
-  <section>
-    <h2>Translators</h2>
-    <p>More than 100 people have helped translate CattyMod and its addons — far more than we could list here.</p>
-  </section>
+    <span class="arrow">→</span>
 
-  <section>
-    <h2>Inspiration</h2>
-    <p>PenguinMod's gh-pages branch inspired me to create CattyMod!</p>
-    <p>Snail IDE's homepage inspired me to put a video of projects on the homepage.</p>
-  </section>
+    <div class="based-on-item">
+      <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4">
+      Scrooch 3
+    </div>
 
-  <section>
-    <h2>PenguinMod</h2>
-    <p>This is a list of PenguinMod developers from the version used in CattyMod:</p>
-    <div id="penguinmod-users" class="users"></div>
-  </section>
+    <span class="arrow">→</span>
 
-  <section>
-    <h2>And finally... You!</h2>
-    <p>For supporting my Scratch mod by just using it!</p>
-  </section>
+    <div class="based-on-item">
+      <img src="https://cattymod.app/images/apple-touch-icon.png">
+      CattyMod
+    </div>
+  </div>
+</section>
 
-  <hr>
+<section>
+  <h2>GitHub Pages</h2>
+  <p>Hosted by GitHub Pages</p>
+</section>
 
-  <section>
-    <p><i>Individual contributors are listed in no particular order. The order is randomized each visit.</i></p>
-  </section>
+<section>
+  <h2>Scratch</h2>
+  <p>Based on Scratch contributors.</p>
+</section>
+
+<section>
+  <h2>Translators</h2>
+  <p>100+ people helped translate CattyMod.</p>
+</section>
+
+<section>
+  <h2>PenguinMod</h2>
+  <div id="penguinmod-users" class="users"></div>
+</section>
+
+<section>
+  <h2>And finally... You!</h2>
+  <p>For supporting the project 💙</p>
+</section>
+
+<hr>
+
+<section>
+  <p><i>Contributors are randomized each visit.</i></p>
+</section>
 
 </main>
 
+<button id="themeToggle"><i id="icon" class="fa-solid fa-moon"></i></button>
+
 <script>
-(function() {
+(function(){
 
   const addonUsers = [
-    { userId: '34018398', username: 'Jeffalo' },
-    { userId: '64184234', username: 'ErrorGamer2000' },
-    { userId: '41616512', username: 'pufferfish101007' },
-    { userId: '61409215', username: 'TheColaber' },
-    { userId: '1882674', username: 'griffpatch' },
-    { userId: '10817178', username: 'apple502j' },
-    { userId: '16947341', username: '--Explosion--' },
-    { userId: '14880401', username: 'Sheep_maker' },
-    { userId: '9981676', username: 'NitroCipher' },
-    { userId: '2561680', username: 'lisa_wolfgang' },
-    { userId: '60000111', username: 'GDUcrash' },
-    { userId: '4648559', username: 'World_Languages' },
-    { userId: '17340565', username: 'Garbo Muffin' },
-    { userId: '5354974', username: 'Chrome_Cat' },
-    { userId: '34455896', username: 'summerscar' },
-    { userId: '55742784', username: 'RedGuy7' },
-    { userId: '9636514', username: 'Tacodude7729' },
-    { userId: '14792872', username: '_nix' },
-    { userId: '30323614', username: 'BarelySmooth' },
-    { userId: '64691048', username: 'CST1229' }
+    { userId:'34018398', username:'Jeffalo' },
+    { userId:'64184234', username:'ErrorGamer2000' },
+    { userId:'41616512', username:'pufferfish101007' },
+    { userId:'61409215', username:'TheColaber' },
+    { userId:'1882674', username:'griffpatch' },
+    { userId:'10817178', username:'apple502j' },
+    { userId:'16947341', username:'--Explosion--' },
+    { userId:'14880401', username:'Sheep_maker' },
+    { userId:'9981676', username:'NitroCipher' },
+    { userId:'2561680', username:'lisa_wolfgang' },
+    { userId:'60000111', username:'GDUcrash' },
+    { userId:'4648559', username:'World_Languages' },
+    { userId:'17340565', username:'Garbo Muffin' },
+    { userId:'5354974', username:'Chrome_Cat' },
+    { userId:'34455896', username:'summerscar' },
+    { userId:'55742784', username:'RedGuy7' },
+    { userId:'9636514', username:'Tacodude7729' },
+    { userId:'14792872', username:'_nix' },
+    { userId:'30323614', username:'BarelySmooth' },
+    { userId:'64691048', username:'CST1229' }
   ];
 
   const extensionUsers = [
-    { userId: '119198', username: 'scratchteam' },
-    { userId: '17340565', username: 'Garbo Muffin' },
-    { userId: '1882674', username: 'griffpatch' }
+    { userId:'119198', username:'scratchteam' },
+    { userId:'17340565', username:'Garbo Muffin' },
+    { userId:'1882674', username:'griffpatch' }
   ];
 
-const penguinModUsers = [
-  { github: 'RedMan13', display: 'godslayerakp', avatar: 'https://github.com/RedMan13.png' },
-  { github: 'jwklong', display: 'jwklong', avatar: 'https://github.com/jwklong.png' },
-  { github: 'JeremyGamer13', display: 'JeremyGamer13', avatar: 'https://github.com/JeremyGamer13.png' },
-  { github: 'Ianyourgod', display: 'Ianyourgod', avatar: 'https://github.com/Ianyourgod.png' },
-  { github: 'CST1229', display: 'CST1229', avatar: 'https://github.com/cst1229.png' },
-  { github: 'FreshPenguin112', display: 'FreshPenguin112', avatar: 'https://github.com/FreshPenguin112.png' }
-];
+  const penguinModUsers = [
+    { github:'RedMan13', display:'godslayerakp', avatar:'https://github.com/RedMan13.png' },
+    { github:'jwklong', display:'jwklong', avatar:'https://github.com/jwklong.png' },
+    { github:'JeremyGamer13', display:'JeremyGamer13', avatar:'https://github.com/JeremyGamer13.png' },
+    { github:'Ianyourgod', display:'Ianyourgod', avatar:'https://github.com/Ianyourgod.png' },
+    { github:'CST1229', display:'CST1229', avatar:'https://github.com/cst1229.png' },
+    { github:'FreshPenguin112', display:'FreshPenguin112', avatar:'https://github.com/FreshPenguin112.png' }
+  ];
 
   function shuffle(a){
     for(let i=a.length-1;i>0;i--){
@@ -293,14 +319,15 @@ const penguinModUsers = [
     }
   }
 
-  function renderUsers(id, users, gh=false){
+  function render(id, list, gh=false){
     const c=document.getElementById(id);
-    shuffle(users);
+    if(!c) return;
+    shuffle(list);
 
-    users.forEach(u=>{
-      const a=document.createElement('a');
-      a.className='user';
-      a.target='_blank';
+    list.forEach(u=>{
+      const a=document.createElement("a");
+      a.className="user";
+      a.target="_blank";
 
       if(gh){
         a.href=`https://github.com/${u.github}`;
@@ -314,11 +341,36 @@ const penguinModUsers = [
     });
   }
 
-  renderUsers('addon-users', addonUsers);
-  renderUsers('extension-users', extensionUsers);
-  renderUsers('penguinmod-users', penguinModUsers, true);
+  window.addEventListener("DOMContentLoaded", ()=>{
+    render("addon-users", addonUsers);
+    render("extension-users", extensionUsers);
+    render("penguinmod-users", penguinModUsers, true);
+  });
 
 })();
+</script>
+
+<script>
+const btn=document.getElementById("themeToggle");
+const icon=document.getElementById("icon");
+
+function setTheme(m){
+  document.body.classList.toggle("light", m==="light");
+  icon.className = m==="light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+  document.cookie="theme="+m+";path=/;max-age=31536000";
+  localStorage.setItem("theme",m);
+}
+
+function getTheme(){
+  return localStorage.getItem("theme") ||
+    (document.cookie.includes("theme=light")?"light":"dark");
+}
+
+setTheme(getTheme());
+
+btn.onclick=()=>{
+  setTheme(document.body.classList.contains("light")?"dark":"light");
+};
 </script>
 
 </body>
