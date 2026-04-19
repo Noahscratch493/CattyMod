@@ -1,0 +1,23 @@
+{
+  "name": "cattymod-studio",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "app.cattymod.studio",
+    "productName": "CattyMod Desktop",
+    "files": ["main.js"],
+    "win": {
+      "target": "portable"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
