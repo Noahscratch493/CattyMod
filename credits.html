@@ -26,15 +26,20 @@
     color: black;
   }
 
-a {
-  text-decoration: none;
-  color: #4af;
-  font-size: 1.3rem;
-}
+  /* NORMAL LINKS (NOT PROFILE LINKS) */
+  a {
+    text-decoration: none;
+    color: #4af;
+  }
 
-body.light a {
-  color: #007bc7;
-}
+  body.light a {
+    color: #007bc7;
+  }
+
+  /* ONLY PROFILE LINKS */
+  .user {
+    font-size: 1.3rem;
+  }
 
   main {
     max-width: 900px;
@@ -42,25 +47,17 @@ body.light a {
     padding: 20px;
   }
 
-  /* ===== BANNER FIX (TOP + FULL WIDTH) ===== */
   header.top-header {
     position: relative;
-    top: 0;
-    left: 0;
-
     width: 100vw;
     margin: 0;
     margin-left: calc(50% - 50vw);
-
     text-align: center;
     padding: 30px 0;
-
     font-size: 2rem;
     font-weight: bold;
     color: white;
-
     background: #007bc7;
-
     box-sizing: border-box;
     transition: 0.3s ease;
   }
@@ -135,7 +132,6 @@ body.light a {
     height: 18px;
   }
 
-  /* ===== THEME BUTTON ===== */
   #themeToggle {
     position: fixed;
     bottom: 20px;
@@ -181,85 +177,99 @@ body.light a {
   <div id="addon-users" class="users"></div>
 </section>
 
-<section>
-  <h2>Extensions</h2>
-  <p>Most extension developers haven't been listed as I could not find the developer.</p>
-  <div id="extension-users" class="users"></div>
-</section>
+  <section>
+    <h2>Extensions</h2>
+    <p>Most extension developers haven't been listed as I could not find the developer.</p>
+    <div id="extension-users" class="users"></div>
+  </section>
 
-<section>
-  <h2>Lovable</h2>
-  <div class="lovable">
-    <img src="https://lovable.dev/img/logo/lovable-logo-icon.png">
-    <div>
-      <a href="https://lovable.dev">Lovable</a> was used to generate pages.
+  <!-- LOVABLE (ADDED) -->
+  <section>
+    <h2>Lovable</h2>
+    <div class="lovable">
+      <img src="https://lovable.dev/img/logo/lovable-logo-icon.png" alt="Lovable">
+<div>
+  <a href="https://lovable.dev" target="_blank">Lovable</a> was used to generate the Homepage and Explore Page.<br>
+  The explore page also uses Lovable Cloud to host projects shared.
+</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section>
-  <h2>Based On</h2>
+  <section>
+    <h2>Based On</h2>
 
-  <div class="based-on">
-    <div class="based-on-item">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png">
-      Scratch
+    <div class="based-on">
+      <div class="based-on-item">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png">
+        <div>Scratch</div>
+      </div>
+
+      <span class="arrow">→</span>
+
+      <div class="based-on-item">
+        <img src="https://extensions.turbowarp.org/turbowarp.svg">
+        <div>TurboWarp</div>
+      </div>
+
+      <span class="arrow">→</span>
+
+      <div class="based-on-item">
+        <img src="https://penguinmod.com/favicon.ico">
+        <div>PenguinMod</div>
+      </div>
+
+      <span class="arrow">→</span>
+
+      <div class="based-on-item">
+        <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4">
+        <div>Scrooch 3 Framework</div>
+      </div>
+
+      <span class="arrow">→</span>
+
+      <div class="based-on-item">
+        <img src="https://cattymod.app/images/apple-touch-icon.png">
+        <div>CattyMod</div>
+      </div>
     </div>
+  </section>
 
-    <span class="arrow">→</span>
+  <section>
+    <h2>GitHub Pages</h2>
+    <p>CattyMod is hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.</p>
+  </section>
 
-    <div class="based-on-item">
-      <img src="https://extensions.turbowarp.org/turbowarp.svg">
-      TurboWarp
-    </div>
+  <section>
+    <h2>Scratch</h2>
+    <p>
+      CattyMod is based on the work of the
+      <a href="https://scratch.mit.edu/credits" target="_blank">Scratch contributors</a>,
+      but is not endorsed by Scratch.
+    </p>
+    <p><a href="https://scratch.mit.edu/donate" target="_blank">Donate to support Scratch</a>.</p>
+  </section>
 
-    <span class="arrow">→</span>
+  <section>
+    <h2>Translators</h2>
+    <p>More than 100 people have helped translate CattyMod and its addons — far more than we could list here.</p>
+  </section>
 
-    <div class="based-on-item">
-      <img src="https://penguinmod.com/favicon.ico">
-      PenguinMod
-    </div>
+  <section>
+    <h2>Inspiration</h2>
+    <p>PenguinMod's gh-pages branch inspired me to create CattyMod!</p>
+    <p>Snail IDE's homepage inspired me to put a video of projects on the homepage.</p>
+  </section>
 
-    <span class="arrow">→</span>
+  <section>
+    <h2>PenguinMod</h2>
+    <p>This is a list of PenguinMod developers from the version used in CattyMod:</p>
+    <div id="penguinmod-users" class="users"></div>
+  </section>
 
-    <div class="based-on-item">
-      <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4">
-      Scrooch 3
-    </div>
-
-    <span class="arrow">→</span>
-
-    <div class="based-on-item">
-      <img src="https://cattymod.app/images/apple-touch-icon.png">
-      CattyMod
-    </div>
-  </div>
-</section>
-
-<section>
-  <h2>GitHub Pages</h2>
-  <p>Hosted by GitHub Pages</p>
-</section>
-
-<section>
-  <h2>Scratch</h2>
-  <p>Based on Scratch contributors.</p>
-</section>
-
-<section>
-  <h2>Translators</h2>
-  <p>100+ people helped translate CattyMod.</p>
-</section>
-
-<section>
-  <h2>PenguinMod</h2>
-  <div id="penguinmod-users" class="users"></div>
-</section>
-
-<section>
-  <h2>And finally... You!</h2>
-  <p>For supporting the project 💙</p>
-</section>
+  <section>
+    <h2>And finally... You!</h2>
+    <p>For supporting my Scratch mod by just using it!</p>
+  </section>
 
 <hr>
 
@@ -287,7 +297,7 @@ body.light a {
     { userId:'2561680', username:'lisa_wolfgang' },
     { userId:'60000111', username:'GDUcrash' },
     { userId:'4648559', username:'World_Languages' },
-    { userId:'17340565', username:'Garbo Muffin' },
+    { userId:'17340565', username:'GarboMuffin' },
     { userId:'5354974', username:'Chrome_Cat' },
     { userId:'34455896', username:'summerscar' },
     { userId:'55742784', username:'RedGuy7' },
@@ -299,7 +309,7 @@ body.light a {
 
   const extensionUsers = [
     { userId:'119198', username:'scratchteam' },
-    { userId:'17340565', username:'Garbo Muffin' },
+    { userId:'17340565', username:'GarboMuffin' },
     { userId:'1882674', username:'griffpatch' }
   ];
 
@@ -319,9 +329,8 @@ body.light a {
     }
   }
 
-  function render(id, list, gh=false){
+  function render(id,list,gh=false){
     const c=document.getElementById(id);
-    if(!c) return;
     shuffle(list);
 
     list.forEach(u=>{
@@ -348,25 +357,17 @@ body.light a {
   });
 
 })();
-</script>
 
-<script>
 const btn=document.getElementById("themeToggle");
 const icon=document.getElementById("icon");
 
 function setTheme(m){
   document.body.classList.toggle("light", m==="light");
   icon.className = m==="light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
-  document.cookie="theme="+m+";path=/;max-age=31536000";
   localStorage.setItem("theme",m);
 }
 
-function getTheme(){
-  return localStorage.getItem("theme") ||
-    (document.cookie.includes("theme=light")?"light":"dark");
-}
-
-setTheme(getTheme());
+setTheme(localStorage.getItem("theme")||"dark");
 
 btn.onclick=()=>{
   setTheme(document.body.classList.contains("light")?"dark":"light");
