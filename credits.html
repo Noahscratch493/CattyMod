@@ -1,158 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="in">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CattyMod - Credits</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #000;
+  color: #eee;
+  transition: color 0.3s ease;
+}
+
+/* prevent fade when light mode is active */
+body.light {
+  background: white;
+  color: black;
+  transition: none;
+}
+
+/* NORMAL LINKS */
+a {
+  text-decoration: none;
+  color: #4af;
+}
+
+body.light a {
+  color: #007bc7;
+}
+
+/* PROFILE LINKS */
+.user {
+  font-size: 1.3rem;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* TOP BANNER */
+header.top-header {
+  position: relative;
+  width: 100vw;
+  margin: 0;
+  margin-left: calc(50% - 50vw);
+  text-align: center;
+  padding: 30px 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background: #007bc7;
+  box-sizing: border-box;
+
+  /* animation from center */
+  transform-origin: center;
+  transform: scaleX(0);
+  animation: bannerExpand 0.2s ease forwards;
+}
+
+@keyframes bannerExpand {
+  from {
+    transform: scaleX(0);
   }
-
-  body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #000;
-    color: #eee;
-    transition: 0.3s ease;
+  to {
+    transform: scaleX(1);
   }
+}
 
-  body.light {
-    background: white;
-    color: black;
-  }
+body.light header.top-header {
+  background: #00C3FF;
+  color: black;
+}
 
-  /* NORMAL LINKS (NOT PROFILE LINKS) */
-  a {
-    text-decoration: none;
-    color: #4af;
-  }
+section {
+  margin-bottom: 30px;
+}
 
-  body.light a {
-    color: #007bc7;
-  }
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
 
-  /* ONLY PROFILE LINKS */
-  .user {
-    font-size: 1.3rem;
-  }
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-  main {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-  }
+.user {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
 
-  header.top-header {
-    position: relative;
-    width: 100vw;
-    margin: 0;
-    margin-left: calc(50% - 50vw);
-    text-align: center;
-    padding: 30px 0;
-    font-size: 2rem;
-    font-weight: bold;
-    color: white;
-    background: #007bc7;
-    box-sizing: border-box;
-    transition: 0.3s ease;
-  }
+.user:hover {
+  background: rgba(255,255,255,0.08);
+}
 
-  body.light header.top-header {
-    background: #00C3FF;
-    color: black;
-  }
+body.light .user:hover {
+  background: #eee;
+}
 
-  section { margin-bottom: 30px; }
+.user img {
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
 
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
+.based-on {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
 
-  .users {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
+.based-on-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
 
-  .user {
-    display: flex;
-    align-items: center;
-    width: 300px;
-    padding: 6px;
-    border-radius: 6px;
-    transition: 0.2s ease;
-  }
+.based-on-item img {
+  height: 40px;
+}
 
-  .user:hover { background: rgba(255,255,255,0.08); }
-  body.light .user:hover { background: #eee; }
+.arrow {
+  font-size: 1.3rem;
+}
 
-  .user img {
-    width: 60px;
-    height: 60px;
-    margin-right: 12px;
-    border-radius: 50%;
-  }
+.lovable {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-  .based-on {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-  }
+.lovable img {
+  width: 18px;
+  height: 18px;
+}
 
-  .based-on-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-  }
+#themeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: #007bc7;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+}
 
-  .based-on-item img {
-    height: 40px;
-  }
-
-  .arrow {
-    font-size: 1.3rem;
-  }
-
-  .lovable {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .lovable img {
-    width: 18px;
-    height: 18px;
-  }
-
-  #themeToggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    background: #007bc7;
-    color: white;
-    font-size: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: 0.3s ease;
-  }
-
-  body.light #themeToggle {
-    background: #00C3FF;
-    color: black;
-  }
-
+body.light #themeToggle {
+  background: #00C3FF;
+  color: black;
+}
 </style>
 </head>
 
