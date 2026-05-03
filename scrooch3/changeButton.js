@@ -103,7 +103,6 @@
                 resolve(value);
             }
 
-            // X always aborts safely
             const x = document.createElement("div");
             x.textContent = "✕";
             x.style = `
@@ -117,16 +116,13 @@
                 user-select: none;
             `;
             x.onclick = () => close("close");
-
             dialog.appendChild(x);
 
             if (type === "info") {
-                // FINISHED POPUP → ONLY CLOSE BUTTON
                 const closeBtn = btn("Close", "#009CCC");
                 closeBtn.onclick = () => close(true);
                 footer.appendChild(closeBtn);
             } else {
-                // CONFIRM POPUP → YES / NO
                 const yesBtn = btn("Yes", "#009CCC");
                 const noBtn = btn("No", "#FF6680");
 
@@ -149,6 +145,9 @@
         });
     }
 
+    // ----------------------------
+    // BUTTON UPDATE LOGIC
+    // ----------------------------
     function updateButton() {
         const button = document.querySelector(
             'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
@@ -177,14 +176,13 @@
                     type: "confirm"
                 });
 
-                if (publish === "close") return;
-                if (!publish) return;
+                if (publish === "close" || !publish) return;
 
                 const shouldDownload = await makePopup({
                     title: "Download project",
                     text: "Do you want to download your project file?",
                     subtitle:
-                        "We ask you incase you've already downloaded it ready for uploading",
+                        "We ask you in case you've already downloaded it ready for uploading",
                     icon: "https://cattymod.app/assets/box.png",
                     type: "confirm"
                 });
@@ -205,10 +203,7 @@
                     URL.revokeObjectURL(url);
                 }
 
-                window.open(
-                    "https://cattymod.app/explore/upload",
-                    "_blank"
-                );
+                window.open("https://cattymod.app/explore/upload", "_blank");
 
                 setTimeout(() => {
                     makePopup({
@@ -231,13 +226,37 @@
         }
     }
 
-    const observer = new MutationObserver(updateButton);
+    // ----------------------------
+    // ADDONS → SETTINGS RENAMER
+    // ----------------------------
+    function renameAddonsToSettings() {
+        const el = document.querySelector(
+            '.menu-bar_menu-bar-item_oLDa-.menu-bar_hoverable_c6WFB div span'
+        );
+        if (el && el.textContent === "Addons") {
+            el.textContent = "Settings";
+        }
+    }
+
+    // ----------------------------
+    // OBSERVERS
+    // ----------------------------
+    const observer = new MutationObserver(() => {
+        updateButton();
+        renameAddonsToSettings();
+    });
+
     observer.observe(document.body, { childList: true, subtree: true });
 
     setInterval(() => {
         if (window.location.href !== lastUrl) {
             lastUrl = window.location.href;
             updateButton();
+            renameAddonsToSettings();
         }
     }, 1000);
+
+    // initial run
+    updateButton();
+    renameAddonsToSettings();
 })();
