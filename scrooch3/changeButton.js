@@ -4,7 +4,16 @@
 
     let lastUrl = window.location.href;
 
-    /* ---------------- POPUP ---------------- */
+    /* ---------------- COOKIE ---------------- */
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+
+    /* ---------------- POPUP SYSTEM (UNCHANGED CORE) ---------------- */
 
     function makePopup({ title, text, subtitle, icon, type = "confirm" }) {
         return new Promise((resolve) => {
@@ -12,31 +21,29 @@
             overlay.style = `
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.4);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 999999;
+                background: rgba(0,0,0,0.4);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                z-index:999999;
             `;
 
             const dialog = document.createElement("div");
             dialog.style = `
-                width: 320px;
-                background: #fff;
-                border-radius: 12px;
-                border: 2px solid #d9d9d9;
-                box-shadow: 0 6px 0 rgba(0,0,0,0.15);
-                font-family: Arial, sans-serif;
-                overflow: hidden;
-                position: relative;
+                width:320px;
+                background:#fff;
+                border-radius:12px;
+                font-family:Arial;
+                overflow:hidden;
+                position:relative;
             `;
 
             const header = document.createElement("div");
             header.style = `
-                background: #009CCC;
-                color: white;
-                padding: 10px 12px;
-                font-weight: bold;
+                background:#009CCC;
+                color:white;
+                padding:10px;
+                font-weight:bold;
             `;
             header.textContent = title;
 
@@ -63,13 +70,13 @@
                 const b = document.createElement("button");
                 b.textContent = label;
                 b.style = `
-                    padding:6px 14px;
+                    padding:6px 12px;
                     border:none;
                     border-radius:6px;
                     cursor:pointer;
                     color:white;
-                    font-weight:bold;
                     background:${color};
+                    font-weight:bold;
                 `;
                 return b;
             }
@@ -106,7 +113,7 @@
         });
     }
 
-    /* ---------------- MENU PATCH (NO ADDONS ANYMORE) ---------------- */
+    /* ---------------- MENU PATCH (ADDONS → SETTINGS FIX) ---------------- */
 
     function patchMenu() {
         const items = document.querySelectorAll(
@@ -117,17 +124,19 @@
             const span = el.querySelector("span");
             if (!span) return;
 
-            const txt = span.textContent.trim();
+            const text = span.textContent.trim();
 
-            /* ❌ REMOVE ANY ADDONS LINK BEHAVIOR */
-            if (txt === "Addons") {
+            if (text === "Addons") {
+
                 span.textContent = "Settings";
-
                 el.removeAttribute("href");
-                el.style.cursor = "pointer";
 
-                /* 🔥 IMPORTANT: direct click = popup blocker safe */
-                el.onclick = (e) => {
+                const clone = el.cloneNode(true);
+                el.parentNode.replaceChild(clone, el);
+
+                clone.style.cursor = "pointer";
+
+                clone.addEventListener("click", (e) => {
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -136,12 +145,29 @@
                         "_blank",
                         "noopener,noreferrer"
                     );
-                };
+                });
             }
         });
     }
 
-    /* ---------------- SHARE BUTTON (UNCHANGED LOGIC) ---------------- */
+    /* ---------------- FEEDBACK COLOR FIX ---------------- */
+
+    function applyNavColourToFeedback() {
+        const color = getCookie("NavColour");
+        if (!color) return;
+
+        const button = document.querySelector(
+            'a.menu-bar_feedback-link_1BnAR'
+        );
+        if (!button) return;
+
+        const span = button.querySelector("span");
+        if (!span) return;
+
+        span.style.color = color;
+    }
+
+    /* ---------------- SHARE BUTTON ---------------- */
 
     function updateButton() {
         const button = document.querySelector(
@@ -161,13 +187,13 @@
             clone.addEventListener("click", async (e) => {
                 e.preventDefault();
 
-                const publish = await makePopup({
+                const result = await makePopup({
                     title: "Publish project",
                     text: "Publish your project?",
                     icon: "https://cattymod.app/assets/dango/publish.svg"
                 });
 
-                if (!publish) return;
+                if (!result) return;
 
                 window.open("https://cattymod.app/explore/upload", "_blank");
             });
@@ -183,6 +209,7 @@
     const observer = new MutationObserver(() => {
         patchMenu();
         updateButton();
+        applyNavColourToFeedback();
     });
 
     observer.observe(document.body, {
@@ -195,11 +222,13 @@
             lastUrl = window.location.href;
             patchMenu();
             updateButton();
+            applyNavColourToFeedback();
         }
     }, 1000);
 
     /* INIT */
     patchMenu();
     updateButton();
+    applyNavColourToFeedback();
 
 })();
