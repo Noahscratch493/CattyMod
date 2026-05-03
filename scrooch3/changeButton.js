@@ -4,20 +4,6 @@
 
     let lastUrl = window.location.href;
 
-    /* ---------------- SAFE WAIT ---------------- */
-
-    function onReady(fn) {
-        const check = setInterval(() => {
-            const menu = document.querySelector(".menu-bar_menu-bar-item_oLDa-");
-            const body = document.body;
-
-            if (menu && body) {
-                clearInterval(check);
-                fn();
-            }
-        }, 300);
-    }
-
     /* ---------------- COOKIE ---------------- */
 
     function getCookie(name) {
@@ -29,7 +15,19 @@
         return null;
     }
 
-    /* ---------------- POPUP (UNCHANGED) ---------------- */
+    /* ---------------- SAFE WAIT ---------------- */
+
+    function onReady(fn) {
+        const check = setInterval(() => {
+            const menu = document.querySelector(".menu-bar_menu-bar-item_oLDa-");
+            if (menu && document.body) {
+                clearInterval(check);
+                fn();
+            }
+        }, 300);
+    }
+
+    /* ---------------- POPUP ---------------- */
 
     function makePopup({ title, text, subtitle, icon, type = "confirm" }) {
         return new Promise((resolve) => {
@@ -37,42 +35,34 @@
             overlay.style = `
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.4);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 999999;
+                background: rgba(0,0,0,0.4);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                z-index:999999;
             `;
 
             const dialog = document.createElement("div");
             dialog.style = `
-                width: 320px;
-                background: #ffffff;
-                border-radius: 12px;
-                border: 2px solid #d9d9d9;
-                box-shadow: 0 6px 0 rgba(0,0,0,0.15);
-                font-family: Helvetica, Arial, sans-serif;
-                overflow: hidden;
-                position: relative;
+                width:320px;
+                background:#fff;
+                border-radius:12px;
+                font-family:Arial;
+                overflow:hidden;
+                position:relative;
             `;
 
             const header = document.createElement("div");
             header.style = `
-                background: #009CCC;
-                color: white;
-                padding: 10px 12px;
-                font-size: 14px;
-                font-weight: bold;
+                background:#009CCC;
+                color:white;
+                padding:10px;
+                font-weight:bold;
             `;
             header.textContent = title;
 
             const body = document.createElement("div");
-            body.style = `
-                padding: 16px;
-                font-size: 14px;
-                color: #333;
-                text-align: center;
-            `;
+            body.style = `padding:16px;text-align:center;font-size:14px;color:#333;`;
 
             const iconEl = document.createElement("img");
             iconEl.src = icon;
@@ -138,7 +128,7 @@
         });
     }
 
-    /* ---------------- MENU FIX (SAFE CLONE) ---------------- */
+    /* ---------------- MENU PATCH (SAFE) ---------------- */
 
     function patchMenu() {
         try {
@@ -192,7 +182,7 @@
         } catch (e) {}
     }
 
-    /* ---------------- SHARE BUTTON ---------------- */
+    /* ---------------- SHARE + EXPLORE FIX (CRITICAL FIX) ---------------- */
 
     function updateButton() {
         try {
@@ -202,15 +192,59 @@
             const span = button.querySelector("span");
             if (!span) return;
 
-            if (location.href.includes("editor")) {
+            const isEditor = location.href.includes("editor");
+
+            const clone = button.cloneNode(true);
+
+            // 🔥 HARD BLOCK SCRATCH ROUTING
+            clone.removeAttribute("href");
+            clone.removeAttribute("onclick");
+            clone.style.cursor = "pointer";
+
+            if (isEditor) {
                 span.textContent = "Share";
+
+                clone.onclick = async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const result = await makePopup({
+                        title: "Publish project",
+                        text: "Publish your project?",
+                        icon: "https://cattymod.app/assets/dango/publish.svg"
+                    });
+
+                    if (!result) return;
+
+                    window.open(
+                        "https://cattymod.app/explore/upload",
+                        "_blank",
+                        "noopener,noreferrer"
+                    );
+                };
+
             } else {
                 span.textContent = "Explore";
+
+                clone.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // 🔥 GUARANTEED CORRECT TARGET
+                    window.open(
+                        "https://cattymod.app/explore",
+                        "_blank",
+                        "noopener,noreferrer"
+                    );
+                };
             }
+
+            button.parentNode.replaceChild(clone, button);
+
         } catch (e) {}
     }
 
-    /* ---------------- START ONLY WHEN SAFE ---------------- */
+    /* ---------------- START ---------------- */
 
     onReady(() => {
 
