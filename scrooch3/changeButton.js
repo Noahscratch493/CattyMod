@@ -2,7 +2,7 @@
     if (window.__cattyShareHookLoaded) return;
     window.__cattyShareHookLoaded = true;
 
-    let lastUrl = window.location.href;
+    let lastUrl = location.href;
 
     /* ---------------- COOKIE ---------------- */
 
@@ -15,14 +15,17 @@
         return null;
     }
 
-    /* ---------------- SAFE WAIT ---------------- */
+    /* ---------------- WAIT FOR SCRATCH UI ---------------- */
 
-    function onReady(fn) {
-        const check = setInterval(() => {
-            const menu = document.querySelector(".menu-bar_menu-bar-item_oLDa-");
-            if (menu && document.body) {
-                clearInterval(check);
-                fn();
+    function waitForUI(cb) {
+        const t = setInterval(() => {
+            const ok =
+                document.body &&
+                document.querySelector(".menu-bar_menu-bar-item_oLDa-");
+
+            if (ok) {
+                clearInterval(t);
+                cb();
             }
         }, 300);
     }
@@ -128,7 +131,7 @@
         });
     }
 
-    /* ---------------- MENU PATCH (SAFE) ---------------- */
+    /* ---------------- MENU PATCH (SAFE ADDONS → SETTINGS) ---------------- */
 
     function patchMenu() {
         try {
@@ -141,9 +144,7 @@
                 if (!span) return;
 
                 if (span.textContent.trim() === "Addons") {
-
                     span.textContent = "Settings";
-                    el.removeAttribute("href");
 
                     const clone = el.cloneNode(true);
                     el.parentNode.replaceChild(clone, el);
@@ -167,7 +168,7 @@
 
     /* ---------------- FEEDBACK COLOR ---------------- */
 
-    function applyNavColourToFeedback() {
+    function applyNavColour() {
         try {
             const color = getCookie("NavColour");
             if (!color) return;
@@ -182,7 +183,7 @@
         } catch (e) {}
     }
 
-    /* ---------------- SHARE + EXPLORE FIX (CRITICAL FIX) ---------------- */
+    /* ---------------- SHARE + EXPLORE FIX ---------------- */
 
     function updateButton() {
         try {
@@ -196,7 +197,6 @@
 
             const clone = button.cloneNode(true);
 
-            // 🔥 HARD BLOCK SCRATCH ROUTING
             clone.removeAttribute("href");
             clone.removeAttribute("onclick");
             clone.style.cursor = "pointer";
@@ -208,13 +208,13 @@
                     e.preventDefault();
                     e.stopPropagation();
 
-                    const result = await makePopup({
+                    const ok = await makePopup({
                         title: "Publish project",
                         text: "Publish your project?",
                         icon: "https://cattymod.app/assets/dango/publish.svg"
                     });
 
-                    if (!result) return;
+                    if (!ok) return;
 
                     window.open(
                         "https://cattymod.app/explore/upload",
@@ -230,7 +230,6 @@
                     e.preventDefault();
                     e.stopPropagation();
 
-                    // 🔥 GUARANTEED CORRECT TARGET
                     window.open(
                         "https://cattymod.app/explore",
                         "_blank",
@@ -244,21 +243,21 @@
         } catch (e) {}
     }
 
-    /* ---------------- START ---------------- */
+    /* ---------------- BOOT ---------------- */
 
-    onReady(() => {
+    waitForUI(() => {
 
         patchMenu();
         updateButton();
-        applyNavColourToFeedback();
+        applyNavColour();
 
-        const observer = new MutationObserver(() => {
+        const obs = new MutationObserver(() => {
             patchMenu();
             updateButton();
-            applyNavColourToFeedback();
+            applyNavColour();
         });
 
-        observer.observe(document.body, {
+        obs.observe(document.body, {
             childList: true,
             subtree: true
         });
@@ -268,9 +267,10 @@
                 lastUrl = location.href;
                 patchMenu();
                 updateButton();
-                applyNavColourToFeedback();
+                applyNavColour();
             }
         }, 1000);
+
     });
 
 })();
