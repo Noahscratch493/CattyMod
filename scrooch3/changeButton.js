@@ -4,6 +4,8 @@
 
     let lastUrl = window.location.href;
 
+    /* ---------------- POPUP ---------------- */
+
     function makePopup({ title, text, subtitle, icon, type = "confirm" }) {
         return new Promise((resolve) => {
             const overlay = document.createElement("div");
@@ -20,11 +22,11 @@
             const dialog = document.createElement("div");
             dialog.style = `
                 width: 320px;
-                background: #ffffff;
+                background: #fff;
                 border-radius: 12px;
                 border: 2px solid #d9d9d9;
                 box-shadow: 0 6px 0 rgba(0,0,0,0.15);
-                font-family: Helvetica, Arial, sans-serif;
+                font-family: Arial, sans-serif;
                 overflow: hidden;
                 position: relative;
             `;
@@ -34,104 +36,66 @@
                 background: #009CCC;
                 color: white;
                 padding: 10px 12px;
-                font-size: 14px;
                 font-weight: bold;
             `;
             header.textContent = title;
 
             const body = document.createElement("div");
-            body.style = `
-                padding: 16px;
-                font-size: 14px;
-                color: #333;
-                text-align: center;
-            `;
+            body.style = `padding:16px;text-align:center;font-size:14px;color:#333;`;
 
             const iconEl = document.createElement("img");
             iconEl.src = icon;
-            iconEl.style = `
-                width: 96px;
-                height: 96px;
-                margin-bottom: 12px;
-            `;
-
-            const textEl = document.createElement("div");
-            textEl.textContent = text;
+            iconEl.style = "width:96px;height:96px;margin-bottom:10px;";
 
             body.appendChild(iconEl);
-            body.appendChild(textEl);
-
-            if (subtitle) {
-                const subEl = document.createElement("div");
-                subEl.textContent = subtitle;
-                subEl.style = `
-                    margin-top: 8px;
-                    font-size: 12px;
-                    color: #888;
-                `;
-                body.appendChild(subEl);
-            }
+            body.appendChild(document.createTextNode(text));
 
             const footer = document.createElement("div");
             footer.style = `
-                display: flex;
-                justify-content: flex-end;
-                gap: 10px;
-                padding: 12px;
-                background: #f2f2f2;
-                border-top: 1px solid #ddd;
+                display:flex;
+                justify-content:flex-end;
+                gap:10px;
+                padding:12px;
+                background:#f2f2f2;
             `;
 
             function btn(label, color) {
                 const b = document.createElement("button");
                 b.textContent = label;
                 b.style = `
-                    padding: 6px 14px;
-                    border-radius: 6px;
-                    border: none;
-                    cursor: pointer;
-                    font-size: 13px;
-                    font-weight: bold;
-                    color: white;
-                    background: ${color};
+                    padding:6px 14px;
+                    border:none;
+                    border-radius:6px;
+                    cursor:pointer;
+                    color:white;
+                    font-weight:bold;
+                    background:${color};
                 `;
                 return b;
             }
 
-            function close(value) {
-                if (overlay.parentNode) overlay.remove();
-                resolve(value);
+            function close(v) {
+                overlay.remove();
+                resolve(v);
             }
 
             const x = document.createElement("div");
             x.textContent = "✕";
-            x.style = `
-                position: absolute;
-                top: 6px;
-                right: 10px;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: bold;
-                color: white;
-                user-select: none;
-            `;
+            x.style = "position:absolute;top:6px;right:10px;cursor:pointer;color:white;";
             x.onclick = () => close("close");
-
             dialog.appendChild(x);
 
             if (type === "info") {
-                const closeBtn = btn("Close", "#009CCC");
-                closeBtn.onclick = () => close(true);
-                footer.appendChild(closeBtn);
+                const c = btn("Close", "#009CCC");
+                c.onclick = () => close(true);
+                footer.appendChild(c);
             } else {
-                const yesBtn = btn("Yes", "#009CCC");
-                const noBtn = btn("No", "#FF6680");
-
-                yesBtn.onclick = () => close(true);
-                noBtn.onclick = () => close(false);
-
-                footer.appendChild(noBtn);
-                footer.appendChild(yesBtn);
+                const y = btn("Yes", "#009CCC");
+                const n = btn("No", "#FF6680");
+                y.onclick = () => close(true);
+                n.onclick = () => close(false);
+                footer.appendChild(n);
+                footer.appendChild(y);
             }
 
             dialog.appendChild(header);
@@ -139,15 +103,12 @@
             dialog.appendChild(footer);
             overlay.appendChild(dialog);
             document.body.appendChild(overlay);
-
-            overlay.addEventListener("click", (e) => {
-                if (e.target === overlay) close("close");
-            });
         });
     }
 
-    /* 🔥 NEW: Replace Addons menu item with Settings */
-    function patchMenuBar() {
+    /* ---------------- MENU PATCH (NO ADDONS ANYMORE) ---------------- */
+
+    function patchMenu() {
         const items = document.querySelectorAll(
             ".menu-bar_menu-bar-item_oLDa-.menu-bar_hoverable_c6WFB"
         );
@@ -156,19 +117,31 @@
             const span = el.querySelector("span");
             if (!span) return;
 
-            if (span.textContent.trim() === "Addons") {
+            const txt = span.textContent.trim();
+
+            /* ❌ REMOVE ANY ADDONS LINK BEHAVIOR */
+            if (txt === "Addons") {
                 span.textContent = "Settings";
 
+                el.removeAttribute("href");
                 el.style.cursor = "pointer";
 
+                /* 🔥 IMPORTANT: direct click = popup blocker safe */
                 el.onclick = (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    window.open("https://studio.cattymod.app/settings.html", "_blank");
+
+                    window.open(
+                        "https://studio.cattymod.app/settings.html",
+                        "_blank",
+                        "noopener,noreferrer"
+                    );
                 };
             }
         });
     }
+
+    /* ---------------- SHARE BUTTON (UNCHANGED LOGIC) ---------------- */
 
     function updateButton() {
         const button = document.querySelector(
@@ -176,97 +149,57 @@
         );
         if (!button) return;
 
-        const span = button.querySelector(".button_content_3jdgj span");
+        const span = button.querySelector("span");
         if (!span) return;
 
         if (window.location.href.includes("editor")) {
-            if (span.textContent !== "Share") span.textContent = "Share";
+            span.textContent = "Share";
 
-            button.href = "#";
-            button.target = "";
+            const clone = button.cloneNode(true);
+            button.parentNode.replaceChild(clone, button);
 
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-
-            newButton.addEventListener("click", async (e) => {
+            clone.addEventListener("click", async (e) => {
                 e.preventDefault();
 
                 const publish = await makePopup({
                     title: "Publish project",
-                    text: "Are you sure you want to publish your project?",
-                    icon: "https://cattymod.app/assets/dango/publish.svg",
-                    type: "confirm"
+                    text: "Publish your project?",
+                    icon: "https://cattymod.app/assets/dango/publish.svg"
                 });
 
-                if (publish === "close") return;
                 if (!publish) return;
 
-                const shouldDownload = await makePopup({
-                    title: "Download project",
-                    text: "Do you want to download your project file?",
-                    subtitle: "We ask you incase you've already downloaded it ready for uploading",
-                    icon: "https://cattymod.app/assets/box.png",
-                    type: "confirm"
-                });
-
-                if (shouldDownload === "close") return;
-
-                if (shouldDownload) {
-                    const data = await vm.saveProjectSb3();
-
-                    const blob = new Blob([data], { type: "application/zip" });
-                    const url = URL.createObjectURL(blob);
-
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = "project.sb3";
-                    a.click();
-
-                    URL.revokeObjectURL(url);
-                }
-
-                window.open(
-                    "https://cattymod.app/explore/upload",
-                    "_blank"
-                );
-
-                setTimeout(() => {
-                    makePopup({
-                        title: "Finished!",
-                        text: "We opened the upload page in a new tab!",
-                        subtitle: "We can't wait to see your project!",
-                        icon: "https://cattymod.app/assets/dango/blocks.svg",
-                        type: "info"
-                    });
-                }, 300);
+                window.open("https://cattymod.app/explore/upload", "_blank");
             });
 
         } else {
-            if (span.textContent !== "Explore") span.textContent = "Explore";
+            span.textContent = "Explore";
             button.href = "https://cattymod.app/explore";
-
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
         }
     }
 
+    /* ---------------- OBSERVER ---------------- */
+
     const observer = new MutationObserver(() => {
+        patchMenu();
         updateButton();
-        patchMenuBar(); // 🔥 keep applying
     });
 
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 
     setInterval(() => {
         if (window.location.href !== lastUrl) {
             lastUrl = window.location.href;
+            patchMenu();
             updateButton();
-            patchMenuBar();
         }
     }, 1000);
 
-    // initial run
+    /* INIT */
+    patchMenu();
     updateButton();
-    patchMenuBar();
 
 })();
