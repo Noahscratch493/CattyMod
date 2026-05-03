@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CattyMod Settings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* =========================
+   THEME
+========================= */
+:root {
+  --bg: #fff;
+  --panel: #f3f3f3;
+  --panel2: #e9e9e9;
+  --text: #111;
+  --accent: #009CCC;
+}
+
+body.dark {
+  --bg: #111;
+  --panel: #1a1a1a;
+  --panel2: #1e1e1e;
+  --text: #fff;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Segoe UI, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+  width: 260px;
+  background: var(--panel);
+  padding: 20px;
+  border-right: 1px solid transparent;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.nav-item {
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nav-item.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page {
+  display: none;
+  height: 100%;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 20px;
+  overflow: auto;
+  flex: 1;
+}
+
+/* =========================
+   SWITCH (DARK MODE FIXED VISIBILITY)
+========================= */
+.switch {
+  position: relative;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #777;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+input:checked + .slider {
+  background: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* =========================
+   GENERAL CARD
+========================= */
+.card {
+  background: var(--panel2);
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   APPEARANCE
+========================= */
+.theme-box {
+  max-width: 520px;
+  margin: auto;
+  background: var(--panel);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.preview-bar {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--accent);
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.preview-bar img {
+  position: absolute;
+  inset: 0;
+  width: calc(100% - 24px);
+  margin: 0 12px;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* =========================
+   ADDONS
+========================= */
+#addons iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* =========================
+   ABOUT (CHROMIUM STYLE HORIZONTAL)
+========================= */
+.about-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: var(--panel);
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.about-logo {
+  width: 90px;
+  height: 90px;
+}
+
+.about-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.about-version {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  width: 140px;
+}
+
+.about-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--accent);
+  color: white;
+  width: fit-content;
+}
+
+/* BUTTONS */
+button {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.save { background: #4CAF50; color: white; padding: 10px; }
+.reset { background: #f44336; color: white; padding: 10px; }
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+  <div class="sidebar-header">
+    <i class="fas fa-gear"></i>
+    <span>Settings</span>
+  </div>
+
+  <div class="nav-item active" onclick="openPage('general', event)">
+    <i class="fas fa-house"></i> General
+  </div>
+
+  <div class="nav-item" onclick="openPage('appearance', event)">
+    <i class="fas fa-paint-brush"></i> Appearance
+  </div>
+
+  <div class="nav-item" onclick="openPage('addons', event)">
+    <i class="fas fa-puzzle-piece"></i> Addons
+  </div>
+
+  <div class="nav-item" onclick="openPage('about', event)">
+    <i class="fas fa-circle-info"></i> About
+  </div>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- GENERAL (DARK MODE FIXED VISIBILITY) -->
+<div id="general" class="page active">
+  <div class="content">
+
+    <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+      <span>Dark Mode</span>
+      <label class="switch">
+        <input type="checkbox" id="darkToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+  </div>
+</div>
+
+<!-- APPEARANCE -->
+<div id="appearance" class="page">
+  <div class="content">
+
+    <div class="theme-box">
+
+      <h3>Custom Theme</h3>
+
+      <input type="color" id="colorPicker">
+
+      <div class="preview-bar" id="previewBar">
+        <img src="https://cattymod.app/assets/navbar.png">
+      </div>
+
+      <br>
+
+      <button class="save" onclick="saveTheme()">Save</button>
+      <button class="reset" onclick="resetTheme()">Reset</button>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ADDONS -->
+<div id="addons" class="page">
+  <div class="content" style="padding:0;">
+    <iframe src="https://studio.cattymod.app/addons.html"></iframe>
+  </div>
+</div>
+
+<!-- ABOUT (CHROMIUM STYLE) -->
+<div id="about" class="page">
+  <div class="content">
+
+    <div class="about-wrapper">
+
+      <img class="about-logo" src="https://cattymod.app/assets/cattymod-icon-DpwK82Wr.png">
+
+      <div class="about-info">
+
+        <div class="about-title">CattyMod Studio</div>
+
+        <input class="about-version" id="version" value="v1.2.0">
+
+        <button class="about-btn" onclick="window.open('https://cattymod.app','_blank')">
+          Open Homepage
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<script>
+
+/* PAGE SWITCH */
+function openPage(id, e) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  e.target.classList.add('active');
+}
+
+/* DARK MODE */
+const darkToggle = document.getElementById("darkToggle");
+
+function loadDark() {
+  const mode = localStorage.getItem("tw:theme") || "light";
+  document.body.classList.toggle("dark", mode === "dark");
+  darkToggle.checked = mode === "dark";
+}
+
+darkToggle.addEventListener("change", () => {
+  const mode = darkToggle.checked ? "dark" : "light";
+  localStorage.setItem("tw:theme", mode);
+  document.body.classList.toggle("dark", mode === "dark");
+});
+
+/* THEME */
+const picker = document.getElementById("colorPicker");
+const previewBar = document.getElementById("previewBar");
+
+function loadTheme() {
+  const c = localStorage.getItem("NavColour") || "#009CCC";
+  picker.value = c;
+  previewBar.style.background = c;
+}
+
+picker.addEventListener("input", () => {
+  previewBar.style.background = picker.value;
+});
+
+function saveTheme() {
+  localStorage.setItem("NavColour", picker.value);
+}
+
+function resetTheme() {
+  localStorage.removeItem("NavColour");
+  picker.value = "#009CCC";
+  previewBar.style.background = "#009CCC";
+}
+
+/* INIT */
+loadDark();
+loadTheme();
+
+</script>
+
+</body>
+</html>
