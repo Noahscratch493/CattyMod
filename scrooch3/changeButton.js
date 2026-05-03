@@ -103,7 +103,6 @@
                 resolve(value);
             }
 
-            // X always aborts safely
             const x = document.createElement("div");
             x.textContent = "✕";
             x.style = `
@@ -121,12 +120,10 @@
             dialog.appendChild(x);
 
             if (type === "info") {
-                // FINISHED POPUP → ONLY CLOSE BUTTON
                 const closeBtn = btn("Close", "#009CCC");
                 closeBtn.onclick = () => close(true);
                 footer.appendChild(closeBtn);
             } else {
-                // CONFIRM POPUP → YES / NO
                 const yesBtn = btn("Yes", "#009CCC");
                 const noBtn = btn("No", "#FF6680");
 
@@ -146,6 +143,30 @@
             overlay.addEventListener("click", (e) => {
                 if (e.target === overlay) close("close");
             });
+        });
+    }
+
+    /* 🔥 NEW: Replace Addons menu item with Settings */
+    function patchMenuBar() {
+        const items = document.querySelectorAll(
+            ".menu-bar_menu-bar-item_oLDa-.menu-bar_hoverable_c6WFB"
+        );
+
+        items.forEach(el => {
+            const span = el.querySelector("span");
+            if (!span) return;
+
+            if (span.textContent.trim() === "Addons") {
+                span.textContent = "Settings";
+
+                el.style.cursor = "pointer";
+
+                el.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open("https://studio.cattymod.app/settings.html", "_blank");
+                };
+            }
         });
     }
 
@@ -183,8 +204,7 @@
                 const shouldDownload = await makePopup({
                     title: "Download project",
                     text: "Do you want to download your project file?",
-                    subtitle:
-                        "We ask you incase you've already downloaded it ready for uploading",
+                    subtitle: "We ask you incase you've already downloaded it ready for uploading",
                     icon: "https://cattymod.app/assets/box.png",
                     type: "confirm"
                 });
@@ -223,7 +243,6 @@
 
         } else {
             if (span.textContent !== "Explore") span.textContent = "Explore";
-
             button.href = "https://cattymod.app/explore";
 
             const newButton = button.cloneNode(true);
@@ -231,13 +250,23 @@
         }
     }
 
-    const observer = new MutationObserver(updateButton);
+    const observer = new MutationObserver(() => {
+        updateButton();
+        patchMenuBar(); // 🔥 keep applying
+    });
+
     observer.observe(document.body, { childList: true, subtree: true });
 
     setInterval(() => {
         if (window.location.href !== lastUrl) {
             lastUrl = window.location.href;
             updateButton();
+            patchMenuBar();
         }
     }, 1000);
+
+    // initial run
+    updateButton();
+    patchMenuBar();
+
 })();
