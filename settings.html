@@ -129,7 +129,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* THEME BOX */
+/* THEME */
 .theme-box {
   max-width: 520px;
   margin: auto;
@@ -138,7 +138,7 @@ input:checked + .slider:before {
   border-radius: 12px;
 }
 
-/* PREVIEW BAR */
+/* PREVIEW */
 .preview-bar {
   position: relative;
   width: 100%;
@@ -340,13 +340,23 @@ button {
 
 <script>
 
-/* NAV */
+/* NAVIGATION + IFRAME FIX */
 function openPage(id, e) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   e.target.classList.add('active');
+
+  /* 🔥 FIX: reload addons iframe when opened */
+  if (id === "addons") {
+    const iframe = document.querySelector("#addons iframe");
+    if (iframe) {
+      const src = iframe.src;
+      iframe.src = "about:blank";
+      setTimeout(() => iframe.src = src, 10);
+    }
+  }
 }
 
 /* COOKIE SYSTEM */
@@ -357,8 +367,8 @@ function setCookie(name, value, days) {
 }
 
 function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
+  const v = `; ${document.cookie}`;
+  const parts = v.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(';').shift();
   return null;
 }
@@ -389,7 +399,6 @@ const picker = document.getElementById("colorPicker");
 const previewBar = document.getElementById("previewBar");
 const saveBtn = document.getElementById("saveBtn");
 
-/* LOAD */
 function loadTheme() {
   const enabled = getCookie("CustomTheme") !== "false";
 
@@ -416,12 +425,12 @@ themeToggle.addEventListener("change", () => {
   }
 });
 
-/* 🔥 LIVE UPDATE (NO SAVE REQUIRED) */
+/* LIVE UPDATE */
 picker.addEventListener("input", () => {
   previewBar.style.backgroundColor = picker.value;
 });
 
-/* 💾 SAVE ONLY STORES VALUE */
+/* SAVE */
 saveBtn.addEventListener("click", () => {
   if (!themeToggle.checked) {
     alert("Enable Custom Theme first!");
@@ -429,7 +438,7 @@ saveBtn.addEventListener("click", () => {
   }
 
   setCookie("NavColour", picker.value, 365);
-  alert("Saved! NavColour updated.");
+  alert("Saved! Theme applied.");
 });
 
 /* RESET */
