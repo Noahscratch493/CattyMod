@@ -145,9 +145,6 @@
         });
     }
 
-    // ----------------------------
-    // BUTTON UPDATE LOGIC
-    // ----------------------------
     function updateButton() {
         const button = document.querySelector(
             'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
@@ -182,7 +179,7 @@
                     title: "Download project",
                     text: "Do you want to download your project file?",
                     subtitle:
-                        "We ask you in case you've already downloaded it ready for uploading",
+                        "We ask you incase you've already downloaded it ready for uploading",
                     icon: "https://cattymod.app/assets/box.png",
                     type: "confirm"
                 });
@@ -203,7 +200,10 @@
                     URL.revokeObjectURL(url);
                 }
 
-                window.open("https://cattymod.app/explore/upload", "_blank");
+                window.open(
+                    "https://cattymod.app/explore/upload",
+                    "_blank"
+                );
 
                 setTimeout(() => {
                     makePopup({
@@ -226,21 +226,17 @@
         }
     }
 
-    // ----------------------------
-    // ADDONS → SETTINGS RENAMER
-    // ----------------------------
+    // ✅ FIXED RENAMER (no hash dependency)
     function renameAddonsToSettings() {
-        const el = document.querySelector(
-            '.menu-bar_menu-bar-item_oLDa-.menu-bar_hoverable_c6WFB div span'
-        );
-        if (el && el.textContent === "Addons") {
-            el.textContent = "Settings";
-        }
+        const items = document.querySelectorAll('[class*="menu-bar_menu-bar-item"] span');
+
+        items.forEach(el => {
+            if (el.textContent.trim() === "Addons") {
+                el.textContent = "Settings";
+            }
+        });
     }
 
-    // ----------------------------
-    // OBSERVERS
-    // ----------------------------
     const observer = new MutationObserver(() => {
         updateButton();
         renameAddonsToSettings();
@@ -256,7 +252,7 @@
         }
     }, 1000);
 
-    // initial run
+    // run immediately too
     updateButton();
     renameAddonsToSettings();
 })();
