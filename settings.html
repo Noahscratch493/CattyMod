@@ -138,15 +138,15 @@ input:checked + .slider:before {
   border-radius: 12px;
 }
 
-/* PREVIEW */
+/* PREVIEW BAR */
 .preview-bar {
   position: relative;
   width: 100%;
   height: 44px;
   border-radius: 8px;
-  background: var(--accent);
   margin-top: 12px;
   overflow: hidden;
+  background: #009CCC;
 }
 
 .preview-bar img {
@@ -293,7 +293,7 @@ button {
 
         <br>
 
-        <button class="save" onclick="saveTheme()">Save</button>
+        <button class="save" id="saveBtn">Save</button>
         <button class="reset" onclick="resetTheme()">Reset</button>
 
       </div>
@@ -306,7 +306,8 @@ button {
 <!-- ADDONS -->
 <div id="addons" class="page">
   <div class="content" style="padding:0;">
-    <iframe src="https://studio.cattymod.app/addons.html" style="width:100%;height:100%;border:none;"></iframe>
+    <iframe src="https://studio.cattymod.app/addons.html"
+            style="width:100%;height:100%;border:none;"></iframe>
   </div>
 </div>
 
@@ -322,7 +323,7 @@ button {
 
         <div class="about-title">CattyMod Studio</div>
 
-        <input class="about-version" id="version" value="v1.2.0">
+        <input class="about-version" value="v1.2.0">
 
         <button class="about-btn" onclick="window.open('https://cattymod.app','_blank')">
           Open Homepage
@@ -339,13 +340,31 @@ button {
 
 <script>
 
-/* NAV SWITCH */
+/* NAV */
 function openPage(id, e) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   e.target.classList.add('active');
+}
+
+/* COOKIE SYSTEM */
+function setCookie(name, value, days) {
+  const d = new Date();
+  d.setTime(d.getTime() + days * 86400000);
+  document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+}
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = name + "=; Max-Age=-99999999; path=/";
 }
 
 /* DARK MODE */
@@ -363,58 +382,61 @@ darkToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark", mode === "dark");
 });
 
-/* CUSTOM THEME */
+/* THEME */
 const themeToggle = document.getElementById("themeToggle");
 const themeControls = document.getElementById("themeControls");
 const picker = document.getElementById("colorPicker");
 const previewBar = document.getElementById("previewBar");
+const saveBtn = document.getElementById("saveBtn");
 
+/* LOAD */
 function loadTheme() {
-  const enabled = localStorage.getItem("customThemeEnabled") !== "false";
+  const enabled = getCookie("CustomTheme") !== "false";
 
   themeToggle.checked = enabled;
   themeControls.classList.toggle("hidden", !enabled);
 
-  let color = localStorage.getItem("NavColour");
-  if (!color) color = "#009CCC";
+  const color = getCookie("NavColour") || "#009CCC";
 
   picker.value = color;
-  previewBar.style.background = color;
+  previewBar.style.backgroundColor = color;
 }
 
+/* TOGGLE */
 themeToggle.addEventListener("change", () => {
   if (!themeToggle.checked) {
-    localStorage.setItem("customThemeEnabled", "false");
-    localStorage.removeItem("NavColour");
+    setCookie("CustomTheme", "false", 365);
+    deleteCookie("NavColour");
 
     themeControls.classList.add("hidden");
-    previewBar.style.background = "#009CCC";
+    previewBar.style.backgroundColor = "#009CCC";
   } else {
-    localStorage.setItem("customThemeEnabled", "true");
+    setCookie("CustomTheme", "true", 365);
     themeControls.classList.remove("hidden");
   }
 });
 
-/* FIXED SAVE (NOW WORKS + ALERT) */
-function saveTheme() {
+/* 🔥 LIVE UPDATE (NO SAVE REQUIRED) */
+picker.addEventListener("input", () => {
+  previewBar.style.backgroundColor = picker.value;
+});
+
+/* 💾 SAVE ONLY STORES VALUE */
+saveBtn.addEventListener("click", () => {
   if (!themeToggle.checked) {
     alert("Enable Custom Theme first!");
     return;
   }
 
-  localStorage.setItem("NavColour", picker.value);
-  localStorage.setItem("customThemeEnabled", "true");
-
-  previewBar.style.background = picker.value;
-
-  alert("Saved! NavColour has been updated.");
-}
+  setCookie("NavColour", picker.value, 365);
+  alert("Saved! NavColour updated.");
+});
 
 /* RESET */
 function resetTheme() {
-  localStorage.removeItem("NavColour");
+  deleteCookie("NavColour");
   picker.value = "#009CCC";
-  previewBar.style.background = "#009CCC";
+  previewBar.style.backgroundColor = "#009CCC";
 }
 
 /* INIT */
