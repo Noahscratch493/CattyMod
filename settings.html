@@ -9,9 +9,6 @@
 
 <style>
 
-/* =========================
-   THEME
-========================= */
 :root {
   --bg: #fff;
   --panel: #f3f3f3;
@@ -40,14 +37,11 @@ body {
   display: flex;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* SIDEBAR */
 .sidebar {
   width: 260px;
   background: var(--panel);
   padding: 20px;
-  border-right: 1px solid transparent;
 }
 
 .sidebar-header {
@@ -55,7 +49,6 @@ body {
   align-items: center;
   gap: 10px;
   font-weight: 600;
-  font-size: 18px;
   color: var(--accent);
   margin-bottom: 16px;
 }
@@ -75,9 +68,7 @@ body {
   color: white;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 .main {
   flex: 1;
   display: flex;
@@ -101,18 +92,14 @@ body {
   flex: 1;
 }
 
-/* =========================
-   SWITCH (DARK MODE FIXED VISIBILITY)
-========================= */
+/* SWITCH */
 .switch {
   position: relative;
   width: 50px;
   height: 24px;
 }
 
-.switch input {
-  display: none;
-}
+.switch input { display: none; }
 
 .slider {
   position: absolute;
@@ -142,19 +129,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* =========================
-   GENERAL CARD
-========================= */
-.card {
-  background: var(--panel2);
-  padding: 14px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-
-/* =========================
-   APPEARANCE
-========================= */
+/* APPEARANCE */
 .theme-box {
   max-width: 520px;
   margin: auto;
@@ -182,18 +157,18 @@ input:checked + .slider:before {
   object-fit: contain;
 }
 
-/* =========================
-   ADDONS
-========================= */
-#addons iframe {
-  width: 100%;
-  height: 100%;
+/* BUTTONS */
+button {
+  padding: 10px;
   border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* =========================
-   ABOUT (CHROMIUM STYLE HORIZONTAL)
-========================= */
+.save { background: #4CAF50; color: white; }
+.reset { background: #f44336; color: white; }
+
+/* ABOUT */
 .about-wrapper {
   display: flex;
   gap: 20px;
@@ -211,7 +186,6 @@ input:checked + .slider:before {
 }
 
 .about-info {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -223,43 +197,36 @@ input:checked + .slider:before {
 }
 
 .about-version {
+  width: 140px;
   padding: 8px;
   border-radius: 6px;
   border: none;
-  width: 140px;
 }
 
 .about-btn {
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
   background: var(--accent);
   color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
   width: fit-content;
 }
 
-/* BUTTONS */
-button {
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+/* HIDE CUSTOM THEME */
+.hidden {
+  display: none;
 }
-
-.save { background: #4CAF50; color: white; padding: 10px; }
-.reset { background: #f44336; color: white; padding: 10px; }
 
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
 
   <div class="sidebar-header">
     <i class="fas fa-gear"></i>
-    <span>Settings</span>
+    Settings
   </div>
 
   <div class="nav-item active" onclick="openPage('general', event)">
@@ -280,14 +247,13 @@ button {
 
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-<!-- GENERAL (DARK MODE FIXED VISIBILITY) -->
+<!-- GENERAL -->
 <div id="general" class="page active">
   <div class="content">
 
-    <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
       <span>Dark Mode</span>
       <label class="switch">
         <input type="checkbox" id="darkToggle">
@@ -306,16 +272,29 @@ button {
 
       <h3>Custom Theme</h3>
 
-      <input type="color" id="colorPicker">
-
-      <div class="preview-bar" id="previewBar">
-        <img src="https://cattymod.app/assets/navbar.png">
+      <!-- MASTER TOGGLE -->
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span>Enable Custom Theme</span>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider"></span>
+        </label>
       </div>
 
-      <br>
+      <div id="themeControls">
 
-      <button class="save" onclick="saveTheme()">Save</button>
-      <button class="reset" onclick="resetTheme()">Reset</button>
+        <input type="color" id="colorPicker">
+
+        <div class="preview-bar" id="previewBar">
+          <img src="https://cattymod.app/assets/navbar.png">
+        </div>
+
+        <br>
+
+        <button class="save" onclick="saveTheme()">Save</button>
+        <button class="reset" onclick="resetTheme()">Reset</button>
+
+      </div>
 
     </div>
 
@@ -325,11 +304,11 @@ button {
 <!-- ADDONS -->
 <div id="addons" class="page">
   <div class="content" style="padding:0;">
-    <iframe src="https://studio.cattymod.app/addons.html"></iframe>
+    <iframe src="https://studio.cattymod.app/addons.html" style="width:100%;height:100%;border:none;"></iframe>
   </div>
 </div>
 
-<!-- ABOUT (CHROMIUM STYLE) -->
+<!-- ABOUT -->
 <div id="about" class="page">
   <div class="content">
 
@@ -382,21 +361,42 @@ darkToggle.addEventListener("change", () => {
   document.body.classList.toggle("dark", mode === "dark");
 });
 
-/* THEME */
+/* CUSTOM THEME (NAVCOLOUR COOKIE = localStorage) */
+const themeToggle = document.getElementById("themeToggle");
+const themeControls = document.getElementById("themeControls");
 const picker = document.getElementById("colorPicker");
 const previewBar = document.getElementById("previewBar");
 
 function loadTheme() {
-  const c = localStorage.getItem("NavColour") || "#009CCC";
-  picker.value = c;
-  previewBar.style.background = c;
+  const enabled = localStorage.getItem("customThemeEnabled") !== "false";
+
+  themeToggle.checked = enabled;
+  themeControls.classList.toggle("hidden", !enabled);
+
+  const color = localStorage.getItem("NavColour") || "#009CCC";
+  picker.value = color;
+  previewBar.style.background = color;
 }
+
+themeToggle.addEventListener("change", () => {
+  if (!themeToggle.checked) {
+    localStorage.setItem("customThemeEnabled", "false");
+    localStorage.removeItem("NavColour");
+
+    themeControls.classList.add("hidden");
+    previewBar.style.background = "#009CCC";
+  } else {
+    localStorage.setItem("customThemeEnabled", "true");
+    themeControls.classList.remove("hidden");
+  }
+});
 
 picker.addEventListener("input", () => {
   previewBar.style.background = picker.value;
 });
 
 function saveTheme() {
+  if (!themeToggle.checked) return;
   localStorage.setItem("NavColour", picker.value);
 }
 
