@@ -2,156 +2,242 @@
     if (window.__cattyShareHookLoaded) return;
     window.__cattyShareHookLoaded = true;
 
-    let lastUrl = location.href;
+    let lastUrl = window.location.href;
 
-    /* ---------------- COOKIE ---------------- */
+    function makePopup({ title, text, subtitle, icon, type = "confirm" }) {
+        return new Promise((resolve) => {
+            const overlay = document.createElement("div");
+            overlay.style = `
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 999999;
+            `;
 
-    function getCookie(name) {
-        try {
-            const v = `; ${document.cookie}`;
-            const parts = v.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        } catch (e) {}
-        return null;
-    }
+            const dialog = document.createElement("div");
+            dialog.style = `
+                width: 320px;
+                background: #ffffff;
+                border-radius: 12px;
+                border: 2px solid #d9d9d9;
+                box-shadow: 0 6px 0 rgba(0,0,0,0.15);
+                font-family: Helvetica, Arial, sans-serif;
+                overflow: hidden;
+                position: relative;
+            `;
 
-    /* ---------------- SAFE WAIT ---------------- */
+            const header = document.createElement("div");
+            header.style = `
+                background: #009CCC;
+                color: white;
+                padding: 10px 12px;
+                font-size: 14px;
+                font-weight: bold;
+            `;
+            header.textContent = title;
 
-    function onReady(fn) {
-        const t = setInterval(() => {
-            const menu = document.querySelector(".menu-bar_menu-bar-item_oLDa-");
-            if (menu && document.body) {
-                clearInterval(t);
-                fn();
+            const body = document.createElement("div");
+            body.style = `
+                padding: 16px;
+                font-size: 14px;
+                color: #333;
+                text-align: center;
+            `;
+
+            const iconEl = document.createElement("img");
+            iconEl.src = icon;
+            iconEl.style = `
+                width: 96px;
+                height: 96px;
+                margin-bottom: 12px;
+            `;
+
+            const textEl = document.createElement("div");
+            textEl.textContent = text;
+
+            body.appendChild(iconEl);
+            body.appendChild(textEl);
+
+            if (subtitle) {
+                const subEl = document.createElement("div");
+                subEl.textContent = subtitle;
+                subEl.style = `
+                    margin-top: 8px;
+                    font-size: 12px;
+                    color: #888;
+                `;
+                body.appendChild(subEl);
             }
-        }, 300);
-    }
 
-    /* ---------------- FEEDBACK COLOR (SAFE ONLY STYLE) ---------------- */
+            const footer = document.createElement("div");
+            footer.style = `
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                padding: 12px;
+                background: #f2f2f2;
+                border-top: 1px solid #ddd;
+            `;
 
-    function applyNavColourToFeedback() {
-        try {
-            const color = getCookie("NavColour");
-            if (!color) return;
+            function btn(label, color) {
+                const b = document.createElement("button");
+                b.textContent = label;
+                b.style = `
+                    padding: 6px 14px;
+                    border-radius: 6px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: white;
+                    background: ${color};
+                `;
+                return b;
+            }
 
-            const btn = document.querySelector('a.menu-bar_feedback-link_1BnAR');
-            if (!btn) return;
+            function close(value) {
+                if (overlay.parentNode) overlay.remove();
+                resolve(value);
+            }
 
-            const span = btn.querySelector("span");
-            if (!span) return;
+            // X always aborts safely
+            const x = document.createElement("div");
+            x.textContent = "✕";
+            x.style = `
+                position: absolute;
+                top: 6px;
+                right: 10px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                color: white;
+                user-select: none;
+            `;
+            x.onclick = () => close("close");
 
-            span.style.color = color;
-        } catch (e) {}
-    }
+            dialog.appendChild(x);
 
-    /* ---------------- MENU TEXT PATCH (NO REPLACEMENT) ---------------- */
+            if (type === "info") {
+                // FINISHED POPUP → ONLY CLOSE BUTTON
+                const closeBtn = btn("Close", "#009CCC");
+                closeBtn.onclick = () => close(true);
+                footer.appendChild(closeBtn);
+            } else {
+                // CONFIRM POPUP → YES / NO
+                const yesBtn = btn("Yes", "#009CCC");
+                const noBtn = btn("No", "#FF6680");
 
-    function patchMenuText() {
-        try {
-            const items = document.querySelectorAll(
-                ".menu-bar_menu-bar-item_oLDa-.menu-bar_hoverable_c6WFB span"
-            );
+                yesBtn.onclick = () => close(true);
+                noBtn.onclick = () => close(false);
 
-            items.forEach(span => {
-                if (span.textContent.trim() === "Addons") {
-                    span.textContent = "Settings";
-                }
+                footer.appendChild(noBtn);
+                footer.appendChild(yesBtn);
+            }
+
+            dialog.appendChild(header);
+            dialog.appendChild(body);
+            dialog.appendChild(footer);
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener("click", (e) => {
+                if (e.target === overlay) close("close");
             });
-        } catch (e) {}
+        });
     }
-
-    /* ---------------- CLICK REDIRECT SAFE (NO DOM REPLACEMENT) ---------------- */
-
-    function attachClickInterceptors() {
-        document.body.addEventListener("click", (e) => {
-            const el = e.target.closest(".menu-bar_menu-bar-item_oLDa-.menu-bar_hoverable_c6WFB");
-            if (!el) return;
-
-            const span = el.querySelector("span");
-            if (!span) return;
-
-            if (span.textContent.trim() === "Settings") {
-                e.preventDefault();
-                e.stopPropagation();
-
-                window.open(
-                    "https://studio.cattymod.app/settings.html",
-                    "_blank",
-                    "noopener,noreferrer"
-                );
-            }
-        }, true);
-    }
-
-    /* ---------------- SHARE / EXPLORE FIX (NO CLONING) ---------------- */
 
     function updateButton() {
-        try {
-            const button = document.querySelector('a.menu-bar_feedback-link_1BnAR');
-            if (!button) return;
+        const button = document.querySelector(
+            'a.menu-bar_feedback-link_1BnAR[href="https://scratch.mit.edu/discuss/topic/636814/"]'
+        );
+        if (!button) return;
 
-            const span = button.querySelector("span");
-            if (!span) return;
+        const span = button.querySelector(".button_content_3jdgj span");
+        if (!span) return;
 
-            const isEditor = location.href.includes("editor");
+        if (window.location.href.includes("editor")) {
+            if (span.textContent !== "Share") span.textContent = "Share";
 
-            if (isEditor) {
-                span.textContent = "Share";
-            } else {
-                span.textContent = "Explore";
-            }
+            button.href = "#";
+            button.target = "";
 
-            button.onclick = (e) => {
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            newButton.addEventListener("click", async (e) => {
                 e.preventDefault();
-                e.stopPropagation();
 
-                if (isEditor) {
-                    window.open(
-                        "https://cattymod.app/explore/upload",
-                        "_blank",
-                        "noopener,noreferrer"
-                    );
-                } else {
-                    window.open(
-                        "https://cattymod.app/explore",
-                        "_blank",
-                        "noopener,noreferrer"
-                    );
+                const publish = await makePopup({
+                    title: "Publish project",
+                    text: "Are you sure you want to publish your project?",
+                    icon: "https://cattymod.app/assets/dango/publish.svg",
+                    type: "confirm"
+                });
+
+                if (publish === "close") return;
+                if (!publish) return;
+
+                const shouldDownload = await makePopup({
+                    title: "Download project",
+                    text: "Do you want to download your project file?",
+                    subtitle:
+                        "We ask you incase you've already downloaded it ready for uploading",
+                    icon: "https://cattymod.app/assets/box.png",
+                    type: "confirm"
+                });
+
+                if (shouldDownload === "close") return;
+
+                if (shouldDownload) {
+                    const data = await vm.saveProjectSb3();
+
+                    const blob = new Blob([data], { type: "application/zip" });
+                    const url = URL.createObjectURL(blob);
+
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "project.sb3";
+                    a.click();
+
+                    URL.revokeObjectURL(url);
                 }
-            };
 
-        } catch (e) {}
+                window.open(
+                    "https://cattymod.app/explore/upload",
+                    "_blank"
+                );
+
+                setTimeout(() => {
+                    makePopup({
+                        title: "Finished!",
+                        text: "We opened the upload page in a new tab!",
+                        subtitle: "We can't wait to see your project!",
+                        icon: "https://cattymod.app/assets/dango/blocks.svg",
+                        type: "info"
+                    });
+                }, 300);
+            });
+
+        } else {
+            if (span.textContent !== "Explore") span.textContent = "Explore";
+
+            button.href = "https://cattymod.app/explore";
+
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+        }
     }
 
-    /* ---------------- MAIN RUNNER ---------------- */
+    const observer = new MutationObserver(updateButton);
+    observer.observe(document.body, { childList: true, subtree: true });
 
-    function run() {
-        patchMenuText();
-        updateButton();
-        applyNavColourToFeedback();
-    }
-
-    /* ---------------- INIT ---------------- */
-
-    onReady(() => {
-        run();
-        attachClickInterceptors();
-
-        const obs = new MutationObserver(() => {
-            run();
-        });
-
-        obs.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-
-        setInterval(() => {
-            if (location.href !== lastUrl) {
-                lastUrl = location.href;
-                run();
-            }
-        }, 1000);
-    });
-
+    setInterval(() => {
+        if (window.location.href !== lastUrl) {
+            lastUrl = window.location.href;
+            updateButton();
+        }
+    }, 1000);
 })();
