@@ -229,7 +229,7 @@ button {
     Settings
   </div>
 
-  <div class="nav-item active" onclick="openPage('general', event)">
+  <div class="nav-item" onclick="openPage('general', event)">
     <i class="fas fa-house"></i> General
   </div>
 
@@ -250,10 +250,8 @@ button {
 <!-- MAIN -->
 <div class="main">
 
-<!-- GENERAL -->
-<div id="general" class="page active">
+<div id="general" class="page">
   <div class="content">
-
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <span>Dark Mode</span>
       <label class="switch">
@@ -261,16 +259,12 @@ button {
         <span class="slider"></span>
       </label>
     </div>
-
   </div>
 </div>
 
-<!-- APPEARANCE -->
 <div id="appearance" class="page">
   <div class="content">
-
     <div class="theme-box">
-
       <h3>Custom Theme</h3>
 
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -282,9 +276,7 @@ button {
       </div>
 
       <div id="themeControls">
-
         <br>
-
         <input type="color" id="colorPicker">
 
         <div class="preview-bar" id="previewBar">
@@ -292,18 +284,14 @@ button {
         </div>
 
         <br>
-
         <button class="save" id="saveBtn">Save</button>
         <button class="reset" onclick="resetTheme()">Reset</button>
-
       </div>
 
     </div>
-
   </div>
 </div>
 
-<!-- ADDONS -->
 <div id="addons" class="page">
   <div class="content" style="padding:0;">
     <iframe src="https://studio.cattymod.app/addonsEmbed.html"
@@ -311,28 +299,18 @@ button {
   </div>
 </div>
 
-<!-- ABOUT -->
 <div id="about" class="page">
   <div class="content">
-
     <div class="about-wrapper">
-
       <img class="about-logo" src="https://cattymod.app/assets/cattymod-icon-DpwK82Wr.png">
-
       <div class="about-info">
-
         <div class="about-title">CattyMod Studio</div>
-
         <input class="about-version" value="v1.2.0">
-
         <button class="about-btn" onclick="window.open('https://cattymod.app','_blank')">
           Open Homepage
         </button>
-
       </div>
-
     </div>
-
   </div>
 </div>
 
@@ -340,15 +318,28 @@ button {
 
 <script>
 
-/* NAVIGATION + IFRAME FIX */
+/* NAVIGATION */
 function openPage(id, e) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  openPageById(id);
 
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  e.target.classList.add('active');
+  e.currentTarget.classList.add('active');
 
-  /* 🔥 FIX: reload addons iframe when opened */
+  history.replaceState(null, "", "?page=" + id);
+}
+
+function openPageById(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById(id);
+  if (page) page.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute("onclick")?.includes(`'${id}'`)) {
+      n.classList.add('active');
+    }
+  });
+
   if (id === "addons") {
     const iframe = document.querySelector("#addons iframe");
     if (iframe) {
@@ -357,6 +348,12 @@ function openPage(id, e) {
       setTimeout(() => iframe.src = src, 10);
     }
   }
+}
+
+/* URL HANDLER */
+function getPageFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("page");
 }
 
 /* COOKIE SYSTEM */
@@ -411,12 +408,10 @@ function loadTheme() {
   previewBar.style.backgroundColor = color;
 }
 
-/* TOGGLE */
 themeToggle.addEventListener("change", () => {
   if (!themeToggle.checked) {
     setCookie("CustomTheme", "false", 365);
     deleteCookie("NavColour");
-
     themeControls.classList.add("hidden");
     previewBar.style.backgroundColor = "#009CCC";
   } else {
@@ -425,23 +420,19 @@ themeToggle.addEventListener("change", () => {
   }
 });
 
-/* LIVE UPDATE */
 picker.addEventListener("input", () => {
   previewBar.style.backgroundColor = picker.value;
 });
 
-/* SAVE */
 saveBtn.addEventListener("click", () => {
   if (!themeToggle.checked) {
     alert("Enable Custom Theme first!");
     return;
   }
-
   setCookie("NavColour", picker.value, 365);
   alert("Saved! Theme applied.");
 });
 
-/* RESET */
 function resetTheme() {
   deleteCookie("NavColour");
   picker.value = "#009CCC";
@@ -451,6 +442,10 @@ function resetTheme() {
 /* INIT */
 loadDark();
 loadTheme();
+
+/* LOAD PAGE FROM URL */
+const page = getPageFromURL() || "general";
+openPageById(page);
 
 </script>
 
