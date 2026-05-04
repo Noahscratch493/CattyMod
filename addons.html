@@ -9,6 +9,7 @@
 
 <style>
 
+/* ROOT */
 :root {
   --bg: #fff;
   --panel: #f3f3f3;
@@ -24,6 +25,7 @@ body.dark {
   --text: #fff;
 }
 
+/* PAGE BASE */
 html, body {
   margin: 0;
   height: 100%;
@@ -35,6 +37,7 @@ html, body {
 
 body {
   display: flex;
+  height: 100%;
 }
 
 /* SIDEBAR */
@@ -68,16 +71,18 @@ body {
   color: white;
 }
 
-/* MAIN */
+/* MAIN LAYOUT FIX */
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
 }
 
 .page {
   display: none;
+  flex: 1;
   height: 100%;
 }
 
@@ -87,9 +92,9 @@ body {
 }
 
 .content {
+  flex: 1;
   padding: 20px;
   overflow: auto;
-  flex: 1;
 }
 
 /* SWITCH */
@@ -129,7 +134,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* THEME */
+/* THEME BOX */
 .theme-box {
   max-width: 520px;
   margin: auto;
@@ -213,7 +218,21 @@ button {
   width: fit-content;
 }
 
-/* HIDE */
+/* ADDONS FULL FIX */
+#addons .content {
+  padding: 0;
+  display: flex;
+  height: 100%;
+}
+
+#addonsFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  display: block;
+}
+
 .hidden { display: none; }
 
 </style>
@@ -250,6 +269,7 @@ button {
 <!-- MAIN -->
 <div class="main">
 
+<!-- GENERAL -->
 <div id="general" class="page">
   <div class="content">
     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -262,9 +282,11 @@ button {
   </div>
 </div>
 
+<!-- APPEARANCE -->
 <div id="appearance" class="page">
   <div class="content">
     <div class="theme-box">
+
       <h3>Custom Theme</h3>
 
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -292,13 +314,16 @@ button {
   </div>
 </div>
 
+<!-- ADDONS -->
 <div id="addons" class="page">
-  <div class="content" style="padding:0;">
-    <iframe src="https://studio.cattymod.app/addonsEmbed.html"
-            style="width:100%;height:100%;border:none;"></iframe>
+  <div class="content">
+    <iframe id="addonsFrame"
+      src="https://studio.cattymod.app/addonsEmbed.html">
+    </iframe>
   </div>
 </div>
 
+<!-- ABOUT -->
 <div id="about" class="page">
   <div class="content">
     <div class="about-wrapper">
@@ -318,134 +343,74 @@ button {
 
 <script>
 
-/* NAVIGATION */
+/* THEME TRACKING */
+let lastTheme = localStorage.getItem("tw:theme") || "light";
+
+/* NAV */
 function openPage(id, e) {
-  openPageById(id);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  e.currentTarget.classList.add('active');
+  if (e) e.currentTarget.classList.add('active');
 
   history.replaceState(null, "", "?page=" + id);
-}
-
-function openPageById(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById(id);
-  if (page) page.classList.add('active');
-
-  document.querySelectorAll('.nav-item').forEach(n => {
-    n.classList.remove('active');
-    if (n.getAttribute("onclick")?.includes(`'${id}'`)) {
-      n.classList.add('active');
-    }
-  });
 
   if (id === "addons") {
-    const iframe = document.querySelector("#addons iframe");
-    if (iframe) {
-      const src = iframe.src;
-      iframe.src = "about:blank";
-      setTimeout(() => iframe.src = src, 10);
-    }
+    reloadIfNeeded();
   }
 }
 
-/* URL HANDLER */
-function getPageFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("page");
+/* ADDONS RELOAD */
+function reloadAddons() {
+  const iframe = document.getElementById("addonsFrame");
+  const base = iframe.src.split("?")[0];
+  iframe.src = base + "?t=" + Date.now();
 }
 
-/* COOKIE SYSTEM */
-function setCookie(name, value, days) {
-  const d = new Date();
-  d.setTime(d.getTime() + days * 86400000);
-  document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
-}
-
-function getCookie(name) {
-  const v = `; ${document.cookie}`;
-  const parts = v.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-}
-
-function deleteCookie(name) {
-  document.cookie = name + "=; Max-Age=-99999999; path=/";
+function reloadIfNeeded() {
+  const currentTheme = localStorage.getItem("tw:theme") || "light";
+  if (currentTheme !== lastTheme) {
+    reloadAddons();
+    lastTheme = currentTheme;
+  }
 }
 
 /* DARK MODE */
 const darkToggle = document.getElementById("darkToggle");
 
-function loadDark() {
-  const mode = localStorage.getItem("tw:theme") || "light";
+function applyTheme(mode) {
   document.body.classList.toggle("dark", mode === "dark");
-  darkToggle.checked = mode === "dark";
+  localStorage.setItem("tw:theme", mode);
 }
 
 darkToggle.addEventListener("change", () => {
-  const mode = darkToggle.checked ? "dark" : "light";
-  localStorage.setItem("tw:theme", mode);
-  document.body.classList.toggle("dark", mode === "dark");
-});
+  const newTheme = darkToggle.checked ? "dark" : "light";
+  const oldTheme = localStorage.getItem("tw:theme") || "light";
 
-/* THEME */
-const themeToggle = document.getElementById("themeToggle");
-const themeControls = document.getElementById("themeControls");
-const picker = document.getElementById("colorPicker");
-const previewBar = document.getElementById("previewBar");
-const saveBtn = document.getElementById("saveBtn");
+  applyTheme(newTheme);
 
-function loadTheme() {
-  const enabled = getCookie("CustomTheme") !== "false";
-
-  themeToggle.checked = enabled;
-  themeControls.classList.toggle("hidden", !enabled);
-
-  const color = getCookie("NavColour") || "#009CCC";
-
-  picker.value = color;
-  previewBar.style.backgroundColor = color;
-}
-
-themeToggle.addEventListener("change", () => {
-  if (!themeToggle.checked) {
-    setCookie("CustomTheme", "false", 365);
-    deleteCookie("NavColour");
-    themeControls.classList.add("hidden");
-    previewBar.style.backgroundColor = "#009CCC";
-  } else {
-    setCookie("CustomTheme", "true", 365);
-    themeControls.classList.remove("hidden");
+  if (newTheme !== oldTheme) {
+    reloadAddons();
+    lastTheme = newTheme;
   }
 });
-
-picker.addEventListener("input", () => {
-  previewBar.style.backgroundColor = picker.value;
-});
-
-saveBtn.addEventListener("click", () => {
-  if (!themeToggle.checked) {
-    alert("Enable Custom Theme first!");
-    return;
-  }
-  setCookie("NavColour", picker.value, 365);
-  alert("Saved! Theme applied.");
-});
-
-function resetTheme() {
-  deleteCookie("NavColour");
-  picker.value = "#009CCC";
-  previewBar.style.backgroundColor = "#009CCC";
-}
 
 /* INIT */
-loadDark();
-loadTheme();
+const saved = localStorage.getItem("tw:theme") || "light";
+applyTheme(saved);
+darkToggle.checked = saved === "dark";
 
-/* LOAD PAGE FROM URL */
-const page = getPageFromURL() || "general";
-openPageById(page);
+/* DEFAULT PAGE */
+const params = new URLSearchParams(location.search);
+const start = params.get("page") || "general";
+
+document.getElementById(start).classList.add("active");
+document.querySelectorAll('.nav-item').forEach(n => {
+  if (n.getAttribute("onclick")?.includes(`'${start}'`)) {
+    n.classList.add("active");
+  }
+});
 
 </script>
 
