@@ -103,6 +103,7 @@
                 resolve(value);
             }
 
+            // X always aborts safely
             const x = document.createElement("div");
             x.textContent = "✕";
             x.style = `
@@ -116,13 +117,16 @@
                 user-select: none;
             `;
             x.onclick = () => close("close");
+
             dialog.appendChild(x);
 
             if (type === "info") {
+                // FINISHED POPUP → ONLY CLOSE BUTTON
                 const closeBtn = btn("Close", "#009CCC");
                 closeBtn.onclick = () => close(true);
                 footer.appendChild(closeBtn);
             } else {
+                // CONFIRM POPUP → YES / NO
                 const yesBtn = btn("Yes", "#009CCC");
                 const noBtn = btn("No", "#FF6680");
 
@@ -173,7 +177,8 @@
                     type: "confirm"
                 });
 
-                if (publish === "close" || !publish) return;
+                if (publish === "close") return;
+                if (!publish) return;
 
                 const shouldDownload = await makePopup({
                     title: "Download project",
@@ -226,33 +231,13 @@
         }
     }
 
-    // ✅ FIXED RENAMER (no hash dependency)
-    function renameAddonsToSettings() {
-        const items = document.querySelectorAll('[class*="menu-bar_menu-bar-item"] span');
-
-        items.forEach(el => {
-            if (el.textContent.trim() === "Addons") {
-                el.textContent = "Settings";
-            }
-        });
-    }
-
-    const observer = new MutationObserver(() => {
-        updateButton();
-        renameAddonsToSettings();
-    });
-
+    const observer = new MutationObserver(updateButton);
     observer.observe(document.body, { childList: true, subtree: true });
 
     setInterval(() => {
         if (window.location.href !== lastUrl) {
             lastUrl = window.location.href;
             updateButton();
-            renameAddonsToSettings();
         }
     }, 1000);
-
-    // run immediately too
-    updateButton();
-    renameAddonsToSettings();
 })();
