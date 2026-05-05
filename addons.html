@@ -71,7 +71,7 @@ body {
   color: white;
 }
 
-/* MAIN LAYOUT FIX */
+/* MAIN */
 .main {
   flex: 1;
   display: flex;
@@ -141,6 +141,25 @@ input:checked + .slider:before {
   background: var(--panel);
   padding: 20px;
   border-radius: 12px;
+}
+
+/* ✅ ANIMATED COLLAPSE */
+#themeControls {
+  overflow: hidden;
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: 
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+#themeControls.collapsed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
 }
 
 /* PREVIEW */
@@ -218,7 +237,7 @@ button {
   width: fit-content;
 }
 
-/* ADDONS FULL FIX */
+/* ADDONS */
 #addons .content {
   padding: 0;
   display: flex;
@@ -229,18 +248,13 @@ button {
   width: 100%;
   height: 100%;
   border: none;
-  outline: none;
-  display: block;
 }
-
-.hidden { display: none; }
 
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
 
   <div class="sidebar-header">
@@ -266,13 +280,11 @@ button {
 
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-<!-- GENERAL -->
 <div id="general" class="page">
   <div class="content">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between;">
       <span>Dark Mode</span>
       <label class="switch">
         <input type="checkbox" id="darkToggle">
@@ -282,14 +294,13 @@ button {
   </div>
 </div>
 
-<!-- APPEARANCE -->
 <div id="appearance" class="page">
   <div class="content">
     <div class="theme-box">
 
       <h3>Custom Theme</h3>
 
-      <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; justify-content:space-between;">
         <span>Enable Custom Theme</span>
         <label class="switch">
           <input type="checkbox" id="themeToggle">
@@ -301,36 +312,32 @@ button {
         <br>
         <input type="color" id="colorPicker">
 
-        <div class="preview-bar" id="previewBar">
+        <div class="preview-bar">
           <img src="https://cattymod.app/assets/navbar.png">
         </div>
 
         <br>
-        <button class="save" id="saveBtn">Save</button>
-        <button class="reset" onclick="resetTheme()">Reset</button>
+        <button class="save">Save</button>
+        <button class="reset">Reset</button>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- ADDONS -->
 <div id="addons" class="page">
   <div class="content">
-    <iframe id="addonsFrame"
-      src="https://studio.cattymod.app/addonsEmbed.html">
-    </iframe>
+    <iframe id="addonsFrame" src="https://studio.cattymod.app/addonsEmbed.html"></iframe>
   </div>
 </div>
 
-<!-- ABOUT -->
 <div id="about" class="page">
   <div class="content">
     <div class="about-wrapper">
       <img class="about-logo" src="https://cattymod.app/assets/cattymod-icon-DpwK82Wr.png">
       <div class="about-info">
         <div class="about-title">CattyMod Studio</div>
-        <input class="about-version" value="v26.5">
+        <input class="about-version" value="v26.5.1">
         <button class="about-btn" onclick="window.open('https://cattymod.app','_blank')">
           Open Homepage
         </button>
@@ -343,9 +350,6 @@ button {
 
 <script>
 
-/* THEME TRACKING */
-let lastTheme = localStorage.getItem("tw:theme") || "light";
-
 /* NAV */
 function openPage(id, e) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -353,27 +357,6 @@ function openPage(id, e) {
 
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (e) e.currentTarget.classList.add('active');
-
-  history.replaceState(null, "", "?page=" + id);
-
-  if (id === "addons") {
-    reloadIfNeeded();
-  }
-}
-
-/* ADDONS RELOAD */
-function reloadAddons() {
-  const iframe = document.getElementById("addonsFrame");
-  const base = iframe.src.split("?")[0];
-  iframe.src = base + "?t=" + Date.now();
-}
-
-function reloadIfNeeded() {
-  const currentTheme = localStorage.getItem("tw:theme") || "light";
-  if (currentTheme !== lastTheme) {
-    reloadAddons();
-    lastTheme = currentTheme;
-  }
 }
 
 /* DARK MODE */
@@ -385,32 +368,34 @@ function applyTheme(mode) {
 }
 
 darkToggle.addEventListener("change", () => {
-  const newTheme = darkToggle.checked ? "dark" : "light";
-  const oldTheme = localStorage.getItem("tw:theme") || "light";
-
-  applyTheme(newTheme);
-
-  if (newTheme !== oldTheme) {
-    reloadAddons();
-    lastTheme = newTheme;
-  }
+  applyTheme(darkToggle.checked ? "dark" : "light");
 });
 
-/* INIT */
 const saved = localStorage.getItem("tw:theme") || "light";
 applyTheme(saved);
 darkToggle.checked = saved === "dark";
 
-/* DEFAULT PAGE */
-const params = new URLSearchParams(location.search);
-const start = params.get("page") || "general";
+/* ✅ CUSTOM THEME COLLAPSE */
+const themeToggle = document.getElementById("themeToggle");
+const themeControls = document.getElementById("themeControls");
 
-document.getElementById(start).classList.add("active");
-document.querySelectorAll('.nav-item').forEach(n => {
-  if (n.getAttribute("onclick")?.includes(`'${start}'`)) {
-    n.classList.add("active");
-  }
+function updateThemeControls() {
+  themeControls.classList.toggle("collapsed", !themeToggle.checked);
+}
+
+/* LOAD STATE */
+const enabled = localStorage.getItem("customTheme") === "true";
+themeToggle.checked = enabled;
+updateThemeControls();
+
+/* CHANGE */
+themeToggle.addEventListener("change", () => {
+  localStorage.setItem("customTheme", themeToggle.checked);
+  updateThemeControls();
 });
+
+/* DEFAULT PAGE */
+document.getElementById("general").classList.add("active");
 
 </script>
 
