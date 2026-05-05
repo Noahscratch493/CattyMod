@@ -25,7 +25,7 @@ body.dark {
   --text: #fff;
 }
 
-/* PAGE BASE */
+/* BASE */
 html, body {
   margin: 0;
   height: 100%;
@@ -35,10 +35,7 @@ html, body {
   color: var(--text);
 }
 
-body {
-  display: flex;
-  height: 100%;
-}
+body { display: flex; }
 
 /* SIDEBAR */
 .sidebar {
@@ -77,13 +74,11 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  height: 100%;
 }
 
 .page {
   display: none;
   flex: 1;
-  height: 100%;
 }
 
 .page.active {
@@ -98,156 +93,123 @@ body {
 }
 
 /* SWITCH */
-.switch {
-  position: relative;
-  width: 50px;
-  height: 24px;
-}
-
-.switch input { display: none; }
+.switch { width:50px;height:24px;position:relative; }
+.switch input { display:none; }
 
 .slider {
-  position: absolute;
-  inset: 0;
-  background: #777;
-  border-radius: 20px;
-  cursor: pointer;
+  position:absolute;
+  inset:0;
+  background:#777;
+  border-radius:20px;
+  cursor:pointer;
 }
 
 .slider:before {
-  content: "";
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  left: 3px;
-  top: 3px;
-  background: white;
-  border-radius: 50%;
-  transition: 0.2s;
+  content:"";
+  position:absolute;
+  width:18px;height:18px;
+  left:3px;top:3px;
+  background:white;
+  border-radius:50%;
+  transition:.2s;
 }
 
-input:checked + .slider {
-  background: var(--accent);
-}
+input:checked + .slider { background:var(--accent); }
+input:checked + .slider:before { transform:translateX(26px); }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/* THEME BOX */
+/* THEME */
 .theme-box {
-  max-width: 520px;
-  margin: auto;
-  background: var(--panel);
-  padding: 20px;
-  border-radius: 12px;
+  max-width:520px;
+  margin:auto;
+  background:var(--panel);
+  padding:20px;
+  border-radius:12px;
 }
 
-/* ✅ ANIMATED COLLAPSE */
+/* ANIMATION */
 #themeControls {
-  overflow: hidden;
-  max-height: 500px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: 
-    max-height 0.35s ease,
-    opacity 0.25s ease,
-    transform 0.25s ease;
+  overflow:hidden;
+  max-height:500px;
+  opacity:1;
+  transform:translateY(0);
+  transition:max-height .35s ease, opacity .25s ease, transform .25s ease;
 }
 
 #themeControls.collapsed {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
+  max-height:0;
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
 }
 
 /* PREVIEW */
 .preview-bar {
-  position: relative;
-  width: 100%;
-  height: 44px;
-  border-radius: 8px;
-  margin-top: 12px;
-  overflow: hidden;
-  background: #009CCC;
+  height:44px;
+  border-radius:8px;
+  margin-top:12px;
+  overflow:hidden;
+  background:#009CCC;
+  position:relative;
 }
 
 .preview-bar img {
   position: absolute;
-  inset: 0;
-  width: calc(100% - 24px);
-  margin: 0 12px;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  max-width: calc(100% - 24px);
+  max-height: 100%;
   object-fit: contain;
 }
 
 /* BUTTONS */
-button {
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.save { background: #4CAF50; color: white; }
-.reset { background: #f44336; color: white; }
+button { padding:10px;border:none;border-radius:8px;cursor:pointer; }
+.save { background:#4CAF50;color:white; }
+.reset { background:#f44336;color:white; }
 
 /* ABOUT */
 .about-wrapper {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  background: var(--panel);
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 700px;
-  margin: auto;
+  display:flex;
+  gap:20px;
+  align-items:center;
+  background:var(--panel);
+  padding:20px;
+  border-radius:12px;
+  max-width:700px;
+  margin:auto;
 }
 
-.about-logo {
-  width: 90px;
-  height: 90px;
-}
+.about-logo { width:90px;height:90px; }
 
-.about-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.about-title {
-  font-size: 20px;
-  font-weight: 600;
-}
+.about-title { font-size:20px;font-weight:600; }
 
 .about-version {
-  width: 140px;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
+  width:140px;
+  padding:8px;
+  border-radius:6px;
+  border:none;
 }
 
 .about-btn {
-  background: var(--accent);
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  width: fit-content;
+  background:var(--accent);
+  color:white;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-/* ADDONS */
+/* ADDONS FIX */
 #addons .content {
-  padding: 0;
-  display: flex;
-  height: 100%;
+  padding:0;
+  height:100%;
 }
 
 #addonsFrame {
-  width: 100%;
-  height: 100%;
-  border: none;
+  width:100%;
+  height:100%;
+  border:none;
+  display:block;
 }
 
 </style>
@@ -256,35 +218,32 @@ button {
 <body>
 
 <div class="sidebar">
-
   <div class="sidebar-header">
-    <i class="fas fa-gear"></i>
-    Settings
+    <i class="fas fa-gear"></i> Settings
   </div>
 
-  <div class="nav-item" onclick="openPage('general', event)">
+  <div class="nav-item" data-page="general">
     <i class="fas fa-house"></i> General
   </div>
 
-  <div class="nav-item" onclick="openPage('appearance', event)">
+  <div class="nav-item" data-page="appearance">
     <i class="fas fa-paint-brush"></i> Appearance
   </div>
 
-  <div class="nav-item" onclick="openPage('addons', event)">
+  <div class="nav-item" data-page="addons">
     <i class="fas fa-puzzle-piece"></i> Addons
   </div>
 
-  <div class="nav-item" onclick="openPage('about', event)">
+  <div class="nav-item" data-page="about">
     <i class="fas fa-circle-info"></i> About
   </div>
-
 </div>
 
 <div class="main">
 
 <div id="general" class="page">
   <div class="content">
-    <div style="display:flex; justify-content:space-between;">
+    <div style="display:flex;justify-content:space-between;">
       <span>Dark Mode</span>
       <label class="switch">
         <input type="checkbox" id="darkToggle">
@@ -297,10 +256,9 @@ button {
 <div id="appearance" class="page">
   <div class="content">
     <div class="theme-box">
-
       <h3>Custom Theme</h3>
 
-      <div style="display:flex; justify-content:space-between;">
+      <div style="display:flex;justify-content:space-between;">
         <span>Enable Custom Theme</span>
         <label class="switch">
           <input type="checkbox" id="themeToggle">
@@ -310,17 +268,14 @@ button {
 
       <div id="themeControls">
         <br>
-        <input type="color" id="colorPicker">
-
+        <input type="color">
         <div class="preview-bar">
           <img src="https://cattymod.app/assets/navbar.png">
         </div>
-
         <br>
         <button class="save">Save</button>
         <button class="reset">Reset</button>
       </div>
-
     </div>
   </div>
 </div>
@@ -335,7 +290,7 @@ button {
   <div class="content">
     <div class="about-wrapper">
       <img class="about-logo" src="https://cattymod.app/assets/cattymod-icon-DpwK82Wr.png">
-      <div class="about-info">
+      <div>
         <div class="about-title">CattyMod Studio</div>
         <input class="about-version" value="v26.5.1">
         <button class="about-btn" onclick="window.open('https://cattymod.app','_blank')">
@@ -350,14 +305,30 @@ button {
 
 <script>
 
-/* NAV */
-function openPage(id, e) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+/* PAGE SWITCHING */
+const navItems = document.querySelectorAll(".nav-item");
 
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  if (e) e.currentTarget.classList.add('active');
+function openPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  navItems.forEach(n => n.classList.remove("active"));
+  document.querySelector(`[data-page="${id}"]`).classList.add("active");
+
+  history.replaceState(null, "", "?page=" + id);
 }
+
+/* CLICK NAV */
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    openPage(item.dataset.page);
+  });
+});
+
+/* URL LOAD FIX */
+const params = new URLSearchParams(location.search);
+const startPage = params.get("page") || "general";
+openPage(startPage);
 
 /* DARK MODE */
 const darkToggle = document.getElementById("darkToggle");
@@ -367,15 +338,15 @@ function applyTheme(mode) {
   localStorage.setItem("tw:theme", mode);
 }
 
+const savedTheme = localStorage.getItem("tw:theme") || "light";
+applyTheme(savedTheme);
+darkToggle.checked = savedTheme === "dark";
+
 darkToggle.addEventListener("change", () => {
   applyTheme(darkToggle.checked ? "dark" : "light");
 });
 
-const saved = localStorage.getItem("tw:theme") || "light";
-applyTheme(saved);
-darkToggle.checked = saved === "dark";
-
-/* ✅ CUSTOM THEME COLLAPSE */
+/* THEME COLLAPSE */
 const themeToggle = document.getElementById("themeToggle");
 const themeControls = document.getElementById("themeControls");
 
@@ -383,19 +354,14 @@ function updateThemeControls() {
   themeControls.classList.toggle("collapsed", !themeToggle.checked);
 }
 
-/* LOAD STATE */
 const enabled = localStorage.getItem("customTheme") === "true";
 themeToggle.checked = enabled;
 updateThemeControls();
 
-/* CHANGE */
 themeToggle.addEventListener("change", () => {
   localStorage.setItem("customTheme", themeToggle.checked);
   updateThemeControls();
 });
-
-/* DEFAULT PAGE */
-document.getElementById("general").classList.add("active");
 
 </script>
 
