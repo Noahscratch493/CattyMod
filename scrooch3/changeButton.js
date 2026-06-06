@@ -103,7 +103,6 @@
                 resolve(value);
             }
 
-            // X always aborts safely
             const x = document.createElement("div");
             x.textContent = "✕";
             x.style = `
@@ -121,12 +120,10 @@
             dialog.appendChild(x);
 
             if (type === "info") {
-                // FINISHED POPUP → ONLY CLOSE BUTTON
                 const closeBtn = btn("Close", "#009CCC");
                 closeBtn.onclick = () => close(true);
                 footer.appendChild(closeBtn);
             } else {
-                // CONFIRM POPUP → YES / NO
                 const yesBtn = btn("Yes", "#009CCC");
                 const noBtn = btn("No", "#FF6680");
 
@@ -205,16 +202,17 @@
                     URL.revokeObjectURL(url);
                 }
 
+                // NEW BEHAVIOUR: open Scratch studio instead of upload page
                 window.open(
-                    "https://cattymod.app/explore/upload",
+                    "https://scratch.mit.edu/studios/51716082",
                     "_blank"
                 );
 
                 setTimeout(() => {
                     makePopup({
                         title: "Finished!",
-                        text: "We opened the upload page in a new tab!",
-                        subtitle: "We can't wait to see your project!",
+                        text: "We opened the Scratch studio in a new tab!",
+                        subtitle: "You can now continue from there.",
                         icon: "https://cattymod.app/assets/dango/blocks.svg",
                         type: "info"
                     });
