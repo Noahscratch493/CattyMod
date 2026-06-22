@@ -6,6 +6,7 @@
 <title>CattyMod - Credits</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 html, body {
   margin: 0;
@@ -20,14 +21,12 @@ body {
   transition: color 0.3s ease;
 }
 
-/* prevent fade when light mode is active */
 body.light {
   background: white;
   color: black;
   transition: none;
 }
 
-/* NORMAL LINKS */
 a {
   text-decoration: none;
   color: #4af;
@@ -37,7 +36,6 @@ body.light a {
   color: #007bc7;
 }
 
-/* PROFILE LINKS */
 .user {
   font-size: 1.3rem;
 }
@@ -48,7 +46,6 @@ main {
   padding: 20px;
 }
 
-/* TOP BANNER */
 header.top-header {
   position: relative;
   width: 100vw;
@@ -61,15 +58,6 @@ header.top-header {
   color: white;
   background: #007bc7;
   box-sizing: border-box;
-}
-
-@keyframes bannerExpand {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
 }
 
 body.light header.top-header {
@@ -138,6 +126,17 @@ body.light .user:hover {
   font-size: 1.3rem;
 }
 
+.lovable {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lovable img {
+  width: 18px;
+  height: 18px;
+}
+
 #themeToggle {
   position: fixed;
   bottom: 20px;
@@ -177,8 +176,6 @@ body.light #themeToggle {
   </div>
 </section>
 
-
-
 <section>
   <h2>Addons</h2>
   <div id="addon-users" class="users"></div>
@@ -188,6 +185,18 @@ body.light #themeToggle {
   <h2>Extensions</h2>
   <p>Some extension developers haven't been listed as I could not find the developer.</p>
   <div id="extension-users" class="users"></div>
+</section>
+
+<!-- LOVABLE UPDATED -->
+<section>
+  <h2>Lovable</h2>
+  <div class="lovable">
+    <img src="https://lovable.dev/img/logo/lovable-logo-icon.png" alt="Lovable">
+    <div>
+      <a href="https://lovable.dev" target="_blank">Lovable</a> was used to generate the Homepage.
+      The homepage design and layout were created using Lovable.
+    </div>
+  </div>
 </section>
 
 <section>
@@ -249,18 +258,13 @@ body.light #themeToggle {
   <p>More than 100 people have helped translate CattyMod and its addons — far more than we could list here.</p>
 </section>
 
-<!-- NEW SECTION -->
+<!-- DANGO -->
 <section>
   <h2>Creators of Dango</h2>
   <div id="dango-users" class="users"></div>
 
-  <p>
-    <strong>littlebunny06</strong> created the original artwork of Dango.
-  </p>
-  <p>
-    <strong>Noahscratch493</strong> recoloured the artwork, adapted it into CattyMod,
-    and made it the official mascot.
-  </p>
+  <p><strong>littlebunny06</strong> created the original artwork of Dango.</p>
+  <p><strong>Noahscratch493</strong> recoloured the artwork, adapted it into CattyMod, and made it the official mascot.</p>
 </section>
 
 <section>
@@ -331,7 +335,6 @@ body.light #themeToggle {
     { github:'FreshPenguin112', display:'FreshPenguin112', avatar:'https://github.com/FreshPenguin112.png' }
   ];
 
-  // NEW: Dango creators
   const dangoUsers = [
     { userId:'15572609', username:'littlebunny06' },
     { userId:'111812798', username:'Noahscratch493' }
@@ -339,7 +342,7 @@ body.light #themeToggle {
 
   function shuffle(a){
     for(let i=a.length-1;i>0;i--){
-      const r=Math.floor(Math.random()*(i+1));
+      const r=Math.floor(Math.random()* (i+1));
       [a[i],a[r]]=[a[r],a[i]];
     }
   }
@@ -370,8 +373,6 @@ body.light #themeToggle {
     render("addon-users", addonUsers);
     render("extension-users", extensionUsers);
     render("penguinmod-users", penguinModUsers, true);
-
-    // Dango creators (random order each visit)
     render("dango-users", dangoUsers);
   });
 
