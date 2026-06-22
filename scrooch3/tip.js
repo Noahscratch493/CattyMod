@@ -3,12 +3,12 @@
   let d = null;
   const tips = [
     "Tip: Never Give Up!",
-    "Tip: Press Share to let the world see your project!",
     "Fact: CattyMod was originally called Automate.",
-    "Fact: CattyMod is made by only 1 Developer!",
+    "Fact: CattyMod is edited by only 1 Developer!",
     "Tip: Go to the bottom of the page to see cool projects!",
     "Fact: CattyMod has exactly 650 blocks!",
     "Tip: Use Extensions to add abilities to your project!",
+    "Tip: Replace scratch.mit.edu with cattymod.app in a project URL to open it in CattyMod.",
     "Fact: There are exactly 8 Facts and Tips including this one!"
   ];
   let used = [];
