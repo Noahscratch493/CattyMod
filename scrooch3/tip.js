@@ -8,7 +8,7 @@
     "Tip: Go to the bottom of the page to see cool projects!",
     "Fact: CattyMod has exactly 650 blocks!",
     "Tip: Use Extensions to add abilities to your project!",
-    "Tip: Replace scratch.mit.edu with cattymod.app in a project URL to open it in CattyMod.",
+    "Tip: Replace scratch.mit.edu with cattymod.app in a project URL to open it here.",
     "Fact: There are exactly 8 Facts and Tips including this one!"
   ];
   let used = [];
