@@ -14,15 +14,18 @@
             // Only run on cattymod.app (and subdomains)
             if (!host.includes("cattymod.app")) return;
 
+            // Don't redirect the dedicated 404 page
+            if (path === "/404") return;
+
             let match = null;
 
-            // /123
-            if (/^\/\d+$/.test(path)) {
-                match = path.replace("/", "");
+            // /123 or /123/
+            if (/^\/\d+\/?$/.test(path)) {
+                match = path.replace(/\//g, "");
             }
 
-            // /projects/123
-            const projectMatch = path.match(/^\/projects\/(\d+)$/);
+            // /projects/123 or /projects/123/
+            const projectMatch = path.match(/^\/projects\/(\d+)\/?$/);
             if (projectMatch) {
                 match = projectMatch[1];
             }
