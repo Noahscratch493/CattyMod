@@ -1,60 +1,397 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google" value="notranslate">
-    <meta name="description" content="A little Scratch Mod :D" />
-    <title>CattyMod</title>
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">        
-      <link rel="manifest" href="manifest.webmanifest">
-    <style>
-      #splash {
-        position: absolute; width: 100%; height: 100%; top: 0; left: 0;
-        display: flex; align-items: center; justify-content: center;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #ff4c4c;
-      }
-      .tw-loaded #splash, #splash-content { display: none; }
-      #splash[splash-theme="dark"] { background-color: #333; color: #fff; }
-      #splash-spinner:after {
-        content: " "; display: block; width: 64px; height: 64px;
-        border-radius: 50%; border: 6px solid; border-color: currentColor transparent currentColor transparent;
-        animation: splash-spinner 1.2s linear infinite;
-      }
-      @keyframes splash-spinner {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    </style>
-    <link rel="dns-prefetch" href="https://trampoline.turbowarp.org/">
-    <link rel="dns-prefetch" href="https://projects.scratch.mit.edu/">
-    <link rel="dns-prefetch" href="https://assets.scratch.mit.edu/">
-  </head>
-  <body>
-    <div id="splash" aria-hidden="true">
-      <noscript>
-        <h1>Enable JavaScript</h1>
-      </noscript>
-      <div id="splash-content">
-        <div id="splash-spinner"></div>
-     </div>
+<html lang="in">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CattyMod - Credits</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #000;
+  color: #eee;
+  transition: color 0.3s ease;
+}
+
+/* prevent fade when light mode is active */
+body.light {
+  background: white;
+  color: black;
+  transition: none;
+}
+
+/* NORMAL LINKS */
+a {
+  text-decoration: none;
+  color: #4af;
+}
+
+body.light a {
+  color: #007bc7;
+}
+
+/* PROFILE LINKS */
+.user {
+  font-size: 1.3rem;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* TOP BANNER */
+header.top-header {
+  position: relative;
+  width: 100vw;
+  margin: 0;
+  margin-left: calc(50% - 50vw);
+  text-align: center;
+  padding: 30px 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background: #007bc7;
+  box-sizing: border-box;
+}
+
+@keyframes bannerExpand {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+body.light header.top-header {
+  background: #00C3FF;
+  color: black;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.user:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+body.light .user:hover {
+  background: #eee;
+}
+
+.user img {
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
+
+.based-on {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.based-on-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.based-on-item img {
+  height: 40px;
+}
+
+.arrow {
+  font-size: 1.3rem;
+}
+
+#themeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: #007bc7;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+}
+
+body.light #themeToggle {
+  background: #00C3FF;
+  color: black;
+}
+</style>
+</head>
+
+<body>
+
+<header class="top-header">CattyMod Credits</header>
+
+<main>
+
+<section>
+  <h2>Developers</h2>
+  <div class="users">
+    <a class="user" href="https://me.cattymod.app">
+      <img src="https://trampoline.turbowarp.org/avatars/111812798">
+      <div>Noahscratch493</div>
+    </a>
+  </div>
+</section>
+
+
+
+<section>
+  <h2>Addons</h2>
+  <div id="addon-users" class="users"></div>
+</section>
+
+<section>
+  <h2>Extensions</h2>
+  <p>Some extension developers haven't been listed as I could not find the developer.</p>
+  <div id="extension-users" class="users"></div>
+</section>
+
+<section>
+  <h2>Based On</h2>
+
+  <div class="based-on">
+    <div class="based-on-item">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Scratch_S.svg/500px-Scratch_S.svg.png">
+      <div>Scratch</div>
     </div>
-    <script>
-      (function() {
-        document.querySelector('#splash-content').style.display = 'block';
-        
-        try {var localTheme = localStorage.getItem('tw:theme');} catch (e) {}
-        if (localTheme ? localTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches) document.querySelector('#splash').setAttribute('splash-theme', 'dark');
-        
-      })();
-    </script>
-    <div id="app"></div>
-  <script src="js/vendors~addon-settings~credits~editor~embed~fullscreen~player.js"></script><script src="js/vendors~editor~embed~fullscreen~player.js"></script><script src="js/addon-settings~addons~editor~fullscreen~player.js"></script><script src="js/editor~embed~fullscreen~player.js"></script><script src="js/player.js"></script></body>
-<script src="scrooch3/changeButton.js"></script>
-<script src="scrooch3/cookieTheme.js"></script>
-<script src="scrooch3/home.js"></script>
-<script src="scrooch3/default.js"></script>
-<script src="scrooch3/checkStop.js"></script>
-<script src="scrooch3/tip.js"></script>
-<script src="scrooch3/tidyui.js"></script>
+
+    <span class="arrow">→</span>
+
+    <div class="based-on-item">
+      <img src="https://extensions.turbowarp.org/turbowarp.svg">
+      <div>TurboWarp</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="based-on-item">
+      <img src="https://penguinmod.com/favicon.ico">
+      <div>PenguinMod</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="based-on-item">
+      <img src="https://avatars.githubusercontent.com/u/221273265?s=200&v=4">
+      <div>Scrooch 3 Framework</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="based-on-item">
+      <img src="https://cattymod.app/images/apple-touch-icon.png">
+      <div>CattyMod</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>GitHub Pages</h2>
+  <p>CattyMod is hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.</p>
+</section>
+
+<section>
+  <h2>Scratch</h2>
+  <p>
+    CattyMod is based on the work of the
+    <a href="https://scratch.mit.edu/credits" target="_blank">Scratch contributors</a>,
+    but is not endorsed by Scratch.
+  </p>
+  <p><a href="https://scratch.mit.edu/donate" target="_blank">Donate to support Scratch</a>.</p>
+</section>
+
+<section>
+  <h2>Translators</h2>
+  <p>More than 100 people have helped translate CattyMod and its addons — far more than we could list here.</p>
+</section>
+
+<!-- NEW SECTION -->
+<section>
+  <h2>Creators of Dango</h2>
+  <div id="dango-users" class="users"></div>
+
+  <p>
+    <strong>littlebunny06</strong> created the original artwork of Dango.
+  </p>
+  <p>
+    <strong>Noahscratch493</strong> recoloured the artwork, adapted it into CattyMod,
+    and made it the official mascot.
+  </p>
+</section>
+
+<section>
+  <h2>Inspiration</h2>
+  <p>PenguinMod's gh-pages branch inspired me to create CattyMod!</p>
+  <p>Snail IDE's homepage inspired me to put a video of projects on the homepage.</p>
+</section>
+
+<section>
+  <h2>PenguinMod</h2>
+  <p>This is a list of PenguinMod developers from the version used in CattyMod:</p>
+  <div id="penguinmod-users" class="users"></div>
+</section>
+
+<section>
+  <h2>And finally... You!</h2>
+  <p>For supporting my Scratch mod by just using it!</p>
+</section>
+
+<hr>
+
+<section>
+  <p><i>Contributors are randomized each visit.</i></p>
+</section>
+
+</main>
+
+<button id="themeToggle"><i id="icon" class="fa-solid fa-moon"></i></button>
+
+<script>
+(function(){
+
+  const addonUsers = [
+    { userId:'34018398', username:'Jeffalo' },
+    { userId:'64184234', username:'ErrorGamer2000' },
+    { userId:'41616512', username:'pufferfish101007' },
+    { userId:'61409215', username:'TheColaber' },
+    { userId:'1882674', username:'griffpatch' },
+    { userId:'10817178', username:'apple502j' },
+    { userId:'16947341', username:'--Explosion--' },
+    { userId:'14880401', username:'Sheep_maker' },
+    { userId:'9981676', username:'NitroCipher' },
+    { userId:'2561680', username:'lisa_wolfgang' },
+    { userId:'60000111', username:'GDUcrash' },
+    { userId:'4648559', username:'World_Languages' },
+    { userId:'17340565', username:'GarboMuffin' },
+    { userId:'5354974', username:'Chrome_Cat' },
+    { userId:'34455896', username:'summerscar' },
+    { userId:'55742784', username:'RedGuy7' },
+    { userId:'9636514', username:'Tacodude7729' },
+    { userId:'14792872', username:'_nix' },
+    { userId:'30323614', username:'BarelySmooth' },
+    { userId:'64691048', username:'CST1229' }
+  ];
+
+  const extensionUsers = [
+    { userId:'119198', username:'scratchteam' },
+    { userId:'17340565', username:'GarboMuffin' },
+    { userId:'1882674', username:'griffpatch' }
+  ];
+
+  const penguinModUsers = [
+    { github:'RedMan13', display:'godslayerakp', avatar:'https://github.com/RedMan13.png' },
+    { github:'jwklong', display:'jwklong', avatar:'https://github.com/jwklong.png' },
+    { github:'JeremyGamer13', display:'JeremyGamer13', avatar:'https://github.com/JeremyGamer13.png' },
+    { github:'Ianyourgod', display:'Ianyourgod', avatar:'https://github.com/Ianyourgod.png' },
+    { github:'CST1229', display:'CST1229', avatar:'https://github.com/cst1229.png' },
+    { github:'FreshPenguin112', display:'FreshPenguin112', avatar:'https://github.com/FreshPenguin112.png' }
+  ];
+
+  // NEW: Dango creators
+  const dangoUsers = [
+    { userId:'15572609', username:'littlebunny06' },
+    { userId:'111812798', username:'Noahscratch493' }
+  ];
+
+  function shuffle(a){
+    for(let i=a.length-1;i>0;i--){
+      const r=Math.floor(Math.random()*(i+1));
+      [a[i],a[r]]=[a[r],a[i]];
+    }
+  }
+
+  function render(id,list,gh=false){
+    const c=document.getElementById(id);
+    if(!c) return;
+    shuffle(list);
+
+    list.forEach(u=>{
+      const a=document.createElement("a");
+      a.className="user";
+      a.target="_blank";
+
+      if(gh){
+        a.href=`https://github.com/${u.github}`;
+        a.innerHTML=`<img src="${u.avatar}"><div>${u.display}</div>`;
+      } else {
+        a.href=`https://scratch.mit.edu/users/${u.username}/`;
+        a.innerHTML=`<img src="https://trampoline.turbowarp.org/avatars/${u.userId}"><div>${u.username}</div>`;
+      }
+
+      c.appendChild(a);
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", ()=>{
+    render("addon-users", addonUsers);
+    render("extension-users", extensionUsers);
+    render("penguinmod-users", penguinModUsers, true);
+
+    // Dango creators (random order each visit)
+    render("dango-users", dangoUsers);
+  });
+
+})();
+
+const btn=document.getElementById("themeToggle");
+const icon=document.getElementById("icon");
+
+function setTheme(m){
+  document.body.classList.toggle("light", m==="light");
+  icon.className = m==="light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+  localStorage.setItem("theme",m);
+}
+
+setTheme(localStorage.getItem("theme")||"dark");
+
+btn.onclick=()=>{
+  setTheme(document.body.classList.contains("light")?"dark":"light");
+};
+</script>
+
+</body>
 </html>
