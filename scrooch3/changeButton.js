@@ -160,7 +160,7 @@
 
                 const res = await makePopup({
                     title: "Leaving CattyMod",
-                    text: "You're leaving CattyMod.",
+                    text: "You're leaving CattyMod to visit Scratch.",
                     subtitle:
                         "Tip: Replace scratch.mit.edu with cattymod.app in project URLs to use CattyMod.",
                     icon: "https://cattymod.app/assets/dango/blocks.svg",
