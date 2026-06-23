@@ -1,113 +1,92 @@
-(async () => {
-    const DEFAULT_SB3_URL = "https://cattymod.app/assets/default.sb3";
-    const ERROR_SB3_URL = "https://cattymod.app/assets/invalid-projecturl.sb3";
+// IndexedDB helper
 
-    // Wait for VM helper
-    const waitForVM = () => new Promise(resolve => {
-        if (window.vm) return resolve();
-        const interval = setInterval(() => {
-            if (window.vm) {
-                clearInterval(interval);
-                resolve();
-            }
-        }, 100);
+function getCustomDefaultProject() {
+    return new Promise((resolve) => {
+
+        const enabled =
+            document.cookie
+                .split("; ")
+                .find(row => row.startsWith("DefaultProjectEnabled="))
+                ?.split("=")[1] === "true";
+
+        if (!enabled) {
+            resolve(null);
+            return;
+        }
+
+        const request = indexedDB.open("CattyModSettings", 1);
+
+        request.onerror = () => resolve(null);
+
+        request.onsuccess = () => {
+
+            const db = request.result;
+
+            const tx = db.transaction(
+                "settings",
+                "readonly"
+            );
+
+            const store =
+                tx.objectStore("settings");
+
+            const getReq =
+                store.get("defaultProject");
+
+            getReq.onsuccess = () => {
+                resolve(getReq.result || null);
+            };
+
+            getReq.onerror = () => {
+                resolve(null);
+            };
+        };
     });
+}
 
-    // Load project from URL
-    async function loadProjectFromURL(url) {
-        await waitForVM();
+async function loadDefaultProject() {
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to fetch SB3 file: ${response.status}`);
+    await waitForVM();
 
-        const arrayBuffer = await response.arrayBuffer();
-        await window.vm.loadProject(arrayBuffer);
+    try {
 
-        console.log(`✅ Project loaded from ${url}`);
-    }
+        const customProject =
+            await getCustomDefaultProject();
 
-    async function loadDefaultProject() {
-        return loadProjectFromURL(DEFAULT_SB3_URL);
-    }
+        if (customProject) {
 
-    async function loadErrorProject(reason) {
-        console.warn("⚠️ Loading error project:", reason);
-        return loadProjectFromURL(ERROR_SB3_URL);
-    }
+            console.log(
+                "📦 Loading custom default project..."
+            );
 
-    // Hook "New" button
-    if (!window.__customNewHookInstalled) {
-        window.__customNewHookInstalled = true;
+            const arrayBuffer =
+                await customProject.arrayBuffer();
 
-        document.addEventListener("click", function (e) {
-            const li = e.target.closest('li.menu_menu-item_3EwYA.menu_hoverable_3u9dt.menu_menu-section_2U-v6');
-            if (!li) return;
+            await window.vm.loadProject(
+                arrayBuffer
+            );
 
-            const span = li.querySelector("span");
-            if (!span || span.textContent.trim() !== "New") return;
-
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            e.stopPropagation();
-
-            const ok = confirm("Replace contents of the current project?");
-            if (!ok) return;
-
-            setTimeout(() => {
-                loadDefaultProject();
-            }, 400);
-        }, true);
-    }
-
-    // Page load logic
-    window.addEventListener("load", async () => {
-        const params = new URLSearchParams(window.location.search);
-        const projectSB3 = params.get("projectsb3");
-        const projectURL = params.get("project_url");
-
-        const hash = window.location.hash;
-        const hasNumericHash = /^#\d+$/.test(hash);
-
-        // ⏭ Skip if numeric hash
-        if (hasNumericHash) {
-            console.log("⏭ Skipping load (numeric hash detected)");
-            return;
-        }
-
-        // ⏭ Skip if built-in project_url is used
-        if (projectURL) {
-            console.log("⏭ Skipping default (project_url detected)");
-            return;
-        }
-
-        // 🔗 Handle projectsb3
-        if (projectSB3) {
-            let url;
-
-            try {
-                url = new URL(projectSB3, window.location.origin);
-            } catch {
-                await loadErrorProject("Invalid URL format");
-                return;
-            }
-
-            if (!["http:", "https:"].includes(url.protocol)) {
-                await loadErrorProject("Invalid protocol");
-                return;
-            }
-
-            try {
-                console.log("🔗 Loading project from projectsb3 param...");
-                await loadProjectFromURL(url.href);
-            } catch {
-                await loadErrorProject("Fetch failed");
-            }
+            console.log(
+                "✅ Custom default project loaded"
+            );
 
             return;
         }
 
-        // 📦 Default fallback
-        await loadDefaultProject();
-    });
+    } catch (err) {
 
-})();
+        console.warn(
+            "Failed to load custom default project:",
+            err
+        );
+
+    }
+
+    console.log(
+        "📦 Loading built-in default project..."
+    );
+
+    return loadProjectFromURL(
+        DEFAULT_SB3_URL
+    );
+}
