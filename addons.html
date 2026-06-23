@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CattyMod Settings</title>
+
+<style>
+:root{
+    --bg:#121212;
+    --sidebar:#1a1a1a;
+    --card:#202020;
+    --border:#2f2f2f;
+    --text:#ffffff;
+    --sub:#a8a8a8;
+    --accent:#009CCC;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    background:var(--sidebar);
+    border-right:1px solid var(--border);
+    padding:20px;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+.logo span{
+    color:var(--accent);
+}
+
+.nav-btn{
+    width:100%;
+    padding:14px;
+    margin-bottom:10px;
+    background:none;
+    border:none;
+    border-radius:12px;
+    color:white;
+    text-align:left;
+    cursor:pointer;
+    transition:.2s;
+    font-size:15px;
+}
+
+.nav-btn:hover{
+    background:#2a2a2a;
+}
+
+.nav-btn.active{
+    background:var(--accent);
+}
+
+.external-icon{
+    float:right;
+}
+
+/* MAIN */
+
+.content{
+    flex:1;
+    padding:35px;
+    overflow:auto;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:20px;
+}
+
+/* THEME */
+
+input[type=color]{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:10px;
+    background:none;
+    cursor:pointer;
+}
+
+.preview{
+    margin-top:20px;
+    height:50px;
+    border-radius:10px;
+    background:#009CCC;
+    position:relative;
+    overflow:hidden;
+}
+
+.preview::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:url("https://cattymod.app/assets/navbar.png");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+.button-row{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+button.action{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+    font-size:15px;
+}
+
+.save{
+    background:#3fae4a;
+}
+
+.reset{
+    background:#d64242;
+}
+
+/* SWITCH */
+
+.switch-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.switch{
+    position:relative;
+    width:55px;
+    height:30px;
+}
+
+.switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    inset:0;
+    background:#444;
+    border-radius:50px;
+    transition:.25s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    height:22px;
+    width:22px;
+    left:4px;
+    bottom:4px;
+    background:white;
+    border-radius:50%;
+    transition:.25s;
+}
+
+input:checked + .slider{
+    background:var(--accent);
+}
+
+input:checked + .slider:before{
+    transform:translateX(25px);
+}
+
+.expandable{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+}
+
+.expandable.show{
+    max-height:500px;
+}
+
+.upload-box{
+    margin-top:15px;
+    padding:20px;
+    border:2px dashed #555;
+    border-radius:12px;
+}
+
+input[type=file]{
+    width:100%;
+    color:white;
+}
+
+.info{
+    color:var(--sub);
+    margin-top:10px;
+}
+
+.saved-project{
+    margin-top:15px;
+    color:#6ddf6d;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        Catty<span>Mod</span>
+    </div>
+
+    <button class="nav-btn active" onclick="showPage('themes',this)">
+        🎨 Themes
+    </button>
+
+    <button class="nav-btn" onclick="showPage('project',this)">
+        📦 Default Project
+    </button>
+
+    <button class="nav-btn" onclick="window.open('https://studio.cattymod.app/addons.html','_blank')">
+        🧩 Addons
+        <span class="external-icon">↗</span>
+    </button>
+
+</div>
+
+<div class="content">
+
+    <!-- THEMES -->
+
+    <div class="page active" id="themes">
+
+        <h1>Theme Settings</h1>
+
+        <div class="card">
+
+            <label>Navbar & Custom Button Color</label>
+
+            <br><br>
+
+            <input type="color" id="navbarColor">
+
+            <div class="button-row">
+                <button class="action save" id="saveTheme">
+                    Save Theme
+                </button>
+
+                <button class="action reset" id="resetTheme">
+                    Reset Theme
+                </button>
+            </div>
+
+            <div class="preview" id="preview"></div>
+
+        </div>
+
+    </div>
+
+    <!-- DEFAULT PROJECT -->
+
+    <div class="page" id="project">
+
+        <h1>Default Project</h1>
+
+        <div class="card">
+
+            <div class="switch-row">
+                <div>
+                    <strong>Enable Default Project</strong>
+                    <div class="info">
+                        Automatically load a project when CattyMod starts.
+                    </div>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" id="enableProject">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="expandable" id="projectArea">
+
+                <div class="upload-box">
+
+                    <input type="file" id="projectFile" accept=".sb3">
+
+                    <div class="info">
+                        Select an SB3 file.
+                    </div>
+
+                    <div class="saved-project" id="savedProject"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* Navigation */
+
+function showPage(id, button){
+
+    document.querySelectorAll('.page')
+    .forEach(p=>p.classList.remove('active'));
+
+    document.querySelectorAll('.nav-btn')
+    .forEach(b=>b.classList.remove('active'));
+
+    document.getElementById(id).classList.add('active');
+    button.classList.add('active');
+}
+
+/* Cookies */
+
+function setCookie(name,value,days){
+    const d=new Date();
+    d.setTime(d.getTime()+(days*24*60*60*1000));
+
+    document.cookie=
+    name+"="+encodeURIComponent(value)+
+    ";expires="+d.toUTCString()+
+    ";path=/";
+}
+
+function getCookie(name){
+    const value=`; ${document.cookie}`;
+    const parts=value.split(`; ${name}=`);
+    if(parts.length===2){
+        return decodeURIComponent(
+            parts.pop().split(';').shift()
+        );
+    }
+    return null;
+}
+
+function deleteCookie(name){
+    document.cookie=
+    name+'=; Max-Age=-99999999; path=/';
+}
+
+/* Theme System */
+
+const colorInput=document.getElementById("navbarColor");
+const preview=document.getElementById("preview");
+
+const savedColor=getCookie("NavColour");
+
+if(savedColor){
+    colorInput.value=savedColor;
+    preview.style.background=savedColor;
+}
+else{
+    colorInput.value="#009CCC";
+}
+
+colorInput.addEventListener("input",()=>{
+    preview.style.background=colorInput.value;
+});
+
+document.getElementById("saveTheme")
+.addEventListener("click",()=>{
+
+    setCookie(
+        "NavColour",
+        colorInput.value,
+        365
+    );
+
+    alert("Theme saved!");
+});
+
+document.getElementById("resetTheme")
+.addEventListener("click",()=>{
+
+    deleteCookie("NavColour");
+
+    colorInput.value="#009CCC";
+    preview.style.background="#009CCC";
+
+    alert("Theme reset!");
+});
+
+/* Default Project */
+
+const toggle=document.getElementById("enableProject");
+const area=document.getElementById("projectArea");
+const fileInput=document.getElementById("projectFile");
+const savedProject=document.getElementById("savedProject");
+
+if(getCookie("DefaultProjectEnabled")==="true"){
+    toggle.checked=true;
+    area.classList.add("show");
+}
+
+toggle.addEventListener("change",()=>{
+
+    setCookie(
+        "DefaultProjectEnabled",
+        toggle.checked,
+        365
+    );
+
+    area.classList.toggle(
+        "show",
+        toggle.checked
+    );
+});
+
+const currentProject=getCookie("DefaultProjectName");
+
+if(currentProject){
+    savedProject.textContent=
+    "Current project: "+currentProject;
+}
+
+fileInput.addEventListener("change",()=>{
+
+    if(!fileInput.files[0]) return;
+
+    const file=fileInput.files[0];
+
+    setCookie(
+        "DefaultProjectName",
+        file.name,
+        365
+    );
+
+    savedProject.textContent=
+    "Current project: "+file.name;
+
+    alert("Default project saved!");
+});
+
+</script>
+
+</body>
+</html>
