@@ -1,140 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CattyMod - Privacy Policy</title>
-  <style>
-    body {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: white; color: black;
-    }
-    body[splash-theme="dark"] {
-      background: #111; color: #eee;
-    }
-    a { text-decoration: none; color: #007bc7; }
-    body[splash-theme="dark"] a { color: #4af; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CattyMod Privacy Policy</title>
+<link rel="icon" href="https://cattymod.github.io/images/apple-touch-icon.png">
 
-    main { max-width: 900px; margin: auto; padding: 20px; }
+<style>
+:root {
+    --accent: #4f46e5;
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+}
 
-    header.top-header {
-      text-align: center;
-      padding: 30px 0;
-      color: white;
-      background-color: #007bc7;
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 40px;
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f172a;
+        --card: #111827;
+        --text: #f9fafb;
+        --muted: #9ca3af;
+        --border: #374151;
     }
+}
 
-    section { margin-bottom: 30px; }
-    section h2 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-      color: inherit;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    .toggle-buttons {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .toggle-buttons button {
-      font-size: 1rem;
-      padding: 8px 16px;
-      margin: 0 5px;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      background: #007bc7;
-      color: white;
-      transition: background .2s;
-    }
-    .toggle-buttons button.active { background: #005a9c; }
-    body[splash-theme="dark"] .toggle-buttons button { background: #4af; color: black; }
-    body[splash-theme="dark"] .toggle-buttons button.active { background: #1a8fff; }
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(180deg, var(--bg), #dbeafe10);
+    color: var(--text);
+    line-height: 1.7;
+}
 
-    .policy { display: none; }
-    .policy.active { display: block; }
+.container {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 20px;
+}
 
-    .normal-policy p { margin-bottom: 1em; }
-  </style>
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.08);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 12px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+.updated {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+section {
+    margin-top: 32px;
+}
+
+h2 {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+p,
+li {
+    color: var(--text);
+}
+
+ul {
+    padding-left: 22px;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.notice {
+    background: rgba(79,70,229,.08);
+    border-left: 4px solid var(--accent);
+    padding: 16px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--muted);
+}
+</style>
 </head>
 
 <body>
-<script>
-  (function() {
-    try { var localTheme = localStorage.getItem('tw:theme'); } catch (e) {}
-    if (localTheme ? localTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.setAttribute('splash-theme', 'dark');
-    }
-  })();
-</script>
 
-<main>
-  <header class="top-header">Privacy Policy</header>
+<div class="container">
+<div class="card">
 
-  <div class="toggle-buttons">
-    <button id="shortBtn" class="active">Short</button>
-    <button id="longBtn">Long</button>
-  </div>
+<header>
+    <img
+        class="logo"
+        src="https://cattymod.github.io/images/apple-touch-icon.png"
+        alt="CattyMod Logo"
+    >
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: June 2026</p>
+</header>
 
-  <!-- Friendly short policy -->
-  <section id="shortPolicy" class="policy active">
-    <p>Hey there! Here's the deal with CattyMod and your info:</p>
+<div class="notice">
+    CattyMod is designed with privacy in mind. We do not collect personal
+    information from users.
+</div>
 
-    <p>We use <strong>Lovable</strong> to see how many people use CattyMod. This helps the site work better. You can't turn this off, but we only track basic usage—nothing personal.</p>
+<section>
+    <h2>What CattyMod Does</h2>
+    <p>
+        CattyMod allows users to load Scratch projects using project URLs
+        or <code>.sb3</code> files and provides additional features and
+        compatibility enhancements.
+    </p>
+</section>
 
-    <p>If you use cloud variables, <strong>TurboWarp's servers</strong> may temporarily log your username and project ID for up to 14 days. These variables are public while people are connected, so anything you put in them can be seen by others. Other cloud servers aren’t managed by us, so we can’t control what happens there.</p>
+<section>
+    <h2>Information We Collect</h2>
+    <ul>
+        <li>CattyMod does not collect names, email addresses, locations, or other personal information.</li>
+        <li>CattyMod does not use analytics, advertising trackers, or profiling systems.</li>
+        <li>CattyMod does not store user-created projects on its own servers.</li>
+    </ul>
+</section>
 
-    <p>CattyMod has a community feature for sharing projects, but it’s totally optional. We also recommend not putting any personal info anywhere on CattyMod, just to be safe.</p>
+<section>
+    <h2>Scratch Projects</h2>
+    <p>
+        When loading projects from Scratch, requests may be made directly to
+        Scratch services. In those cases, Scratch's own privacy practices apply.
+    </p>
 
-    <p>Good news: <strong>no ads!</strong> 🎉</p>
+    <p>
+        Learn more:
+        <a href="https://mitscratch.freshdesk.com/en/support/solutions/articles/4000219339-scratch-privacy-policy"
+           target="_blank"
+           rel="noopener noreferrer">
+            Scratch Privacy Policy
+        </a>
+    </p>
+</section>
 
-    <p>Projects from <strong>Scratch</strong> follow <a href="https://mitscratch.freshdesk.com/en/support/solutions/articles/4000219339-privacy-policy" target="_blank">Scratch's Privacy Policy</a>. Projects from the <strong>Explore Page</strong> follow <a href="https://supabase.com/privacy" target="_blank">Supabase's Privacy Policy</a>.</p>
+<section>
+    <h2>Cloud Variables</h2>
+    <p>
+        Projects using cloud variables communicate with TurboWarp's cloud servers.
+    </p>
 
-    <p>Thanks for using CattyMod! 💖</p>
-  </section>
+    <ul>
+        <li>Your inputted username may be transmitted when required by a project.</li>
+        <li>Project IDs may be temporarily processed to support cloud functionality.</li>
+        <li>CattyMod does not store this information.</li>
+    </ul>
+</section>
 
-  <!-- Normal long privacy policy -->
-  <section id="longPolicy" class="policy normal-policy">
-    <p><strong>Introduction:</strong> This Privacy Policy explains how CattyMod collects, uses, and shares information. By using CattyMod, you agree to the practices described below.</p>
+<section>
+    <h2>Third-Party Services</h2>
+    <p>
+        Some projects, custom extensions, or packaged applications may connect
+        to third-party websites, APIs, or services.
+    </p>
 
-    <p><strong>Information Collection:</strong> CattyMod tracks how many users use this site through Lovable. This information is required for functionality and cannot be disabled.</p>
+    <p>
+        CattyMod does not control these services and is not responsible for
+        their privacy practices, content, or availability.
+    </p>
+</section>
 
-    <p><strong>Cloud Variables:</strong> When you use cloud variables, TurboWarp's Cloud Servers may log your username and project ID for up to 14 days. These values are publicly accessible to anyone connected simultaneously. Data on other cloud servers is outside our control.</p>
+<section>
+    <h2>Changes to This Policy</h2>
+    <p>
+        We may update this Privacy Policy from time to time. Any changes
+        will be posted on this page with an updated revision date.
+    </p>
+</section>
 
-    <p><strong>Community Features:</strong> CattyMod provides optional community features that allow you to share projects. Participation is voluntary. Avoid posting personal information in projects or variables.</p>
+<footer>
+    Thank you for using CattyMod ❤️
+</footer>
 
-    <p><strong>Advertisements:</strong> CattyMod does not display advertisements.</p>
+</div>
+</div>
 
-    <p><strong>Third-Party Policies:</strong> Projects sourced from Scratch are governed by <a href="https://mitscratch.freshdesk.com/en/support/solutions/articles/4000219339-privacy-policy" target="_blank">Scratch's Privacy Policy</a>. Projects sourced from the CattyMod Explore Page are governed by <a href="https://supabase.com/privacy" target="_blank">Supabase's Privacy Policy</a>.</p>
-
-    <p><strong>Data Security:</strong> While CattyMod strives to maintain secure systems, the platform cannot guarantee the security of all information shared via cloud variables or community features.</p>
-
-    <p><strong>Changes to This Policy:</strong> CattyMod may update this Privacy Policy periodically. Any changes will be posted on this page.</p>
-  </section>
-</main>
-
-<script>
-  const shortBtn = document.getElementById('shortBtn');
-  const longBtn = document.getElementById('longBtn');
-  const shortPolicy = document.getElementById('shortPolicy');
-  const longPolicy = document.getElementById('longPolicy');
-
-  shortBtn.addEventListener('click', () => {
-    shortBtn.classList.add('active');
-    longBtn.classList.remove('active');
-    shortPolicy.classList.add('active');
-    longPolicy.classList.remove('active');
-  });
-
-  longBtn.addEventListener('click', () => {
-    longBtn.classList.add('active');
-    shortBtn.classList.remove('active');
-    longPolicy.classList.add('active');
-    shortPolicy.classList.remove('active');
-  });
-</script>
 </body>
 </html>
