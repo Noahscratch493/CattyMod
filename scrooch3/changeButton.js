@@ -144,7 +144,7 @@
         );
 
         links.forEach(link => {
-            link.href = "https://scratch.mit.edu/explore";
+            link.href = "https://scratch.mit.edu/search/projects";
 
             const span = link.querySelector(".button_content_3jdgj span");
             if (span) span.textContent = "Explore";
@@ -168,7 +168,7 @@
                 });
 
                 if (res === true) {
-                    window.location.href = "https://scratch.mit.edu/explore";
+                    window.location.href = "https://scratch.mit.edu/search/projects";
                 }
             });
         });
