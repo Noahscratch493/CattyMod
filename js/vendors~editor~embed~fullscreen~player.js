@@ -32178,7 +32178,7 @@ __webpack_require__.r(__webpack_exports__);
     "gui.menuBar.remix": "Remix",
     "gui.menuBar.new": "New",
     "gui.menuBar.file": "File",
-    "gui.menuBar.downloadToComputer": "Save to your computer",
+    "gui.menuBar.downloadToComputer": "Save to your device",
     "gui.menuBar.edit": "Edit",
     "gui.menuBar.turboModeOff": "Turn off Turbo Mode",
     "gui.menuBar.turboModeOn": "Turn on Turbo Mode",
