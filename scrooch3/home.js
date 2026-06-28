@@ -43,7 +43,7 @@ function addScratch2Option() {
       if (span && span.textContent.includes('Change Username')) {
 
         const clone = li.cloneNode(true);
-        clone.querySelector('span').textContent = 'Open Scratch 2';
+        clone.querySelector('span').textContent = 'Open Scratch 2 Legacy';
 
         clone.style.cursor = 'pointer';
         clone.addEventListener('click', e => {
