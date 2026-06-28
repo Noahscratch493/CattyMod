@@ -1,7 +1,7 @@
 {
   "short_name": "CattyMod",
   "name": "CattyMod",
-  "description": "A suite of tools",
+  "description": "Run Scratch projects faster",
   "icons": [
     {
       "src": "images/192.png",
@@ -14,7 +14,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "https://cattymod.app/editor?",
+  "start_url": "https://studio.cattymod.app",
   "background_color": "#333333",
   "display": "standalone",
   "theme_color": "#333333"
