@@ -2214,7 +2214,7 @@ StudioView.THUMBNAIL_SRC = 'https://trampoline.turbowarp.org/thumbnails/$id?widt
 
 // The URL for project pages.
 // $id is replaced with the project ID.
-StudioView.PROJECT_PAGE = 'https://turbowarp.org/$id';
+StudioView.PROJECT_PAGE = 'https://studio.cattymod.app/#$id';
 
 // The URL for studio pages.
 // $id is replaced with the studio ID.
@@ -2383,7 +2383,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 
-const PACKAGER_URL = 'https://cattymod.github.io/packager/';
+const PACKAGER_URL = 'https://cattymod.github.io/packager';
 const PACKAGER_ORIGIN = "https://cattymod.github.io/";
 const readBlobAsArrayBuffer = blob => new Promise((resolve, reject) => {
   const fr = new FileReader();
