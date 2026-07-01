@@ -34623,7 +34623,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   replaceProjectWarning: {
     "id": "gui.sharedMessages.replaceProjectWarning",
-    "defaultMessage": "Are you sure you want to switch project?"
+    "defaultMessage": "Replace contents of the current project?"
   },
   loadFromComputerTitle: {
     "id": "gui.sharedMessages.loadFromComputerTitle",
