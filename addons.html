@@ -434,119 +434,124 @@
       <iframe class="addons-iframe" src="https://studio.cattymod.app/addonspage.html" title="TurboWarp Addons"></iframe>
     </section>
 
-    <!-- ABOUT TAB -->
-    <section id="about" class="tab-content">
-      <div class="about-card">
-        <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
-        <div class="about-title"><span>Catty</span><span>Mod</span></div>
-        <div class="about-version">v26.7.1</div>
-        <p class="about-desc">
-          Block-based coding with tons of capabilities
-        </p>
-      </div>
-    </section>
+<!-- ABOUT TAB -->
+<section id="about" class="tab-content">
+  <div class="about-card">
+    <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
+    
+    <div class="about-title" style="margin-bottom: 0.5rem;">
+      <span>Catty</span><span>Mod</span>
+    </div>
+
+    <div class="about-version" style="margin-bottom: 0.3rem;">
+      v26.7.1
+    </div>
+
+    <p class="about-desc" style="margin-top: 0;">
+      Block-based coding with tons of capabilities
+    </p>
+  </div>
+</section>
 
   </main>
 
   <!-- CONTROL SYSTEM SCRIPT -->
-  <script>
-    /* --- TAB SWITCHING SYSTEM --- */
-    const navItems = document.querySelectorAll('.nav-item');
-    const tabContents = document.querySelectorAll('.tab-content');
+<script>
+  /* --- TAB SWITCHING SYSTEM --- */
+  const navItems = document.querySelectorAll('.nav-item');
+  const tabContents = document.querySelectorAll('.tab-content');
 
-    navItems.forEach(item => {
-      item.addEventListener('click', () => {
-        navItems.forEach(nav => nav.classList.remove('active'));
-        tabContents.forEach(tab => tab.classList.remove('active'));
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      navItems.forEach(nav => nav.classList.remove('active'));
+      tabContents.forEach(tab => tab.classList.remove('active'));
 
-        item.classList.add('active');
-        const tabId = item.getAttribute('data-tab');
-        document.getElementById(tabId).classList.add('active');
-      });
+      item.classList.add('active');
+      const tabId = item.getAttribute('data-tab');
+      document.getElementById(tabId).classList.add('active');
     });
+  });
 
-    /* --- SIDEBAR BACK NAVIGATION --- */
-    document.getElementById('sidebarBackButton').addEventListener('click', () => {
-      window.location.href = 'https://studio.cattymod.app/editor.html';
-    });
+  /* --- SIDEBAR BACK NAVIGATION (FIXED) --- */
+  document.getElementById('sidebarBackButton').addEventListener('click', () => {
+    window.open('', '_self');
+    window.close();
+  });
 
-    /* --- COOKIE UTILITIES --- */
-    function setCookie(name, value, days) {
-      const d = new Date();
-      d.setTime(d.getTime() + (days*24*60*60*1000));
-      const expires = "expires=" + d.toUTCString();
-      document.cookie = `${name}=${value};${expires};path=/`;
-    }
+  /* --- COOKIE UTILITIES --- */
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = `${name}=${value};${expires};path=/`;
+  }
 
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-      return null;
-    }
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
 
-    function deleteCookie(name) {
-      document.cookie = name + '=; Max-Age=-99999999; path=/';
-    }
+  function deleteCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999; path=/';
+  }
 
-    /* --- LOCALSTORAGE DARK MODE HOOK --- */
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    
-    // Read initialization state from localstorage safely
-    const currentTheme = localStorage.getItem('tw:theme');
-    if (currentTheme === 'dark' || currentTheme === null) {
-      darkModeToggle.checked = true;
+  /* --- LOCALSTORAGE DARK MODE HOOK --- */
+  const darkModeToggle = document.getElementById('darkModeToggle');
+
+  const currentTheme = localStorage.getItem('tw:theme');
+  if (currentTheme === 'dark' || currentTheme === null) {
+    darkModeToggle.checked = true;
+  } else {
+    darkModeToggle.checked = false;
+  }
+
+  darkModeToggle.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      localStorage.setItem('tw:theme', 'dark');
     } else {
-      darkModeToggle.checked = false;
+      localStorage.setItem('tw:theme', 'light');
     }
+  });
 
-    darkModeToggle.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        localStorage.setItem('tw:theme', 'dark');
-      } else {
-        localStorage.setItem('tw:theme', 'light');
-      }
-    });
+  /* --- THEMES INTERACTION LAYER --- */
+  const themeMasterToggle = document.getElementById('themeMasterToggle');
+  const themePanel = document.getElementById('themePanel');
+  const navbarColorInput = document.getElementById('navbarColor');
+  const previewText = document.getElementById('previewText');
 
-    /* --- THEMES INTERACTION LAYER --- */
-    const themeMasterToggle = document.getElementById('themeMasterToggle');
-    const themePanel = document.getElementById('themePanel');
-    const navbarColorInput = document.getElementById('navbarColor');
-    const previewText = document.getElementById('previewText');
+  const activeSavedColor = getCookie('NavColour');
 
-    const activeSavedColor = getCookie('NavColour');
+  if (activeSavedColor) {
+    themeMasterToggle.checked = true;
+    themePanel.classList.add('expanded');
+    navbarColorInput.value = activeSavedColor;
+    previewText.style.backgroundColor = activeSavedColor;
+  } else {
+    themeMasterToggle.checked = false;
+    previewText.style.backgroundColor = '#009CCC';
+  }
 
-    // Setup active state based on cookie existence
-    if (activeSavedColor) {
-      themeMasterToggle.checked = true;
+  themeMasterToggle.addEventListener('change', (e) => {
+    if (e.target.checked) {
       themePanel.classList.add('expanded');
-      navbarColorInput.value = activeSavedColor;
-      previewText.style.backgroundColor = activeSavedColor;
     } else {
-      themeMasterToggle.checked = false;
+      themePanel.classList.remove('expanded');
+      deleteCookie('NavColour');
+      navbarColorInput.value = '#000000';
       previewText.style.backgroundColor = '#009CCC';
     }
+  });
 
-    // Dynamic master tracking
-    themeMasterToggle.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        themePanel.classList.add('expanded');
-      } else {
-        themePanel.classList.remove('expanded');
-        deleteCookie('NavColour');
-        navbarColorInput.value = '#000000';
-        previewText.style.backgroundColor = '#009CCC';
-      }
-    });
+  navbarColorInput.addEventListener('input', () => {
+    previewText.style.backgroundColor = navbarColorInput.value;
+  });
 
-    navbarColorInput.addEventListener('input', () => {
-      previewText.style.backgroundColor = navbarColorInput.value;
-    });
-
-    document.getElementById('saveButton').addEventListener('click', () => {
-      setCookie('NavColour', navbarColorInput.value, 365);
-      alert("Theme saved! Reload the editor for changes to take affect!");
-    });
-  </script>
+  document.getElementById('saveButton').addEventListener('click', () => {
+    setCookie('NavColour', navbarColorInput.value, 365);
+    alert("Theme saved! Reload the editor for changes to take affect!");
+  });
+</script>
 </body>
 </html>
