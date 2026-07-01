@@ -61,30 +61,14 @@ function addScratch2Option() {
 }
 
 
-// Rename "Addons" → "Settings"
-function renameAddonsToSettings() {
-  document.querySelectorAll('.menu-bar_menu-bar-item_oLDa-').forEach(item => {
-    const span = item.querySelector('span');
-    if (!span) return;
-
-    if (span.textContent.trim() === 'Addons') {
-      span.textContent = 'Settings';
-    }
-  });
-}
-
-
-// Keep everything alive safely
+// Keep both features alive safely
 const observer = new MutationObserver(() => {
   addHomeIcon();
   addScratch2Option();
-  renameAddonsToSettings();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-
 // Initial run
 addHomeIcon();
 addScratch2Option();
-renameAddonsToSettings();
