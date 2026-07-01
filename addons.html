@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CattyMod Settings</title>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent-color: #009CCC;
+      --bg-dark: #121212;
+      --bg-panel: #1e1e1e;
+      --text-main: #eee;
+      --text-muted: #aaa;
+      --sidebar-width: 260px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-panel);
+      border-right: 1px solid #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1rem;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      padding-left: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span:first-child {
+      color: var(--accent-color);
+    }
+
+    .brand span:last-child {
+      color: #fff;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .nav-item {
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-item i, .nav-item .tw-mask {
+      width: 18px;
+      text-align: center;
+    }
+
+    /* SVG Colour forcing solution via CSS Masking */
+    .tw-mask {
+      height: 18px;
+      background-color: var(--text-muted);
+      mask: url("https://studio.cattymod.app/images/tw.svg") no-repeat center;
+      -webkit-mask: url("https://studio.cattymod.app/images/tw.svg") no-repeat center;
+      mask-size: contain;
+      -webkit-mask-size: contain;
+      transition: background-color 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+    
+    .nav-item:hover .tw-mask {
+      background-color: #fff;
+    }
+
+    .nav-item.active {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .nav-item.active .tw-mask {
+      background-color: #fff;
+    }
+
+    /* Sidebar Exit Button */
+    .sidebar-footer {
+      border-top: 1px solid #2a2a2a;
+      padding-top: 1rem;
+    }
+
+    .exit-btn {
+      width: 100%;
+      background-color: #2a2a2a;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .exit-btn:hover {
+      background-color: #3a3a3a;
+    }
+
+    /* --- MAIN CONTENT AREA --- */
+    .content-area {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .tab-content {
+      display: none;
+      height: 100%;
+      padding: 2.5rem;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-content.full-bleed {
+      padding: 0;
+    }
+
+    h2 {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+
+    /* --- CLEAN FORM ELEMENTS --- */
+    .setting-row {
+      background-color: var(--bg-panel);
+      padding: 1.25rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      border: 1px solid #2a2a2a;
+    }
+
+    .setting-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .setting-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Custom Toggle Switch Component */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #444;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent-color);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    /* --- EXPANDABLE THEME INNER SYSTEM --- */
+    .theme-collapsible {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      max-width: 500px;
+      margin-top: 1rem;
+    }
+
+    .theme-collapsible.expanded {
+      max-height: 400px;
+    }
+
+    .theme-inner {
+      background-color: var(--bg-panel);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid #2a2a2a;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 50px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+      margin-bottom: 1.5rem;
+    }
+
+    #saveButton {
+      width: 100%;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    #saveButton:hover { background-color: #45a049; }
+
+    .preview {
+      margin-top: 1.5rem;
+      padding: 0 10px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--accent-color);
+      height: 40px;
+    }
+
+    .preview::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 10px; right: 10px; bottom: 0;
+      background-image: url("https://cattymod.app/assets/navbar.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      pointer-events: none;
+    }
+
+    /* --- TURBOWARP ADDONS EMBED --- */
+    .addons-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: var(--bg-panel);
+    }
+
+    /* --- ABOUT TAB --- */
+    .about-card {
+      max-width: 550px;
+      margin: 0 auto;
+      background-color: var(--bg-panel);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border: 1px solid #2a2a2a;
+    }
+
+    .about-logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 0px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .about-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .about-title span:first-child { color: var(--accent-color); }
+    .about-title span:last-child { color: #fff; }
+
+    .about-version {
+      display: inline-block;
+      background-color: rgba(0, 156, 204, 0.15);
+      color: var(--accent-color);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(0, 156, 204, 0.3);
+    }
+
+    .about-desc {
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand"><span>Catty</span><span>Mod</span></div>
+      <ul class="nav-menu">
+        <li class="nav-item active" data-tab="general"><i class="fa-solid fa-gear"></i> General</li>
+        <li class="nav-item" data-tab="themes"><i class="fa-solid fa-palette"></i> Themes</li>
+        <li class="nav-item" data-tab="addons">
+          <div class="tw-mask"></div> TurboWarp Addons
+        </li>
+        <li class="nav-item" data-tab="about"><i class="fa-solid fa-circle-info"></i> About</li>
+      </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+      <button class="exit-btn" id="sidebarBackButton">
+        <i class="fa-solid fa-arrow-left"></i> Go back to editor
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="content-area">
+
+    <!-- GENERAL TAB -->
+    <section id="general" class="tab-content active">
+      <h2>General Settings</h2>
+      <div class="setting-row">
+        <div class="setting-info">
+          <h3>Dark Mode</h3>
+          <p>Toggle the editor background theme</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- THEMES TAB -->
+    <section id="themes" class="tab-content">
+      <h2>Theme Settings</h2>
+      <div class="setting-row" style="max-width: 500px; margin-bottom: 0;">
+        <div class="setting-info">
+          <h3>Custom Editor Colours</h3>
+          <p>Change the accent colour of the editor</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="themeMasterToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Expandable Configuration Block -->
+      <div class="theme-collapsible" id="themePanel">
+        <div class="theme-inner">
+          <label for="navbarColor">Navbar & Custom Button Color:</label>
+          <input type="color" id="navbarColor" />
+          <button id="saveButton">💾 Save Theme</button>
+          <div class="preview" id="previewText"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TURBOWARP ADDONS TAB (FULL BLEED) -->
+    <section id="addons" class="tab-content full-bleed">
+      <iframe class="addons-iframe" src="https://studio.cattymod.app/addonspage.html" title="TurboWarp Addons"></iframe>
+    </section>
+
+    <!-- ABOUT TAB -->
+    <section id="about" class="tab-content">
+      <div class="about-card">
+        <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
+        <div class="about-title"><span>Catty</span><span>Mod</span></div>
+        <div class="about-version">v26.7.1</div>
+        <p class="about-desc">
+          Block-based coding with tons of capabilities
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CONTROL SYSTEM SCRIPT -->
+  <script>
+    /* --- TAB SWITCHING SYSTEM --- */
+    const navItems = document.querySelectorAll('.nav-item');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(nav => nav.classList.remove('active'));
+        tabContents.forEach(tab => tab.classList.remove('active'));
+
+        item.classList.add('active');
+        const tabId = item.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    /* --- SIDEBAR BACK NAVIGATION --- */
+    document.getElementById('sidebarBackButton').addEventListener('click', () => {
+      window.location.href = 'https://studio.cattymod.app/editor.html';
+    });
+
+    /* --- COOKIE UTILITIES --- */
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days*24*60*60*1000));
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = `${name}=${value};${expires};path=/`;
+    }
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    }
+
+    function deleteCookie(name) {
+      document.cookie = name + '=; Max-Age=-99999999; path=/';
+    }
+
+    /* --- LOCALSTORAGE DARK MODE HOOK --- */
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    // Read initialization state from localstorage safely
+    const currentTheme = localStorage.getItem('tw:theme');
+    if (currentTheme === 'dark' || currentTheme === null) {
+      darkModeToggle.checked = true;
+    } else {
+      darkModeToggle.checked = false;
+    }
+
+    darkModeToggle.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        localStorage.setItem('tw:theme', 'dark');
+      } else {
+        localStorage.setItem('tw:theme', 'light');
+      }
+    });
+
+    /* --- THEMES INTERACTION LAYER --- */
+    const themeMasterToggle = document.getElementById('themeMasterToggle');
+    const themePanel = document.getElementById('themePanel');
+    const navbarColorInput = document.getElementById('navbarColor');
+    const previewText = document.getElementById('previewText');
+
+    const activeSavedColor = getCookie('NavColour');
+
+    // Setup active state based on cookie existence
+    if (activeSavedColor) {
+      themeMasterToggle.checked = true;
+      themePanel.classList.add('expanded');
+      navbarColorInput.value = activeSavedColor;
+      previewText.style.backgroundColor = activeSavedColor;
+    } else {
+      themeMasterToggle.checked = false;
+      previewText.style.backgroundColor = '#009CCC';
+    }
+
+    // Dynamic master tracking
+    themeMasterToggle.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        themePanel.classList.add('expanded');
+      } else {
+        themePanel.classList.remove('expanded');
+        deleteCookie('NavColour');
+        navbarColorInput.value = '#000000';
+        previewText.style.backgroundColor = '#009CCC';
+      }
+    });
+
+    navbarColorInput.addEventListener('input', () => {
+      previewText.style.backgroundColor = navbarColorInput.value;
+    });
+
+    document.getElementById('saveButton').addEventListener('click', () => {
+      setCookie('NavColour', navbarColorInput.value, 365);
+      alert("Theme saved! Reload the editor for changes to take affect!");
+    });
+  </script>
+</body>
+</html>
