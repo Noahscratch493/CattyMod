@@ -26,7 +26,31 @@
         console.log(`✅ Project loaded from ${url}`);
     }
 
+    // Intercepts and checks if a custom user template should overwrite the asset load
     async function loadDefaultProject() {
+        const customEnabled = localStorage.getItem('customProjectEnabled') === 'true';
+        const savedProjectData = localStorage.getItem('cattyModCustomProject');
+
+        if (customEnabled && savedProjectData) {
+            try {
+                await waitForVM();
+                console.log("📦 Loading custom default template from storage...");
+                
+                // Convert the stored Base64 Data URL string back into a structural ArrayBuffer
+                const response = await fetch(savedProjectData);
+                const arrayBuffer = await response.arrayBuffer();
+                
+                await window.vm.loadProject(arrayBuffer);
+                console.log("✅ Custom default project loaded successfully!");
+                return;
+            } catch (err) {
+                console.error("❌ Failed to parse custom stored project file:", err);
+                // Graceful fallback to factory setting if your storage item gets corrupted
+                return loadProjectFromURL(DEFAULT_SB3_URL);
+            }
+        }
+
+        // Run it like before if option is turned off
         return loadProjectFromURL(DEFAULT_SB3_URL);
     }
 
@@ -106,7 +130,7 @@
             return;
         }
 
-        // 📦 Default fallback
+        // 📦 Default fallback (Will dynamically check template configurations automatically)
         await loadDefaultProject();
     });
 
