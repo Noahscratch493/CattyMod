@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CattyMod Settings</title>
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -408,7 +407,6 @@
 </head>
 <body>
 
-  <!-- SIDEBAR NAVIGATION -->
   <aside class="sidebar">
     <div>
       <div class="brand"><span>Catty</span><span>Mod</span></div>
@@ -429,10 +427,8 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT CONTAINER -->
   <main class="content-area">
 
-    <!-- GENERAL TAB -->
     <section id="general" class="tab-content active">
       <h2>General Settings</h2>
       <div class="setting-row">
@@ -447,7 +443,6 @@
       </div>
     </section>
 
-    <!-- THEMES TAB -->
     <section id="themes" class="tab-content">
       <h2>Theme Settings</h2>
       <div class="setting-row" style="max-width: 500px; margin-bottom: 0;">
@@ -461,7 +456,6 @@
         </label>
       </div>
 
-      <!-- Expandable Configuration Block -->
       <div class="theme-collapsible" id="themePanel">
         <div class="theme-inner">
           <label for="navbarColor">Navbar & Custom Button Color:</label>
@@ -472,13 +466,10 @@
       </div>
     </section>
 
-    <!-- TURBOWARP ADDONS TAB (FULL BLEED) -->
     <section id="addons" class="tab-content full-bleed">
-      <!-- Removed src to prevent background frame initialization -->
       <iframe class="addons-iframe" id="addonsIframe" title="TurboWarp Addons"></iframe>
     </section>
 
-    <!-- ABOUT TAB -->
     <section id="about" class="tab-content">
       <div class="about-card">
         <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
@@ -495,7 +486,6 @@
           Block-based coding with tons of capabilities
         </p>
 
-        <!-- Powered By Scrooch Graphic Link Frame -->
         <a href="https://scrooch-project.github.io/ad/build/ad.html?mod=CattyMod" target="_blank" class="scrooch-badge-link">
           <img src="https://scrooch-project.github.io/ad/PoweredByScrooch.svg" alt="Powered By Scrooch" class="scrooch-badge">
         </a>
@@ -504,8 +494,7 @@
 
   </main>
 
-  <!-- CONTROL SYSTEM SCRIPT -->
-<script>
+  <script>
   /* --- TAB SWITCHING & DYNAMIC IFRAME LOADING SYSTEM --- */
   const navItems = document.querySelectorAll('.nav-item');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -528,9 +517,9 @@
     });
   });
 
-  /* --- SIDEBAR BACK NAVIGATION --- */
+  /* --- SIDEBAR BACK NAVIGATION (TAB CLOSE) --- */
   document.getElementById('sidebarBackButton').addEventListener('click', () => {
-    window.location.href = 'https://studio.cattymod.app/editor.html';
+    window.close();
   });
 
   /* --- COOKIE UTILITIES --- */
