@@ -137,6 +137,11 @@
       position: relative;
     }
 
+    /* DUAL SCROLLBAR FIX: Disables main content area scrolling when addons iframe is focused */
+    body.addons-active .content-area {
+      overflow-y: hidden;
+    }
+
     .tab-content {
       display: none;
       height: 100%;
@@ -496,9 +501,15 @@
       const tabId = item.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
 
-      // Lazy load logic: If user switches to addons and it hasn't loaded yet, assign src
-      if (tabId === 'addons' && (!addonsIframe.src || addonsIframe.src === 'about:blank')) {
-        addonsIframe.src = addonsUrl;
+      // Add dynamic modifier layout classes onto the root frame to avoid dual-scrollbar nesting
+      if (tabId === 'addons') {
+        document.body.classList.add('addons-active');
+        // Lazy load logic: If user switches to addons and it hasn't loaded yet, assign src
+        if (!addonsIframe.src || addonsIframe.src === 'about:blank') {
+          addonsIframe.src = addonsUrl;
+        }
+      } else {
+        document.body.classList.remove('addons-active');
       }
     });
   });
