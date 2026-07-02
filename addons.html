@@ -129,36 +129,6 @@
       background-color: #fff;
     }
 
-    /* Sidebar Exit Button */
-    .sidebar-footer {
-      border-top: 1px solid var(--border-color);
-      padding-top: 1rem;
-    }
-
-    .exit-btn {
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.15);
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: background 0.2s, color 0.2s;
-    }
-    body.light-theme .exit-btn {
-      background-color: #f0f2f5;
-    }
-
-    .exit-btn:hover {
-      background-color: rgba(0, 156, 204, 0.1);
-      color: var(--accent-color);
-    }
-
     /* --- MAIN CONTENT AREA --- */
     .content-area {
       flex: 1;
@@ -419,12 +389,6 @@
         <li class="nav-item" data-tab="about"><i class="fa-solid fa-circle-info"></i> About</li>
       </ul>
     </div>
-    
-    <div class="sidebar-footer">
-      <button class="exit-btn" id="sidebarBackButton">
-        <i class="fa-solid fa-arrow-left"></i> Go back to editor
-      </button>
-    </div>
   </aside>
 
   <main class="content-area">
@@ -435,7 +399,7 @@
       <div class="setting-row">
         <div class="setting-info">
           <h3>Dark Mode</h3>
-          <p>Toggle the editor background theme</p>
+          <p>Toggle the editor background theme (you might have to reload the editor after toggling)</p>
         </div>
         <label class="switch">
           <input type="checkbox" id="darkModeToggle">
@@ -537,11 +501,6 @@
         addonsIframe.src = addonsUrl;
       }
     });
-  });
-
-  /* --- SIDEBAR BACK NAVIGATION (TAB CLOSE) --- */
-  document.getElementById('sidebarBackButton').addEventListener('click', () => {
-    window.close();
   });
 
   /* --- COOKIE UTILITIES --- */
