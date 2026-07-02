@@ -431,15 +431,37 @@
 
     <section id="general" class="tab-content active">
       <h2>General Settings</h2>
+      
       <div class="setting-row">
         <div class="setting-info">
           <h3>Dark Mode</h3>
-          <p>Toggle the editor background theme. You might have to reload the editor when you toggle this setting.</p>
+          <p>Toggle the editor background theme</p>
         </div>
         <label class="switch">
           <input type="checkbox" id="darkModeToggle">
           <span class="slider"></span>
         </label>
+      </div>
+
+      <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+          <div class="setting-info">
+            <h3>Custom Default Project</h3>
+            <p>Load your own project file automatically when opening the editor</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="customProjectToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div id="uploadContainer" style="display: none; width: 100%; margin-top: 0.5rem;">
+          <input type="file" id="projectSelector" accept=".sb3,.sb2,.sb" style="display: none;">
+          <button id="uploadBtn" style="background: var(--accent-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">
+            <i class="fa-solid fa-upload"></i> Choose Project File
+          </button>
+          <span id="fileNameDisplay" style="margin-left: 10px; color: var(--text-muted); font-size: 0.9rem;">No file selected</span>
+        </div>
       </div>
     </section>
 
@@ -549,7 +571,7 @@
     try {
       if (addonsIframe && addonsIframe.contentWindow) {
         const currentUrl = addonsIframe.contentWindow.location.href;
-        // Ensure iframe has a valid active URL (isn't blank or uninitialized) before forcing a reload
+        // Ensure iframe has a valid active URL before forcing a reload
         if (currentUrl && currentUrl !== 'about:blank') {
           addonsIframe.contentWindow.location.replace(currentUrl);
         }
@@ -636,6 +658,52 @@
   document.getElementById('saveButton').addEventListener('click', () => {
     setCookie('NavColour', navbarColorInput.value, 365);
     alert("Theme saved! Reload the editor for changes to take affect!");
+  });
+
+  /* --- CUSTOM DEFAULT PROJECT SYSTEM --- */
+  const customProjectToggle = document.getElementById('customProjectToggle');
+  const uploadContainer = document.getElementById('uploadContainer');
+  const projectSelector = document.getElementById('projectSelector');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+  // Load custom project initial configuration state
+  const isCustomProjectEnabled = localStorage.getItem('customProjectEnabled') === 'true';
+  if (customProjectToggle) {
+    customProjectToggle.checked = isCustomProjectEnabled;
+    uploadContainer.style.display = isCustomProjectEnabled ? 'block' : 'none';
+  }
+
+  if (localStorage.getItem('customProjectName')) {
+    fileNameDisplay.textContent = localStorage.getItem('customProjectName');
+  }
+
+  customProjectToggle.addEventListener('change', (e) => {
+    localStorage.setItem('customProjectEnabled', e.target.checked);
+    uploadContainer.style.display = e.target.checked ? 'block' : 'none';
+  });
+
+  uploadBtn.addEventListener('click', () => projectSelector.click());
+
+  projectSelector.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    fileNameDisplay.textContent = file.name;
+    localStorage.setItem('customProjectName', file.name);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    
+    reader.onload = function () {
+      try {
+        localStorage.setItem('cattyModCustomProject', reader.result);
+        alert("Project saved successfully as your default template!");
+      } catch (error) {
+        alert("File is too large! LocalStorage is limited to 5MB.");
+        console.error("Storage Error: ", error);
+      }
+    };
   });
 </script>
 </body>
