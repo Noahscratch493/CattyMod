@@ -4,15 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CattyMod Settings</title>
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --accent-color: #009CCC;
+      
+      /* Dark Theme Variables */
       --bg-dark: #121212;
       --bg-panel: #1e1e1e;
       --text-main: #eee;
       --text-muted: #aaa;
+      --border-color: #2a2a2a;
       --sidebar-width: 260px;
+    }
+
+    /* Light Theme Variables Overrides */
+    body.light-theme {
+      --bg-dark: #f0f2f5;
+      --bg-panel: #ffffff;
+      --text-main: #1c1e21;
+      --text-muted: #606770;
+      --border-color: #e5e5e5;
     }
 
     * {
@@ -28,17 +41,20 @@
       display: flex;
       height: 100vh;
       overflow: hidden;
+      /* Smooth theme transition fade effect */
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* --- SIDEBAR --- */
     .sidebar {
       width: var(--sidebar-width);
       background-color: var(--bg-panel);
-      border-right: 1px solid #2a2a2a;
+      border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       padding: 1.5rem 1rem;
       justify-content: space-between;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .brand {
@@ -55,6 +71,9 @@
 
     .brand span:last-child {
       color: #fff;
+    }
+    body.light-theme .brand span:last-child {
+      color: #1c1e21;
     }
 
     .nav-menu {
@@ -94,12 +113,12 @@
     }
 
     .nav-item:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: #fff;
+      background-color: rgba(0, 156, 204, 0.08);
+      color: var(--accent-color);
     }
     
     .nav-item:hover .tw-mask {
-      background-color: #fff;
+      background-color: var(--accent-color);
     }
 
     .nav-item.active {
@@ -113,15 +132,15 @@
 
     /* Sidebar Exit Button */
     .sidebar-footer {
-      border-top: 1px solid #2a2a2a;
+      border-top: 1px solid var(--border-color);
       padding-top: 1rem;
     }
 
     .exit-btn {
       width: 100%;
-      background-color: #2a2a2a;
-      color: #fff;
-      border: none;
+      background-color: rgba(0, 0, 0, 0.15);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       padding: 0.75rem;
       font-weight: 600;
@@ -130,11 +149,15 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
+    }
+    body.light-theme .exit-btn {
+      background-color: #f0f2f5;
     }
 
     .exit-btn:hover {
-      background-color: #3a3a3a;
+      background-color: rgba(0, 156, 204, 0.1);
+      color: var(--accent-color);
     }
 
     /* --- MAIN CONTENT AREA --- */
@@ -162,7 +185,7 @@
     h2 {
       font-weight: 600;
       margin-bottom: 1.5rem;
-      color: #fff;
+      color: var(--text-main);
     }
 
     /* --- CLEAN FORM ELEMENTS --- */
@@ -174,7 +197,8 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
-      border: 1px solid #2a2a2a;
+      border: 1px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .setting-info h3 {
@@ -209,6 +233,9 @@
       background-color: #444;
       transition: .3s;
       border-radius: 24px;
+    }
+    body.light-theme .slider {
+      background-color: #ccd0d5;
     }
 
     .slider:before {
@@ -248,8 +275,9 @@
       background-color: var(--bg-panel);
       padding: 1.5rem;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      border: 1px solid #2a2a2a;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border: 1px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     label {
@@ -321,8 +349,9 @@
       border-radius: 16px;
       padding: 2.5rem;
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      border: 1px solid #2a2a2a;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      border: 1px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .about-logo {
@@ -330,7 +359,7 @@
       height: 96px;
       border-radius: 0px;
       margin-bottom: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     .about-title {
@@ -340,7 +369,7 @@
     }
 
     .about-title span:first-child { color: var(--accent-color); }
-    .about-title span:last-child { color: #fff; }
+    .about-title span:last-child { color: var(--text-main); }
 
     .about-version {
       display: inline-block;
@@ -379,6 +408,7 @@
 </head>
 <body>
 
+  <!-- SIDEBAR NAVIGATION -->
   <aside class="sidebar">
     <div>
       <div class="brand"><span>Catty</span><span>Mod</span></div>
@@ -399,8 +429,10 @@
     </div>
   </aside>
 
+  <!-- MAIN CONTENT CONTAINER -->
   <main class="content-area">
 
+    <!-- GENERAL TAB -->
     <section id="general" class="tab-content active">
       <h2>General Settings</h2>
       <div class="setting-row">
@@ -415,6 +447,7 @@
       </div>
     </section>
 
+    <!-- THEMES TAB -->
     <section id="themes" class="tab-content">
       <h2>Theme Settings</h2>
       <div class="setting-row" style="max-width: 500px; margin-bottom: 0;">
@@ -428,6 +461,7 @@
         </label>
       </div>
 
+      <!-- Expandable Configuration Block -->
       <div class="theme-collapsible" id="themePanel">
         <div class="theme-inner">
           <label for="navbarColor">Navbar & Custom Button Color:</label>
@@ -438,10 +472,13 @@
       </div>
     </section>
 
+    <!-- TURBOWARP ADDONS TAB (FULL BLEED) -->
     <section id="addons" class="tab-content full-bleed">
-      <iframe class="addons-iframe" src="https://studio.cattymod.app/addonspage.html" title="TurboWarp Addons"></iframe>
+      <!-- Removed src to prevent background frame initialization -->
+      <iframe class="addons-iframe" id="addonsIframe" title="TurboWarp Addons"></iframe>
     </section>
 
+    <!-- ABOUT TAB -->
     <section id="about" class="tab-content">
       <div class="about-card">
         <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
@@ -458,6 +495,7 @@
           Block-based coding with tons of capabilities
         </p>
 
+        <!-- Powered By Scrooch Graphic Link Frame -->
         <a href="https://scrooch-project.github.io/ad/build/ad.html?mod=CattyMod" target="_blank" class="scrooch-badge-link">
           <img src="https://scrooch-project.github.io/ad/PoweredByScrooch.svg" alt="Powered By Scrooch" class="scrooch-badge">
         </a>
@@ -466,10 +504,13 @@
 
   </main>
 
-  <script>
-  /* --- TAB SWITCHING SYSTEM --- */
+  <!-- CONTROL SYSTEM SCRIPT -->
+<script>
+  /* --- TAB SWITCHING & DYNAMIC IFRAME LOADING SYSTEM --- */
   const navItems = document.querySelectorAll('.nav-item');
   const tabContents = document.querySelectorAll('.tab-content');
+  const addonsIframe = document.getElementById('addonsIframe');
+  const addonsUrl = "https://studio.cattymod.app/addonspage.html";
 
   navItems.forEach(item => {
     item.addEventListener('click', () => {
@@ -479,6 +520,11 @@
       item.classList.add('active');
       const tabId = item.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
+
+      // Lazy load logic: If user switches to addons and it hasn't loaded yet, assign src
+      if (tabId === 'addons' && (!addonsIframe.src || addonsIframe.src === 'about:blank')) {
+        addonsIframe.src = addonsUrl;
+      }
     });
   });
 
@@ -506,21 +552,62 @@
     document.cookie = name + '=; Max-Age=-99999999; path=/';
   }
 
-  /* --- LOCALSTORAGE DARK MODE HOOK --- */
+  /* --- DARK MODE TRANSITION ENGINE & IFRAME REFRESH --- */
   const darkModeToggle = document.getElementById('darkModeToggle');
 
-  const currentTheme = localStorage.getItem('tw:theme');
-  if (currentTheme === 'dark' || currentTheme === null) {
-    darkModeToggle.checked = true;
-  } else {
-    darkModeToggle.checked = false;
+  // Reload the addons iframe at its exact active inner path location
+  function reloadAddonsIframe() {
+    try {
+      if (addonsIframe && addonsIframe.contentWindow) {
+        const currentUrl = addonsIframe.contentWindow.location.href;
+        // Ensure iframe has a valid active URL (isn't blank or uninitialized) before forcing a reload
+        if (currentUrl && currentUrl !== 'about:blank') {
+          addonsIframe.contentWindow.location.replace(currentUrl);
+        }
+      }
+    } catch (e) {
+      // Fallback safeguard if cross-origin limits interfere unexpectedly
+      if (addonsIframe.src && addonsIframe.src !== 'about:blank') {
+        addonsIframe.src = addonsIframe.src;
+      }
+    }
   }
 
+  // Unified function to update body styling cleanly and trigger a live iframe refresh
+  function updateThemeUI(themeValue, triggerReload = false) {
+    const isDark = (themeValue === 'dark' || themeValue === null);
+    
+    if (isDark) {
+      document.body.classList.remove('light-theme');
+      darkModeToggle.checked = true;
+    } else {
+      document.body.classList.add('light-theme');
+      darkModeToggle.checked = false;
+    }
+
+    if (triggerReload) {
+      reloadAddonsIframe();
+    }
+  }
+
+  // Initial runtime load check (No reload required on startup)
+  updateThemeUI(localStorage.getItem('tw:theme'), false);
+
+  // User input selection change triggers local update and refreshes iframe
   darkModeToggle.addEventListener('change', (e) => {
     if (e.target.checked) {
       localStorage.setItem('tw:theme', 'dark');
+      updateThemeUI('dark', true);
     } else {
       localStorage.setItem('tw:theme', 'light');
+      updateThemeUI('light', true);
+    }
+  });
+
+  // Cross-Tab / Internal script listener changes tracker
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'tw:theme') {
+      updateThemeUI(e.newValue, true);
     }
   });
 
