@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CattyMod Settings</title>
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -360,12 +359,26 @@
       line-height: 1.6;
       font-size: 1.05rem;
       font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .scrooch-badge-link {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .scrooch-badge-link:hover {
+      transform: scale(1.03);
+    }
+
+    .scrooch-badge {
+      height: 50px;
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  <!-- SIDEBAR NAVIGATION -->
   <aside class="sidebar">
     <div>
       <div class="brand"><span>Catty</span><span>Mod</span></div>
@@ -386,10 +399,8 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT CONTAINER -->
   <main class="content-area">
 
-    <!-- GENERAL TAB -->
     <section id="general" class="tab-content active">
       <h2>General Settings</h2>
       <div class="setting-row">
@@ -404,7 +415,6 @@
       </div>
     </section>
 
-    <!-- THEMES TAB -->
     <section id="themes" class="tab-content">
       <h2>Theme Settings</h2>
       <div class="setting-row" style="max-width: 500px; margin-bottom: 0;">
@@ -418,7 +428,6 @@
         </label>
       </div>
 
-      <!-- Expandable Configuration Block -->
       <div class="theme-collapsible" id="themePanel">
         <div class="theme-inner">
           <label for="navbarColor">Navbar & Custom Button Color:</label>
@@ -429,34 +438,35 @@
       </div>
     </section>
 
-    <!-- TURBOWARP ADDONS TAB (FULL BLEED) -->
     <section id="addons" class="tab-content full-bleed">
       <iframe class="addons-iframe" src="https://studio.cattymod.app/addonspage.html" title="TurboWarp Addons"></iframe>
     </section>
 
-<!-- ABOUT TAB -->
-<section id="about" class="tab-content">
-  <div class="about-card">
-    <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
-    
-    <div class="about-title" style="margin-bottom: 0.5rem;">
-      <span>Catty</span><span>Mod</span>
-    </div>
+    <section id="about" class="tab-content">
+      <div class="about-card">
+        <img src="https://studio.cattymod.app/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
+        
+        <div class="about-title" style="margin-bottom: 0.5rem;">
+          <span>Catty</span><span>Mod</span>
+        </div>
 
-    <div class="about-version" style="margin-bottom: 0.3rem;">
-      v26.7.1
-    </div>
+        <div class="about-version" style="margin-bottom: 0.8rem;">
+          v26.7.2
+        </div>
 
-    <p class="about-desc" style="margin-top: 0;">
-      Block-based coding with tons of capabilities
-    </p>
-  </div>
-</section>
+        <p class="about-desc" style="margin-top: 0;">
+          Block-based coding with tons of capabilities
+        </p>
+
+        <a href="https://scrooch-project.github.io/ad/build/ad.html?mod=CattyMod" target="_blank" class="scrooch-badge-link">
+          <img src="https://scrooch-project.github.io/ad/PoweredByScrooch.svg" alt="Powered By Scrooch" class="scrooch-badge">
+        </a>
+      </div>
+    </section>
 
   </main>
 
-  <!-- CONTROL SYSTEM SCRIPT -->
-<script>
+  <script>
   /* --- TAB SWITCHING SYSTEM --- */
   const navItems = document.querySelectorAll('.nav-item');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -472,10 +482,9 @@
     });
   });
 
-  /* --- SIDEBAR BACK NAVIGATION (FIXED) --- */
+  /* --- SIDEBAR BACK NAVIGATION --- */
   document.getElementById('sidebarBackButton').addEventListener('click', () => {
-    window.open('', '_self');
-    window.close();
+    window.location.href = 'https://studio.cattymod.app/editor.html';
   });
 
   /* --- COOKIE UTILITIES --- */
