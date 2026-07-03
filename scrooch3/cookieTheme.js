@@ -21,7 +21,7 @@
   }
 
   const smallBtnColor = darkenColor(navColor, 0.25);
-  const outlineColor = darkenColor(navColor, 0.4);
+  const outlineColor = darkenColor(navColor, 0.4); // slightly darker for main button outline
 
   function applyColors() {
     // Navbar
@@ -64,7 +64,7 @@
       });
   }
 
-  // Inject CSS (tooltip + FIXED arrow)
+  // Inject CSS to force tooltip + arrow color
   if (!document.getElementById('tooltip-navcolor-style')) {
     const styleEl = document.createElement('style');
     styleEl.id = 'tooltip-navcolor-style';
@@ -74,19 +74,18 @@
         color: white !important;
         box-shadow: none !important;
       }
-
-      /* FIXED triangle (top-position tooltip) */
       .action-menu_tooltip_3Bkh5::after {
-        border-top-color: ${navColor} !important;
-        border-left-color: transparent !important;
-        border-right-color: transparent !important;
+        background-color: ${navColor} !important;
+        border-color: ${navColor} !important;
       }
     `;
     document.head.appendChild(styleEl);
   }
 
+  // Run immediately
   applyColors();
 
+  // Observe dynamic DOM changes
   const observer = new MutationObserver(applyColors);
   observer.observe(document.body, { childList: true, subtree: true });
 })();
