@@ -104,8 +104,8 @@
     .tw-mask {
       height: 18px;
       background-color: var(--text-muted);
-      mask: url("https://cattymod.app/editor/images/tw.svg") no-repeat center;
-      -webkit-mask: url("https://cattymod.app/editor/images/tw.svg") no-repeat center;
+      mask: url("https://cattymod.app/previous/images/tw.svg") no-repeat center;
+      -webkit-mask: url("https://cattymod.app/previous/images/tw.svg") no-repeat center;
       mask-size: contain;
       -webkit-mask-size: contain;
       transition: background-color 0.2s ease;
@@ -462,7 +462,7 @@
 
     <section id="about" class="tab-content">
       <div class="about-card">
-        <img src="https://cattymod.app/editor/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
+        <img src="https://cattymod.app/previous/images/apple-touch-icon.png" alt="CattyMod Logo" class="about-logo">
         
         <div class="about-title" style="margin-bottom: 0.5rem;">
           <span>Catty</span><span>Mod</span>
@@ -489,7 +489,7 @@
   const navItems = document.querySelectorAll('.nav-item');
   const tabContents = document.querySelectorAll('.tab-content');
   const addonsIframe = document.getElementById('addonsIframe');
-  const addonsUrl = "https://cattymod.app/editor/addonspage.html";
+  const addonsUrl = "https://cattymod.app/previous/addonspage.html";
 
   navItems.forEach(item => {
     item.addEventListener('click', () => {
